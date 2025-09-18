@@ -84,47 +84,57 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* 分类筛选 */}
-        <div className="mb-12">
-          <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-6 py-3 rounded-full transition-all duration-300 cursor-pointer whitespace-nowrap ${
-                  activeCategory === category.id
-                    ? 'bg-blue-600 text-white shadow-lg'
-                    : 'bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-600 shadow-md'
-                }`}
-              >
-                {category.name} ({category.count})
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {error && (
-          <div className="max-w-3xl mx-auto mb-8 rounded-xl bg-red-50 px-6 py-4 text-center text-red-600 shadow">
-            {error}
-          </div>
-        )}
-
-        {/* 产品网格 */}
-        <div data-product-shop>
-          {loading ? (
-            <div className="flex min-h-[200px] items-center justify-center text-gray-500">
-              正在加载产品信息...
+        <div className="flex flex-col gap-12 lg:flex-row">
+          {/* 分类筛选 */}
+          <aside className="lg:w-64">
+            <div className="mx-auto max-w-xl rounded-2xl bg-white p-6 shadow-lg lg:sticky lg:top-24">
+              <h2 className="mb-6 text-center text-lg font-semibold text-gray-800 lg:text-left">产品分类</h2>
+              <div className="flex flex-wrap justify-center gap-3 lg:flex-col lg:items-stretch">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setActiveCategory(category.id)}
+                    className={`rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 cursor-pointer whitespace-nowrap lg:w-full ${
+                      activeCategory === category.id
+                        ? 'bg-blue-600 text-white shadow-lg'
+                        : 'bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+                    }`}
+                  >
+                    <span className="flex items-center justify-between gap-4">
+                      <span>{category.name}</span>
+                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-blue-600">
+                        {category.count}
+                      </span>
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
-          ) : filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredProducts.map((product, index) => (
-                <div
-                  key={product.id}
-                  className="group overflow-hidden rounded-xl bg-white shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-                  style={{
-                    animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
-                  }}
-                >
+          </aside>
+
+          <div className="flex-1">
+            {error && (
+              <div className="mx-auto mb-8 max-w-3xl rounded-xl bg-red-50 px-6 py-4 text-center text-red-600 shadow">
+                {error}
+              </div>
+            )}
+
+            {/* 产品网格 */}
+            <div data-product-shop>
+              {loading ? (
+                <div className="flex min-h-[200px] items-center justify-center text-gray-500">
+                  正在加载产品信息...
+                </div>
+              ) : filteredProducts.length > 0 ? (
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {filteredProducts.map((product, index) => (
+                    <div
+                      key={product.id}
+                      className="group overflow-hidden rounded-xl bg-white shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                      style={{
+                        animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
+                      }}
+                    >
                   {/* 产品图片 */}
                   <div className="relative h-64 overflow-hidden bg-gray-100">
                     <img
@@ -180,13 +190,15 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
                     </Link>
                   </div>
                 </div>
-              ))}
+                  ))}
+                </div>
+              ) : (
+                <div className="flex min-h-[200px] items-center justify-center rounded-xl bg-white text-gray-500 shadow">
+                  暂无符合条件的产品。
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="flex min-h-[200px] items-center justify-center rounded-xl bg-white text-gray-500 shadow">
-              暂无符合条件的产品。
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </section>
