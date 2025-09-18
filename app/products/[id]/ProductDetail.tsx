@@ -8,6 +8,16 @@ interface ProductDetailProps {
   productId: string;
 }
 
+type SpecificationKey =
+  | 'capacity'
+  | 'voltage'
+  | 'current'
+  | 'cycles'
+  | 'efficiency'
+  | 'warranty'
+  | 'operating'
+  | 'protection';
+
 interface ProductDetailData {
   id: number;
   title: string;
@@ -18,10 +28,80 @@ interface ProductDetailData {
   dealGallery: string[];
   dealFeatures: string[];
   dealApplications: string[];
+  [key in SpecificationKey]: string;
 }
+
+type ProductDetailApiPayload = Omit<ProductDetailData, SpecificationKey | 'dealGallery' | 'dealFeatures' | 'dealApplications'> &
+  Partial<Record<SpecificationKey, string>> & {
+    dealGallery?: string[];
+    dealFeatures?: string[];
+    dealApplications?: string[];
+    specifications?: Partial<Record<SpecificationKey, string>>;
+  };
+
+const specificationKeys: SpecificationKey[] = [
+  'capacity',
+  'voltage',
+  'current',
+  'cycles',
+  'efficiency',
+  'warranty',
+  'operating',
+  'protection',
+];
+
+const specificationLabels: Record<SpecificationKey, string> = {
+  capacity: 'Capacity',
+  voltage: 'Voltage',
+  current: 'Current',
+  cycles: 'Cycles',
+  efficiency: 'Efficiency',
+  warranty: 'Warranty',
+  operating: 'Operating',
+  protection: 'Protection',
+};
+
+const normalizeProductData = (data: ProductDetailApiPayload): ProductDetailData => {
+  const { specifications, ...rest } = data;
+
+  const ensureValue = (key: SpecificationKey) => data[key] ?? specifications?.[key] ?? '';
+
+  return {
+    ...rest,
+    dealGallery: data.dealGallery ?? [],
+    dealFeatures: data.dealFeatures ?? [],
+    dealApplications: data.dealApplications ?? [],
+    capacity: ensureValue('capacity'),
+    voltage: ensureValue('voltage'),
+    current: ensureValue('current'),
+    cycles: ensureValue('cycles'),
+    efficiency: ensureValue('efficiency'),
+    warranty: ensureValue('warranty'),
+    operating: ensureValue('operating'),
+    protection: ensureValue('protection'),
+  } as ProductDetailData;
+};
+
+const isProductDetailApiPayload = (value: unknown): value is ProductDetailApiPayload => {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const obj = value as Record<string, unknown>;
+
+  return (
+    typeof obj.id === 'number' &&
+    typeof obj.title === 'string' &&
+    typeof obj.category === 'string' &&
+    typeof obj.description === 'string' &&
+    typeof obj.fullDescription === 'string' &&
+    typeof obj.image === 'string'
+  );
+};
 
 export default function ProductDetail({ productId }: ProductDetailProps) {
   const [heroRef, heroInView] = useInView({ threshold: 0.3, triggerOnce: true });
+  const [specsRef, specsInView] = useInView({ threshold: 0.2, triggerOnce: true });
   const [featuresRef, featuresInView] = useInView({ threshold: 0.2, triggerOnce: true });
 
   const [product, setProduct] = useState<ProductDetailData | null>(null);
@@ -47,12 +127,14 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
 
         let parsedProduct: ProductDetailData | null = null;
 
-        if (rawData && typeof rawData === 'object') {
-          if ('id' in rawData) {
-            parsedProduct = rawData as ProductDetailData;
-          } else {
-            const record = rawData as Record<string, ProductDetailData>;
-            parsedProduct = record[productId] ?? null;
+        if (isProductDetailApiPayload(rawData)) {
+          parsedProduct = normalizeProductData(rawData);
+        } else if (rawData && typeof rawData === 'object') {
+          const record = rawData as Record<string, unknown>;
+          const candidate = record[productId];
+
+          if (isProductDetailApiPayload(candidate)) {
+            parsedProduct = normalizeProductData(candidate);
           }
         }
 
@@ -114,6 +196,14 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
       </div>
     );
   }
+
+  const specificationEntries = specificationKeys
+    .map((key) => ({
+      key,
+      label: specificationLabels[key],
+      value: product[key],
+    }))
+    .filter((entry) => Boolean(entry.value));
 
   return (
     <div className="min-h-screen bg-white">
@@ -183,6 +273,40 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
           </div>
         </div>
       </section>
+
+      {specificationEntries.length > 0 && (
+        <section ref={specsRef} className="py-16 sm:py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+              className={`text-center mb-12 transition-all duration-1000 ${
+                specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Technical Specifications</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Detailed technical specifications and performance parameters
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {specificationEntries.map(({ key, label, value }, index) => (
+                <div
+                  key={key}
+                  className={`bg-white p-6 rounded-xl shadow-lg transition-all duration-1000 ${
+                    specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{label}</h3>
+                    <p className="text-blue-600 font-bold text-xl">{value}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Features & Applications */}
       <section ref={featuresRef} className="py-16 sm:py-20 bg-white">
