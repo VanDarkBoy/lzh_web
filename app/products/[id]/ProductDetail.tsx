@@ -127,7 +127,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
               <nav className="flex items-center space-x-2 text-sm text-gray-500 mb-6">
                 <Link href="/" className="hover:text-blue-600">Home</Link>
                 <i className="ri-arrow-right-s-line"></i>
-                <Link href="/#products" className="hover:text-blue-600">Products</Link>
+                <Link href="/product-list" className="hover:text-blue-600">Products</Link>
                 <i className="ri-arrow-right-s-line"></i>
                 <span className="text-gray-900">{product.title}</span>
               </nav>
