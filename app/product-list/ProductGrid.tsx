@@ -4,13 +4,13 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 interface Product {
-  id: string;
+  id: bigint;
   name: string;
   category: string;
   image: string;
   description: string;
   specs: string;
-  features: string[];
+  dealFeatures: string[];
 }
 
 interface ProductGridProps {
@@ -29,7 +29,7 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://locallhost:8077/api/product', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/getAllProduct`, {
           signal: controller.signal
         });
 
@@ -44,7 +44,7 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
         if (err instanceof DOMException && err.name === 'AbortError') {
           return;
         }
-        setError('加载产品数据失败，请稍后重试。');
+        setError('加载产品数据失败，请稍后重试');
       } finally {
         setLoading(false);
       }
@@ -139,10 +139,9 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
                     </div>
 
                     <ul className="mb-6 space-y-2 text-sm text-gray-600">
-                      {product.features.map((feature, featureIndex) => (
+                      {product.dealFeatures.map((feature, featureIndex) => (
                         <li key={`${product.id}-feature-${featureIndex}`} className="flex items-center">
-                          <span className="mr-2 text-blue-500">•</span>
-                          {feature}
+                          <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">{feature}</span>
                         </li>
                       ))}
                     </ul>

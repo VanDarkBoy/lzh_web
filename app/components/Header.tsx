@@ -80,7 +80,7 @@ export default function Header() {
                 <img 
                   src="https://static.readdy.ai/image/78fade42075db25ed5a2e70ff249826e/da2954c8563ca8087714e60cd0512fc7.jfif"
                   alt="Lithium Valley Logo"
-                  className="h-32 sm:h-40 w-auto bg-transparent mix-blend-multiply"
+                  className="h-32 sm:h-20 w-32 bg-transparent mix-blend-multiply"
                 />
               </Link>
             </div>
