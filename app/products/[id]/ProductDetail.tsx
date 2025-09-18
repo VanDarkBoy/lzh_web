@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 
@@ -7,124 +8,95 @@ interface ProductDetailProps {
   productId: string;
 }
 
-const productData = {
-  '1': {
-    id: 1,
-    title: "PowerMax Commercial ESS",
-    category: "Commercial Energy Storage",
-    description: "High-capacity energy storage system for commercial applications with 500kWh-2MWh configurations",
-    fullDescription: "The PowerMax Commercial ESS represents the pinnacle of commercial energy storage technology. Designed for businesses, industrial facilities, and utility-scale applications, this system delivers unmatched reliability and performance. With modular scalability from 500kWh to 2MWh, it adapts to your growing energy needs while providing exceptional return on investment.",
-    image: "https://readdy.ai/api/search-image?query=Large%20commercial%20energy%20storage%20system%20with%20industrial%20battery%20containers%2C%20modern%20clean%20facility%20with%20blue%20and%20white%20energy%20storage%20units%2C%20professional%20product%20photography%20showcasing%20large-scale%20battery%20storage%20technology%2C%20industrial%20warehouse%20setting%20with%20organized%20battery%20modules&width=800&height=600&seq=product-detail-1&orientation=landscape",
-    gallery: [
-      "https://readdy.ai/api/search-image?query=Commercial%20energy%20storage%20system%20installation%20in%20modern%20industrial%20facility%2C%20professional%20technicians%20working%20on%20large%20battery%20modules%2C%20clean%20industrial%20environment%20with%20safety%20equipment%20and%20monitoring%20systems&width=600&height=400&seq=gallery-1-1&orientation=landscape",
-      "https://readdy.ai/api/search-image?query=Energy%20storage%20system%20control%20panel%20with%20digital%20displays%20showing%20performance%20metrics%2C%20professional%20monitoring%20interface%20with%20real-time%20data%20visualization%2C%20industrial%20control%20room%20setting&width=600&height=400&seq=gallery-1-2&orientation=landscape",
-      "https://readdy.ai/api/search-image?query=Large-scale%20battery%20modules%20arranged%20in%20clean%20industrial%20facility%2C%20organized%20rows%20of%20energy%20storage%20units%20with%20safety%20systems%2C%20professional%20industrial%20photography&width=600&height=400&seq=gallery-1-3&orientation=landscape"
-    ],
-    specifications: {
-      capacity: "500kWh - 2MWh",
-      voltage: "400V DC / 480V AC",
-      current: "1250A - 5000A",
-      cycles: "6000+ cycles @ 80% DOD",
-      efficiency: "95%+ round-trip efficiency",
-      warranty: "15 years",
-      operating: "-20°C to +50°C",
-      protection: "IP54 rated enclosure"
-    },
-    features: [
-      "Modular and scalable design",
-      "Advanced battery management system",
-      "Remote monitoring and control",
-      "Grid-tie and islanding capabilities",
-      "Safety systems and fire suppression",
-      "Professional installation support"
-    ],
-    applications: [
-      "Commercial buildings",
-      "Industrial facilities",
-      "Data centers",
-      "Manufacturing plants",
-      "Distribution centers",
-      "Utility substations"
-    ]
-  },
-  '2': {
-    id: 2,
-    title: "EcoGrid Residential Battery",
-    category: "Residential Energy Storage",
-    description: "Compact home energy storage solution with smart home integration and backup power capabilities",
-    fullDescription: "The EcoGrid Residential Battery transforms your home into an energy-independent powerhouse. This sleek, wall-mounted system seamlessly integrates with your existing solar installation or operates as a standalone backup power solution. With intelligent energy management and mobile app control, you'll optimize your energy usage while ensuring your family never loses power.",
-    image: "https://readdy.ai/api/search-image?query=Sleek%20residential%20energy%20storage%20battery%20system%20mounted%20on%20modern%20home%20wall%2C%20clean%20white%20and%20blue%20home%20battery%20unit%20with%20digital%20display%2C%20professional%20product%20photography%20showing%20compact%20residential%20energy%20storage%20solution%20in%20contemporary%20home%20setting&width=800&height=600&seq=product-detail-2&orientation=landscape",
-    gallery: [
-      "https://readdy.ai/api/search-image?query=Home%20energy%20storage%20system%20installation%20in%20modern%20garage%2C%20professional%20installation%20with%20clean%20wiring%20and%20safety%20equipment%2C%20residential%20setting%20with%20organized%20setup&width=600&height=400&seq=gallery-2-1&orientation=landscape",
-      "https://readdy.ai/api/search-image?query=Mobile%20app%20interface%20for%20home%20energy%20storage%20control%2C%20smartphone%20showing%20energy%20management%20dashboard%2C%20real-time%20monitoring%20and%20control%20features&width=600&height=400&seq=gallery-2-2&orientation=landscape",
-      "https://readdy.ai/api/search-image?query=Residential%20solar%20panels%20connected%20to%20home%20battery%20storage%20system%2C%20integrated%20renewable%20energy%20solution%20on%20modern%20house%20roof&width=600&height=400&seq=gallery-2-3&orientation=landscape"
-    ],
-    specifications: {
-      capacity: "10kWh - 20kWh",
-      voltage: "48V DC / 240V AC",
-      current: "200A - 400A",
-      cycles: "8000+ cycles @ 90% DOD",
-      efficiency: "96%+ round-trip efficiency",
-      warranty: "12 years",
-      operating: "0°C to +40°C",
-      protection: "IP65 rated for outdoor use"
-    },
-    features: [
-      "Compact wall-mounted design",
-      "Smart home integration",
-      "Mobile app control",
-      "Silent operation",
-      "Automatic backup switching",
-      "Solar panel compatibility"
-    ],
-    applications: [
-      "Single-family homes",
-      "Townhouses",
-      "Small apartments",
-      "Off-grid cabins",
-      "RV and marine applications",
-      "Emergency backup power"
-    ]
-  },
-  '3': {
-    id: 3,
-    title: "IndustrialPro Mega Storage",
-    category: "Industrial Energy Storage",
-    description: "Utility-scale energy storage for industrial facilities and grid stabilization applications",
-    fullDescription: "The IndustrialPro Mega Storage system sets the standard for utility-scale energy storage. Engineered for the most demanding industrial applications, this system provides massive capacity from 10MWh to 100MWh with unparalleled reliability. Perfect for grid stabilization, peak shaving, and renewable energy integration at the largest scale.",
-    image: "https://readdy.ai/api/search-image?query=Massive%20industrial%20energy%20storage%20facility%20with%20rows%20of%20large%20battery%20containers%2C%20utility-scale%20energy%20storage%20installation%20with%20professional%20industrial%20design%2C%20clean%20modern%20industrial%20setting%20with%20large-scale%20battery%20systems%2C%20professional%20infrastructure%20photography&width=800&height=600&seq=product-detail-3&orientation=landscape",
-    gallery: [
-      "https://readdy.ai/api/search-image?query=Utility-scale%20energy%20storage%20construction%20site%20with%20massive%20battery%20containers%20being%20installed%2C%20industrial%20cranes%20and%20professional%20installation%20crew%2C%20large-scale%20infrastructure%20project&width=600&height=400&seq=gallery-3-1&orientation=landscape",
-      "https://readdy.ai/api/search-image?query=Industrial%20control%20center%20for%20mega-scale%20energy%20storage%20facility%2C%20multiple%20screens%20showing%20grid%20monitoring%20data%2C%20professional%20operators%20managing%20utility-scale%20systems&width=600&height=400&seq=gallery-3-2&orientation=landscape",
-      "https://readdy.ai/api/search-image?query=Aerial%20view%20of%20massive%20energy%20storage%20facility%20connected%20to%20electrical%20grid%2C%20utility-scale%20installation%20with%20transmission%20lines%20and%20industrial%20infrastructure&width=600&height=400&seq=gallery-3-3&orientation=landscape"
-    ],
-    specifications: {
-      capacity: "10MWh - 100MWh",
-      voltage: "1000V DC / 35kV AC",
-      current: "10,000A - 100,000A",
-      cycles: "5000+ cycles @ 85% DOD",
-      efficiency: "94%+ round-trip efficiency",
-      warranty: "20 years",
-      operating: "-30°C to +60°C",
-      protection: "IP55 rated containers"
-    },
-    features: [
-      "Utility-scale capacity",
-      "Grid synchronization",
-      "Advanced control systems",
-      "24/7 monitoring center",
-      "Redundant safety systems",
-      "Transformer integration"
-    ],
-    applications: [
-      "Utility companies",
-      "Power generation facilities",
-      "Industrial complexes",
-      "Mining operations",
-      "Grid stabilization",
-      "Renewable energy farms"
-    ]
+type SpecificationKey =
+  | 'capacity'
+  | 'voltage'
+  | 'current'
+  | 'cycles'
+  | 'efficiency'
+  | 'warranty'
+  | 'operating'
+  | 'protection';
+
+interface ProductDetailData {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  fullDescription: string;
+  image: string;
+  dealGallery: string[];
+  dealFeatures: string[];
+  dealApplications: string[];
+  [key in SpecificationKey]: string;
+}
+
+type ProductDetailApiPayload = Omit<ProductDetailData, SpecificationKey | 'dealGallery' | 'dealFeatures' | 'dealApplications'> &
+  Partial<Record<SpecificationKey, string>> & {
+    dealGallery?: string[];
+    dealFeatures?: string[];
+    dealApplications?: string[];
+    specifications?: Partial<Record<SpecificationKey, string>>;
+  };
+
+const specificationKeys: SpecificationKey[] = [
+  'capacity',
+  'voltage',
+  'current',
+  'cycles',
+  'efficiency',
+  'warranty',
+  'operating',
+  'protection',
+];
+
+const specificationLabels: Record<SpecificationKey, string> = {
+  capacity: 'Capacity',
+  voltage: 'Voltage',
+  current: 'Current',
+  cycles: 'Cycles',
+  efficiency: 'Efficiency',
+  warranty: 'Warranty',
+  operating: 'Operating',
+  protection: 'Protection',
+};
+
+const normalizeProductData = (data: ProductDetailApiPayload): ProductDetailData => {
+  const { specifications, ...rest } = data;
+
+  const ensureValue = (key: SpecificationKey) => data[key] ?? specifications?.[key] ?? '';
+
+  return {
+    ...rest,
+    dealGallery: data.dealGallery ?? [],
+    dealFeatures: data.dealFeatures ?? [],
+    dealApplications: data.dealApplications ?? [],
+    capacity: ensureValue('capacity'),
+    voltage: ensureValue('voltage'),
+    current: ensureValue('current'),
+    cycles: ensureValue('cycles'),
+    efficiency: ensureValue('efficiency'),
+    warranty: ensureValue('warranty'),
+    operating: ensureValue('operating'),
+    protection: ensureValue('protection'),
+  } as ProductDetailData;
+};
+
+const isProductDetailApiPayload = (value: unknown): value is ProductDetailApiPayload => {
+  if (!value || typeof value !== 'object') {
+    return false;
   }
+
+  const obj = value as Record<string, unknown>;
+
+  return (
+    typeof obj.id === 'number' &&
+    typeof obj.title === 'string' &&
+    typeof obj.category === 'string' &&
+    typeof obj.description === 'string' &&
+    typeof obj.fullDescription === 'string' &&
+    typeof obj.image === 'string'
+  );
 };
 
 export default function ProductDetail({ productId }: ProductDetailProps) {
@@ -132,7 +104,85 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
   const [specsRef, specsInView] = useInView({ threshold: 0.2, triggerOnce: true });
   const [featuresRef, featuresInView] = useInView({ threshold: 0.2, triggerOnce: true });
 
-  const product = productData[productId as keyof typeof productData];
+  const [product, setProduct] = useState<ProductDetailData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE}/api/getProductDetail/${productId}`,
+          { signal: controller.signal }
+        );
+
+        if (!response.ok) {
+          throw new Error('获取产品详情失败');
+        }
+
+        const rawData: unknown = await response.json();
+
+        let parsedProduct: ProductDetailData | null = null;
+
+        if (isProductDetailApiPayload(rawData)) {
+          parsedProduct = normalizeProductData(rawData);
+        } else if (rawData && typeof rawData === 'object') {
+          const record = rawData as Record<string, unknown>;
+          const candidate = record[productId];
+
+          if (isProductDetailApiPayload(candidate)) {
+            parsedProduct = normalizeProductData(candidate);
+          }
+        }
+
+        if (!parsedProduct) {
+          setProduct(null);
+          setError('未找到对应的产品信息');
+        } else {
+          setProduct(parsedProduct);
+          setError(null);
+        }
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return;
+        }
+
+        console.error('Error fetching product detail:', err);
+        setError('加载产品详情失败，请稍后重试');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+
+    return () => controller.abort();
+  }, [productId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        正在加载产品详情...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-4">产品详情加载失败</h1>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <Link href="/" className="text-blue-600 hover:text-blue-700">
+            Return to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -146,6 +196,14 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
       </div>
     );
   }
+
+  const specificationEntries = specificationKeys
+    .map((key) => ({
+      key,
+      label: specificationLabels[key],
+      value: product[key],
+    }))
+    .filter((entry) => Boolean(entry.value));
 
   return (
     <div className="min-h-screen bg-white">
@@ -203,7 +261,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
       <section className="py-12 sm:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {product.gallery.map((image, index) => (
+            {product.dealGallery.map((image, index) => (
               <div key={index} className="relative overflow-hidden rounded-xl shadow-lg group">
                 <img
                   src={image}
@@ -216,38 +274,39 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
         </div>
       </section>
 
-      {/* Specifications */}
-      <section ref={specsRef} className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`text-center mb-12 transition-all duration-1000 ${specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Technical Specifications
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Detailed technical specifications and performance parameters
-            </p>
-          </div>
+      {specificationEntries.length > 0 && (
+        <section ref={specsRef} className="py-16 sm:py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+              className={`text-center mb-12 transition-all duration-1000 ${
+                specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Technical Specifications</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Detailed technical specifications and performance parameters
+              </p>
+            </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {Object.entries(product.specifications).map(([key, value], index) => (
-              <div
-                key={key}
-                className={`bg-white p-6 rounded-xl shadow-lg transition-all duration-1000 ${
-                  specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <div className="text-center">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 capitalize">
-                    {key.replace(/([A-Z])/g, ' $1').trim()}
-                  </h3>
-                  <p className="text-blue-600 font-bold text-xl">{value}</p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {specificationEntries.map(({ key, label, value }, index) => (
+                <div
+                  key={key}
+                  className={`bg-white p-6 rounded-xl shadow-lg transition-all duration-1000 ${
+                    specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{label}</h3>
+                    <p className="text-blue-600 font-bold text-xl">{value}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Features & Applications */}
       <section ref={featuresRef} className="py-16 sm:py-20 bg-white">
@@ -258,7 +317,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 Key Features
               </h3>
               <div className="space-y-4">
-                {product.features.map((feature, index) => (
+                {product.dealFeatures.map((feature, index) => (
                   <div key={index} className="flex items-start space-x-3">
                     <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
                       <i className="ri-check-line text-blue-600 text-sm w-4 h-4 flex items-center justify-center"></i>
@@ -274,7 +333,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 Applications
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {product.applications.map((application, index) => (
+                {product.dealApplications.map((application, index) => (
                   <div key={index} className="bg-blue-50 p-4 rounded-lg">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
