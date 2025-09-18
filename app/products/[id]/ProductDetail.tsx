@@ -15,10 +15,10 @@ interface ProductDetailData {
   description: string;
   fullDescription: string;
   image: string;
-  gallery: string[];
+  dealGallery: string[];
   specifications: Record<string, string>;
-  features: string[];
-  applications: string[];
+  dealFeatures: string[];
+  dealApplications: string[];
 }
 
 export default function ProductDetail({ productId }: ProductDetailProps) {
@@ -173,7 +173,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
       <section className="py-12 sm:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {product.gallery.map((image, index) => (
+            {product.dealGallery.map((image, index) => (
               <div key={index} className="relative overflow-hidden rounded-xl shadow-lg group">
                 <img
                   src={image}
@@ -228,7 +228,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 Key Features
               </h3>
               <div className="space-y-4">
-                {product.features.map((feature, index) => (
+                {product.dealFeatures.map((feature, index) => (
                   <div key={index} className="flex items-start space-x-3">
                     <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
                       <i className="ri-check-line text-blue-600 text-sm w-4 h-4 flex items-center justify-center"></i>
@@ -244,7 +244,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 Applications
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {product.applications.map((application, index) => (
+                {product.dealApplications.map((application, index) => (
                   <div key={index} className="bg-blue-50 p-4 rounded-lg">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
