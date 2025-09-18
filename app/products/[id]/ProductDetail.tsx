@@ -15,15 +15,13 @@ interface ProductDetailData {
   description: string;
   fullDescription: string;
   image: string;
-  gallery: string[];
-  specifications: Record<string, string>;
-  features: string[];
-  applications: string[];
+  dealGallery: string[];
+  dealFeatures: string[];
+  dealApplications: string[];
 }
 
 export default function ProductDetail({ productId }: ProductDetailProps) {
   const [heroRef, heroInView] = useInView({ threshold: 0.3, triggerOnce: true });
-  const [specsRef, specsInView] = useInView({ threshold: 0.2, triggerOnce: true });
   const [featuresRef, featuresInView] = useInView({ threshold: 0.2, triggerOnce: true });
 
   const [product, setProduct] = useState<ProductDetailData | null>(null);
@@ -173,46 +171,13 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
       <section className="py-12 sm:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {product.gallery.map((image, index) => (
+            {product.dealGallery.map((image, index) => (
               <div key={index} className="relative overflow-hidden rounded-xl shadow-lg group">
                 <img
                   src={image}
                   alt={`${product.title} view ${index + 1}`}
                   className="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Specifications */}
-      <section ref={specsRef} className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`text-center mb-12 transition-all duration-1000 ${specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Technical Specifications
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Detailed technical specifications and performance parameters
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {Object.entries(product.specifications).map(([key, value], index) => (
-              <div
-                key={key}
-                className={`bg-white p-6 rounded-xl shadow-lg transition-all duration-1000 ${
-                  specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <div className="text-center">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 capitalize">
-                    {key.replace(/([A-Z])/g, ' $1').trim()}
-                  </h3>
-                  <p className="text-blue-600 font-bold text-xl">{value}</p>
-                </div>
               </div>
             ))}
           </div>
@@ -228,7 +193,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 Key Features
               </h3>
               <div className="space-y-4">
-                {product.features.map((feature, index) => (
+                {product.dealFeatures.map((feature, index) => (
                   <div key={index} className="flex items-start space-x-3">
                     <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
                       <i className="ri-check-line text-blue-600 text-sm w-4 h-4 flex items-center justify-center"></i>
@@ -244,7 +209,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 Applications
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {product.applications.map((application, index) => (
+                {product.dealApplications.map((application, index) => (
                   <div key={index} className="bg-blue-50 p-4 rounded-lg">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
