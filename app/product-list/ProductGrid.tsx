@@ -13,6 +13,12 @@ interface Product {
   dealFeatures: string[];
 }
 
+interface Category {
+  id: string;
+  name: string;
+  count: number;
+}
+
 interface ProductGridProps {
   scrollY: number;
 }
@@ -20,25 +26,38 @@ interface ProductGridProps {
 export default function ProductGrid({ scrollY }: ProductGridProps) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const controller = new AbortController();
+    const productsController = new AbortController();
+    const categoriesController = new AbortController();
 
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/getAllProduct`, {
-          signal: controller.signal
-        });
+        const [productsResponse, categoriesResponse] = await Promise.all([
+          fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/getAllProduct`, {
+            signal: productsController.signal
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/getAllCategories`, {
+            signal: categoriesController.signal
+          })
+        ]);
 
-        if (!response.ok) {
+        if (!productsResponse.ok) {
           throw new Error('获取产品列表失败');
         }
 
-        const data: Product[] = await response.json();
-        setProducts(data);
+        if (!categoriesResponse.ok) {
+          throw new Error('获取产品分类失败');
+        }
+
+        const productsData: Product[] = await productsResponse.json();
+        const categoriesData: Category[] = await categoriesResponse.json();
+        setProducts(productsData);
+        setCategories(categoriesData);
         setError(null);
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') {
@@ -53,17 +72,10 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
     fetchProducts();
 
     return () => {
-      controller.abort();
+      productsController.abort();
+      categoriesController.abort();
     };
   }, []);
-
-  const categories = [
-    { id: 'all', name: '全部产品', count: products.length },
-    { id: 'residential', name: '家用储能系统', count: products.filter(p => p.category === 'residential').length },
-    { id: 'commercial', name: '工商业ESS', count: products.filter(p => p.category === 'commercial').length },
-    { id: 'rv', name: '房车控制系统（12V和24V）', count: products.filter(p => p.category === 'rv').length },
-    { id: 'power', name: '动力电池', count: products.filter(p => p.category === 'power').length }
-  ];
 
   const filteredProducts = activeCategory === 'all'
     ? products
