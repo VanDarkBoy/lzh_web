@@ -77,7 +77,7 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
     };
   }, []);
 
-  const filteredProducts = activeCategory === 'all'
+  const filteredProducts = activeCategory === '全部'
     ? products
     : products.filter(product => product.category === activeCategory);
 
