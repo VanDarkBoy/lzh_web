@@ -8,16 +8,6 @@ interface ProductDetailProps {
   productId: string;
 }
 
-type SpecificationKey =
-  | 'capacity'
-  | 'voltage'
-  | 'current'
-  | 'cycles'
-  | 'efficiency'
-  | 'warranty'
-  | 'operating'
-  | 'protection';
-
 interface ProductDetailData {
   id: number;
   title: string;
@@ -28,18 +18,17 @@ interface ProductDetailData {
   dealGallery: string[];
   dealFeatures: string[];
   dealApplications: string[];
-  [key in SpecificationKey]: string;
+  capacity: string;
+  voltage: string;
+  current: string;
+  cycles: string;
+  efficiency: string;
+  warranty: string;
+  operating: string;
+  protection: string;
 }
 
-type ProductDetailApiPayload = Omit<ProductDetailData, SpecificationKey | 'dealGallery' | 'dealFeatures' | 'dealApplications'> &
-  Partial<Record<SpecificationKey, string>> & {
-    dealGallery?: string[];
-    dealFeatures?: string[];
-    dealApplications?: string[];
-    specifications?: Partial<Record<SpecificationKey, string>>;
-  };
-
-const specificationKeys: SpecificationKey[] = [
+const specificationKeys = [
   'capacity',
   'voltage',
   'current',
@@ -48,9 +37,20 @@ const specificationKeys: SpecificationKey[] = [
   'warranty',
   'operating',
   'protection',
-];
+] as const;
 
-const specificationLabels: Record<SpecificationKey, string> = {
+type ProductDetailApiPayload = Omit<
+  ProductDetailData,
+  (typeof specificationKeys)[number] | 'dealGallery' | 'dealFeatures' | 'dealApplications'
+> &
+  Partial<Record<(typeof specificationKeys)[number], string>> & {
+    dealGallery?: string[];
+    dealFeatures?: string[];
+    dealApplications?: string[];
+    specifications?: Partial<Record<(typeof specificationKeys)[number], string>>;
+  };
+
+const specificationLabels: Record<(typeof specificationKeys)[number], string> = {
   capacity: 'Capacity',
   voltage: 'Voltage',
   current: 'Current',
@@ -64,7 +64,7 @@ const specificationLabels: Record<SpecificationKey, string> = {
 const normalizeProductData = (data: ProductDetailApiPayload): ProductDetailData => {
   const { specifications, ...rest } = data;
 
-  const ensureValue = (key: SpecificationKey) => data[key] ?? specifications?.[key] ?? '';
+  const ensureValue = (key: (typeof specificationKeys)[number]) => data[key] ?? specifications?.[key] ?? '';
 
   return {
     ...rest,
