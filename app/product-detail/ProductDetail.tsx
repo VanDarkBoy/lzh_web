@@ -8,7 +8,7 @@ import Header from '../components/Header';
 
 interface ProductDetailData {
   id: number;
-  title: string;
+  name: string;
   category: string;
   description: string;
   fullDescription: string;
@@ -184,7 +184,7 @@ export default function ProductDetail() {
                 </span>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                  {product.title}
+                  {product.name}
                 </h1>
 
                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
@@ -207,7 +207,7 @@ export default function ProductDetail() {
                 <div className="relative overflow-hidden rounded-2xl shadow-2xl" data-product-shop>
                   <img
                     src={product.image}
-                    alt={product.title}
+                    alt={product.name}
                     className="w-full h-96 object-cover object-top hover:scale-105 transition-transform duration-700"
                   />
                 </div>
@@ -224,7 +224,7 @@ export default function ProductDetail() {
                 <div key={index} className="relative overflow-hidden rounded-xl shadow-lg group">
                   <img
                     src={image}
-                    alt={`${product.title} view ${index + 1}`}
+                    alt={`${product.name} view ${index + 1}`}
                     className="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>

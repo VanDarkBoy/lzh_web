@@ -80,9 +80,7 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
     };
   }, []);
 
-  const filteredProducts = !activeCategory || activeCategory === '全部'
-    ? products
-    : products.filter(product => product.category === activeCategory);
+  const filteredProducts =products.filter(product => product.category === activeCategory);
 
   return (
     <section className="py-20 bg-gray-50">
