@@ -173,7 +173,7 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
                     获取报价
                   </button>
                 </Link>
-                <Link href={`/products/${selectedCategory.id}`}>
+                <Link href={`/product-detail?id=${selectedCategory.id}`}>
                   <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
                     查看详情
                   </button>

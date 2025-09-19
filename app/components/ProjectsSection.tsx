@@ -67,7 +67,7 @@ export default function ProjectsSection({ scrollY }: { scrollY: number }) {
           {products.map((product, index) => (
             <Link
               key={product.id}
-              href={`/products/${product.id}`}
+              href={`/product-detail?id=${product.id}`}
               className={`group transition-all duration-1000 ${
                 inView
                   ? 'opacity-100 translate-y-0 scale-100'
