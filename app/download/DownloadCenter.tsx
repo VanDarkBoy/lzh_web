@@ -87,14 +87,39 @@ export default function DownloadCenter() {
       ? downloadItems
       : downloadItems.filter((item) => item.category === activeCategory);
 
-  const handleDownload = (item: DownloadItem) => {
+  const handleDownload = async (item: DownloadItem) => {
     if (!process.env.NEXT_PUBLIC_API_BASE) {
       console.error('未配置下载接口地址');
       return;
     }
 
-    const downloadUrl = `${process.env.NEXT_PUBLIC_API_BASE}/api/downloadResource?id=${encodeURIComponent(item.id)}`;
-    window.open(downloadUrl, '_blank');
+    const requestUrl = `${process.env.NEXT_PUBLIC_API_BASE}/api/downloadResource?id=${encodeURIComponent(item.id)}`;
+
+    try {
+      const response = await fetch(requestUrl);
+
+      if (!response.ok) {
+        throw new Error('获取下载链接失败');
+      }
+
+      const data = (await response.json()) as { url?: unknown };
+      const fileUrl = typeof data.url === 'string' ? data.url.trim() : '';
+
+      if (!fileUrl) {
+        throw new Error('下载链接无效');
+      }
+
+      const anchor = document.createElement('a');
+      anchor.href = fileUrl;
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+    } catch (err) {
+      console.error('下载失败', err);
+      alert(err instanceof Error ? err.message : '获取下载链接失败，请稍后重试');
+    }
   };
 
   return (
