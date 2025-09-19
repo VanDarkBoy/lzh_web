@@ -169,7 +169,7 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
                     </ul>
 
                     <Link
-                      href={`/products/${product.id.toString()}`}
+                      href={`/product-detail?id=${product.id.toString()}`}
                       className="inline-flex items-center justify-center rounded-lg border border-blue-600 px-4 py-2 text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white"
                     >
                       查看详情

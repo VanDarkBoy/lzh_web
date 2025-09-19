@@ -322,7 +322,7 @@ export default function ProductShowcase({ scrollY }: ProductShowcaseProps) {
                   ))}
                 </div>
                 
-                <Link href={`/products/${product.id}`}>
+                <Link href={`/product-detail?id=${product.id}`}>
                   <button className="w-full bg-gray-100 hover:bg-blue-600 hover:text-white text-gray-700 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded">
                     查看详情
                   </button>
