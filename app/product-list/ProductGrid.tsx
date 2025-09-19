@@ -24,7 +24,7 @@ interface ProductGridProps {
 }
 
 export default function ProductGrid({ scrollY }: ProductGridProps) {
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,6 +58,9 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
         const categoriesData: Category[] = await categoriesResponse.json();
         setProducts(productsData);
         setCategories(categoriesData);
+        if (categoriesData.length > 0) {
+          setActiveCategory((current) => current || categoriesData[0].id);
+        }
         setError(null);
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') {
@@ -77,7 +80,7 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
     };
   }, []);
 
-  const filteredProducts = activeCategory === '全部'
+  const filteredProducts = !activeCategory || activeCategory === '全部'
     ? products
     : products.filter(product => product.category === activeCategory);
 
