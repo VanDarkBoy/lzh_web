@@ -146,7 +146,7 @@ export default function ProductDetail() {
             <h1 className="text-2xl font-semibold text-gray-900 mb-4">产品详情加载失败</h1>
             <p className="text-gray-600 mb-6">{error}</p>
             <Link href="/" className="text-blue-600 hover:text-blue-700">
-              Return to Home
+              回到主页
             </Link>
           </div>
         </main>
@@ -160,9 +160,9 @@ export default function ProductDetail() {
         <Header />
         <main className="flex-1 pt-20 sm:pt-24 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Product Not Found</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">未找到产品</h1>
             <Link href="/" className="text-blue-600 hover:text-blue-700">
-              Return to Home
+              回到主页
             </Link>
           </div>
         </main>
@@ -193,12 +193,12 @@ export default function ProductDetail() {
 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap cursor-pointer">
-                    <i className="ri-phone-line mr-2 w-4 h-4 flex items-center justify-center inline-flex"></i>
-                    Contact Sales
+                    <i className="ri-phone-line mr-2 w-4 h-4 items-center justify-center inline-flex"></i>
+                    联系销售
                   </button>
                   <button className="border border-gray-300 text-gray-700 px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap cursor-pointer">
-                    <i className="ri-download-line mr-2 w-4 h-4 flex items-center justify-center inline-flex"></i>
-                    Download Specs
+                    <i className="ri-download-line mr-2 w-4 h-4 items-center justify-center inline-flex"></i>
+                    下载规格
                   </button>
                 </div>
               </div>
@@ -208,7 +208,7 @@ export default function ProductDetail() {
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-96 object-cover object-top hover:scale-105 transition-transform duration-700"
+                    className="w-full max-h-96 object-contain hover:scale-105 transition-transform duration-700 bg-white"
                   />
                 </div>
               </div>
@@ -238,16 +238,16 @@ export default function ProductDetail() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className={`text-center mb-12 transition-all duration-1000 ${specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Technical Specifications
+                技术规格
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Detailed technical specifications and performance parameters
+                详细的技术规格和性能参数
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2">
               <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6">Key Specifications</h3>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-6">关键规格</h3>
                 <dl className="space-y-4">
                   {Object.entries(product.specifications).map(([key, value]) => (
                     <div key={key} className="flex flex-col sm:flex-row sm:items-center">
@@ -264,7 +264,7 @@ export default function ProductDetail() {
 
               <div className="space-y-8">
                 <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">Key Features</h3>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">关键功能</h3>
                   <ul className="space-y-4">
                     {product.dealFeatures.map((feature, index) => (
                       <li key={index} className="flex items-start">
@@ -280,7 +280,7 @@ export default function ProductDetail() {
                 </div>
 
                 <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">Application Scenarios</h3>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">应用方案</h3>
                   <ul className="space-y-3">
                     {product.dealApplications.map((application, index) => (
                       <li key={index} className="flex items-start text-base text-gray-700">
@@ -302,17 +302,17 @@ export default function ProductDetail() {
               <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-center">
                 <div className="lg:col-span-3">
                   <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-                    Ready to deploy a world-class energy storage solution?
+                    准备部署世界一流的储能解决方案了吗？
                   </h2>
                   <p className="text-lg text-blue-100 mb-8 leading-relaxed">
-                    Our experts will help you design and implement the perfect system for your requirements, from consultation to deployment.
+                    我们的专家将帮助您设计和实施从咨询到部署的完美系统。
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button className="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors whitespace-nowrap cursor-pointer">
-                      Schedule a Consultation
+                      安排咨询
                     </button>
                     <button className="border border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-colors whitespace-nowrap cursor-pointer">
-                      Download Full Brochure
+                      下载完整的手册
                     </button>
                   </div>
                 </div>
@@ -324,15 +324,15 @@ export default function ProductDetail() {
                         <i className="ri-flashlight-line text-2xl"></i>
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold">Why choose us?</h3>
-                        <p className="text-blue-100 text-sm">Trusted by industry leaders worldwide</p>
+                        <h3 className="text-xl font-semibold">为什么选择我们？</h3>
+                        <p className="text-blue-100 text-sm">受到全球行业领导者的信任</p>
                       </div>
                     </div>
 
                     <ul className="space-y-4 text-blue-50 text-sm">
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>End-to-end energy storage solutions</span>
+                        <span>端到端储能解决方案</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
