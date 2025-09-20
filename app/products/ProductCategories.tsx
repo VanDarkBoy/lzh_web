@@ -16,6 +16,7 @@ interface Category {
   dealFeatures: string[];
   applications: string;
   image: string;
+  icon: string;
 }
 
 export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
@@ -86,6 +87,13 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
   }, []);
 
   const activeCategory = selectedCategory;
+  const fallbackIcons = [
+    'ri-home-line',
+    'ri-building-line',
+    'ri-truck-line',
+    'ri-recycle-line',
+    'ri-battery-charge-line'
+  ];
 
   return (
     <section
@@ -125,6 +133,11 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
                 activeCategory &&
                   activeCategory.id === category.id;
 
+              const iconClass =
+                category.icon && category.icon.trim().length > 0
+                  ? category.icon
+                  : fallbackIcons[index % fallbackIcons.length];
+
               return (
                 <div
                   key={category.id}
@@ -153,17 +166,7 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
                       }`}
                     >
                       <i
-                        className={`${
-                          index === 0
-                            ? 'ri-home-line'
-                            : index === 1
-                            ? 'ri-building-line'
-                            : index === 2
-                            ? 'ri-truck-line'
-                            : index === 3
-                            ? 'ri-recycle-line'
-                            : 'ri-battery-charge-line'
-                        } w-8 h-8 flex items-center justify-center`}
+                        className={`${iconClass} w-8 h-8 flex items-center justify-center`}
                       ></i>
                     </div>
                     <h3 className="font-semibold text-sm mb-2 leading-tight">
@@ -235,7 +238,7 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
                     </button>
                   </Link>
                   <Link
-                    href={`/product-list}`}
+                    href="/product-list"
                   >
                     <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
                       查看详情
