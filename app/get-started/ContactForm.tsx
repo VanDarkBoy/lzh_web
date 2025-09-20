@@ -42,7 +42,7 @@ export default function ContactForm() {
     setErrorMessage('');
 
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/Contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -252,7 +252,6 @@ export default function ContactForm() {
                     name="inquiry"
                     value={formData.inquiry}
                     onChange={handleChange}
-                    required
                     rows={5}
                     maxLength={600}
                     placeholder="请描述您的项目背景、储能容量需求、应用场景或其他关键信息"

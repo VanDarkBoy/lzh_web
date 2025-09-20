@@ -7,7 +7,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 
 interface ProductDetailData {
-  id: number;
+  id: bigint;
   name: string;
   category: bigint;
   categoryName: string;
