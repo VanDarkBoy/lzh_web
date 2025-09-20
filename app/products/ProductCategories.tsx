@@ -9,12 +9,11 @@ interface ProductCategoriesProps {
 }
 
 interface Category {
-  id: string | number;
+  id: bigint;
   name: string;
   description: string;
   details: string;
   dealFeatures: string[];
-  capacity: string;
   applications: string;
   image: string;
 }
@@ -42,7 +41,7 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
       try {
         setLoading(true);
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE}/api/getProductCategories`,
+          `${process.env.NEXT_PUBLIC_API_BASE}/api/getCategoriesAllDetail`,
           {
             signal: controller.signal,
           }
@@ -58,7 +57,7 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
         setSelectedCategory((current) => {
           if (current) {
             const matched = data.find(
-              (category) => String(category.id) === String(current.id)
+              (category) => category.id === current.id
             );
 
             if (matched) {
@@ -124,7 +123,7 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
             categories.map((category, index) => {
               const isActive =
                 activeCategory &&
-                String(activeCategory.id) === String(category.id);
+                  activeCategory.id === category.id;
 
               return (
                 <div
@@ -201,9 +200,9 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
             <div className="grid lg:grid-cols-2 gap-0">
               <div className="p-8 lg:p-12" data-product-shop>
                 <div className="mb-6">
-                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full mb-4">
-                    {activeCategory.capacity}
-                  </span>
+                  {/*<span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full mb-4">*/}
+                  {/*  {activeCategory.capacity}*/}
+                  {/*</span>*/}
                   <h3 className="text-3xl font-bold text-gray-900 mb-4">
                     {activeCategory.name}
                   </h3>
@@ -236,7 +235,7 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
                     </button>
                   </Link>
                   <Link
-                    href={`/product-detail?id=${encodeURIComponent(String(activeCategory.id))}`}
+                    href={`/product-list}`}
                   >
                     <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
                       查看详情
