@@ -8,15 +8,16 @@ export default function Footer() {
     <footer className="bg-gray-900 text-white w-full">
       <div className="w-full bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
-            <div className="lg:col-span-1">
-              <div className="mb-6">
-                <img 
-                  src="https://static.readdy.ai/image/78fade42075db25ed5a2e70ff249826e/1e5877763b68d906496937d563800040.png"
-                  alt="Lithium Valley Logo"
-                  className="h-48 w-auto mb-4"
-                />
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div>
+              <img
+                src="https://static.readdy.ai/image/78fade42075db25ed5a2e70ff249826e/1e5877763b68d906496937d563800040.png"
+                alt="Lithium Valley Logo"
+                className="h-24 w-auto mb-6"
+              />
+              <p className="text-gray-400 text-base leading-relaxed max-w-md">
+                Lithium Valley 致力于为全球客户提供高效、安全的储能解决方案，推动绿色能源的普及与应用。
+              </p>
             </div>
 
             {/*<div>*/}
@@ -43,60 +44,86 @@ export default function Footer() {
 
             <div>
               <h4 className="text-xl font-semibold mb-6 text-white">联系方式</h4>
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <div className="w-6 h-6 flex items-center justify-center mr-4 mt-1">
-                    <i className="ri-map-pin-line text-green-400 text-lg"></i>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-base text-gray-300">
+                <li className="flex items-start gap-3">
+                  <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 text-green-400 mt-1">
+                    <i className="ri-map-pin-line text-lg"></i>
                   </div>
-                  <span className="text-gray-300 text-base leading-relaxed">东莞总部：东莞市樟木头镇<br />樟洋社区银洋路11号</span>
+                  <span className="leading-relaxed">东莞总部：东莞市樟木头镇<br />樟洋社区银洋路11号</span>
                 </li>
-                <li className="flex items-center">
-                  <div className="w-6 h-6 flex items-center justify-center mr-4">
-                    <i className="ri-phone-line text-green-400 text-lg"></i>
+                <li className="flex items-start gap-3">
+                  <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 text-green-400">
+                    <i className="ri-phone-line text-lg"></i>
                   </div>
-                  <span className="text-gray-300 text-base">+86 400-123-4567</span>
+                  <div>
+                    <span className="block">服务热线</span>
+                    <span className="text-gray-200 font-semibold">+86 400-123-4567</span>
+                  </div>
                 </li>
-                <li className="flex items-center">
-                  <div className="w-6 h-6 flex items-center justify-center mr-4">
-                    <i className="ri-mail-line text-green-400 text-lg"></i>
+                <li className="flex items-start gap-3">
+                  <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 text-green-400">
+                    <i className="ri-mail-line text-lg"></i>
                   </div>
-                  <span className="text-gray-300 text-base">info/sales@lithiumvalley.com</span>
+                  <div>
+                    <span className="block">商务合作</span>
+                    <span className="text-gray-200 font-semibold">info/sales@lithiumvalley.com</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 text-green-400">
+                    <i className="ri-time-line text-lg"></i>
+                  </div>
+                  <div>
+                    <span className="block">服务时间</span>
+                    <span className="text-gray-200 font-semibold">周一至周五 09:00-18:00</span>
+                  </div>
                 </li>
               </ul>
-              
-              {/* 社交媒体图标 */}
-              <div className="mt-6">
-                <h5 className="text-lg font-semibold mb-4 text-white">关注我们</h5>
-                <div className="flex space-x-4">
-                  <a 
-                    href="https://www.linkedin.com/company/72668160/admin/dashboard/"
-                    className="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-blue-600 rounded-full transition-colors cursor-pointer"
-                    aria-label="LinkedIn"
-                  >
-                    <i className="ri-linkedin-fill text-white text-lg"></i>
-                  </a>
-                  <a 
-                    href="https://www.facebook.com/lithiumvalley/"
-                    className="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-blue-700 rounded-full transition-colors cursor-pointer"
-                    aria-label="Facebook"
-                  >
-                    <i className="ri-facebook-fill text-white text-lg"></i>
-                  </a>
-                  <a 
-                    href="https://www.youtube.com/@LithiumValley"
-                    className="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-red-600 rounded-full transition-colors cursor-pointer"
-                    aria-label="YouTube"
-                  >
-                    <i className="ri-youtube-fill text-white text-lg"></i>
-                  </a>
-                  <a 
-                    href="https://www.instagram.com/lithiumvalley"
-                    className="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-pink-600 rounded-full transition-colors cursor-pointer"
-                    aria-label="Instagram"
-                  >
-                    <i className="ri-instagram-fill text-white text-lg"></i>
-                  </a>
-                </div>
+            </div>
+
+            <div>
+              <h4 className="text-xl font-semibold mb-6 text-white">关注我们</h4>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <a
+                  href="https://www.linkedin.com/company/72668160/admin/dashboard/"
+                  className="flex flex-col items-center gap-3 rounded-2xl bg-gray-800/60 border border-gray-800 hover:border-green-400 hover:bg-gray-800 transition-colors cursor-pointer p-4"
+                  aria-label="LinkedIn"
+                >
+                  <span className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900">
+                    <i className="ri-linkedin-fill text-white text-xl"></i>
+                  </span>
+                  <span className="text-sm text-gray-300">LinkedIn</span>
+                </a>
+                <a
+                  href="https://www.facebook.com/lithiumvalley/"
+                  className="flex flex-col items-center gap-3 rounded-2xl bg-gray-800/60 border border-gray-800 hover:border-green-400 hover:bg-gray-800 transition-colors cursor-pointer p-4"
+                  aria-label="Facebook"
+                >
+                  <span className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900">
+                    <i className="ri-facebook-fill text-white text-xl"></i>
+                  </span>
+                  <span className="text-sm text-gray-300">Facebook</span>
+                </a>
+                <a
+                  href="https://www.youtube.com/@LithiumValley"
+                  className="flex flex-col items-center gap-3 rounded-2xl bg-gray-800/60 border border-gray-800 hover:border-green-400 hover:bg-gray-800 transition-colors cursor-pointer p-4"
+                  aria-label="YouTube"
+                >
+                  <span className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900">
+                    <i className="ri-youtube-fill text-white text-xl"></i>
+                  </span>
+                  <span className="text-sm text-gray-300">YouTube</span>
+                </a>
+                <a
+                  href="https://www.instagram.com/lithiumvalley"
+                  className="flex flex-col items-center gap-3 rounded-2xl bg-gray-800/60 border border-gray-800 hover:border-green-400 hover:bg-gray-800 transition-colors cursor-pointer p-4"
+                  aria-label="Instagram"
+                >
+                  <span className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900">
+                    <i className="ri-instagram-fill text-white text-xl"></i>
+                  </span>
+                  <span className="text-sm text-gray-300">Instagram</span>
+                </a>
               </div>
             </div>
           </div>
