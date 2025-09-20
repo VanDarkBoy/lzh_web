@@ -4,6 +4,35 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+type NavItem = {
+  href: string;
+  label: string;
+  mobileOnly?: boolean;
+  desktopOnly?: boolean;
+  isCTA?: boolean;
+};
+
+const NAV_ITEMS: NavItem[] = [
+  { href: '/', label: '首页' },
+  { href: '/about', label: '关于我们' },
+  { href: '/products', label: '产品中心' },
+  { href: '/product-list', label: '产品列表' },
+  { href: '/download', label: '下载中心' },
+  { href: '/approach', label: '解决方案', desktopOnly: true },
+  { href: '/projects', label: '应用案例', desktopOnly: true },
+  { href: '/get-started', label: '获取报价', desktopOnly: true, isCTA: true },
+  { href: '/where-to-buy', label: '购买渠道', mobileOnly: true },
+  { href: '/blog', label: '博客案例', mobileOnly: true },
+  { href: '/contact', label: '联系我们', mobileOnly: true }
+];
+
+const desktopLinkClass =
+  'text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer';
+const desktopCTALinkClass =
+  'bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 transition-colors duration-300 cursor-pointer whitespace-nowrap';
+const mobileLinkClass =
+  'block px-4 py-3 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors cursor-pointer';
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -86,30 +115,15 @@ export default function Header() {
             </div>
 
             <nav className="hidden md:flex items-center space-x-8">
-              <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer">
-                首页
-              </Link>
-              <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer">
-                关于我们
-              </Link>
-              <Link href="/products" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer">
-                产品中心
-              </Link>
-              <Link href="/product-list" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer">
-                产品列表
-              </Link>
-              <Link href="/download" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer">
-                下载中心
-              </Link>
-              <Link href="/approach" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer">
-                解决方案
-              </Link>
-              <Link href="/projects" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer">
-                应用案例
-              </Link>
-              <Link href="/get-started" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 transition-colors duration-300 cursor-pointer whitespace-nowrap">
-                获取报价
-              </Link>
+              {NAV_ITEMS.filter((item) => !item.mobileOnly).map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={item.isCTA ? desktopCTALinkClass : desktopLinkClass}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
 
             <button
@@ -125,69 +139,20 @@ export default function Header() {
             isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
           }`}>
             <nav className="py-4 space-y-1 border-t border-gray-200">
-              <Link 
-                href="/" 
-                className="block px-4 py-3 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                首页
-              </Link>
-              
-              <Link 
-                href="/about" 
-                className="block px-4 py-3 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                关于我们
-              </Link>
-
-              <Link 
-                href="/products" 
-                className="block px-4 py-3 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                产品中心
-              </Link>
-
-              <Link 
-                href="/product-list" 
-                className="block px-4 py-3 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                产品列表
-              </Link>
-
-              <Link 
-                href="/download" 
-                className="block px-4 py-3 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                下载中心
-              </Link>
-
-              <Link 
-                href="/where-to-buy" 
-                className="block px-4 py-3 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                购买渠道
-              </Link>
-
-              <Link 
-                href="/blog" 
-                className="block px-4 py-3 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                博客案例
-              </Link>
-
-              <Link 
-                href="/contact" 
-                className="block px-4 py-3 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                联系我们
-              </Link>
+              {NAV_ITEMS.filter((item) => !item.desktopOnly).map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={
+                    item.isCTA
+                      ? `${mobileLinkClass} bg-blue-600 text-white hover:bg-blue-700 hover:text-white`
+                      : mobileLinkClass
+                  }
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
           </div>
         </div>
