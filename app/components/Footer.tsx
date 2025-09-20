@@ -49,7 +49,7 @@ export default function Footer() {
                   <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 text-green-400 mt-1">
                     <i className="ri-map-pin-line text-lg"></i>
                   </div>
-                  <span className="leading-relaxed">东莞总部：东莞市樟木头镇<br />樟洋社区银洋路11号</span>
+                  <span className="leading-relaxed">东莞总部：东莞市樟木头镇樟洋社区银洋路11号</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 text-green-400">
@@ -67,15 +67,6 @@ export default function Footer() {
                   <div>
                     <span className="block">商务合作</span>
                     <span className="text-gray-200 font-semibold">info/sales@lithiumvalley.com</span>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 text-green-400">
-                    <i className="ri-time-line text-lg"></i>
-                  </div>
-                  <div>
-                    <span className="block">服务时间</span>
-                    <span className="text-gray-200 font-semibold">周一至周五 09:00-18:00</span>
                   </div>
                 </li>
               </ul>
