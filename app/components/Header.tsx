@@ -18,7 +18,6 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/products', label: '产品中心' },
   { href: '/product-list', label: '产品列表' },
   { href: '/download', label: '下载中心' },
-  { href: '/approach', label: '解决方案', desktopOnly: true },
   { href: '/projects', label: '应用案例', desktopOnly: true },
   { href: '/get-started', label: '获取报价', desktopOnly: true, isCTA: true },
   { href: '/where-to-buy', label: '购买渠道', mobileOnly: true },

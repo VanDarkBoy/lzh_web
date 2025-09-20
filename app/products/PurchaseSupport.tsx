@@ -12,7 +12,7 @@ interface PurchaseSupportProps {
 const purchaseChannels = [
   {
     title: "在线咨询提交询盘",
-    description: "通过官网在线咨询，提交产品询盘获取详细方案",
+    description: "提交产品询盘获取详细方案",
     icon: "ri-customer-service-line",
     action: "提交询盘",
     features: ["在线客服", "技术咨询", "方案定制", "实时报价"]

@@ -24,7 +24,7 @@ export default function ProductsPage() {
       <Header />
       <ProductsHero scrollY={scrollY} />
       <ProductCategories scrollY={scrollY} />
-      <ProductShowcase scrollY={scrollY} />
+      {/*<ProductShowcase scrollY={scrollY} />*/}
       <ProductFeatures scrollY={scrollY} />
       <PurchaseSupport scrollY={scrollY} />
       <Footer />

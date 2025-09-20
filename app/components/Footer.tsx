@@ -69,28 +69,28 @@ export default function Footer() {
                 <h5 className="text-lg font-semibold mb-4 text-white">关注我们</h5>
                 <div className="flex space-x-4">
                   <a 
-                    href="#" 
+                    href="https://www.linkedin.com/company/72668160/admin/dashboard/"
                     className="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-blue-600 rounded-full transition-colors cursor-pointer"
                     aria-label="LinkedIn"
                   >
                     <i className="ri-linkedin-fill text-white text-lg"></i>
                   </a>
                   <a 
-                    href="#" 
+                    href="https://www.facebook.com/lithiumvalley/"
                     className="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-blue-700 rounded-full transition-colors cursor-pointer"
                     aria-label="Facebook"
                   >
                     <i className="ri-facebook-fill text-white text-lg"></i>
                   </a>
                   <a 
-                    href="#" 
+                    href="https://www.youtube.com/@LithiumValley"
                     className="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-red-600 rounded-full transition-colors cursor-pointer"
                     aria-label="YouTube"
                   >
                     <i className="ri-youtube-fill text-white text-lg"></i>
                   </a>
                   <a 
-                    href="#" 
+                    href="https://www.instagram.com/lithiumvalley"
                     className="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-pink-600 rounded-full transition-colors cursor-pointer"
                     aria-label="Instagram"
                   >
@@ -103,12 +103,11 @@ export default function Footer() {
 
           <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-base">
-              © 2024 Lithium Valley. 版权所有
+              © 2025 Lithium Valley. 版权所有
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link href="#" className="text-gray-400 hover:text-green-400 transition-colors cursor-pointer text-sm">隐私政策</Link>
               <Link href="#" className="text-gray-400 hover:text-green-400 transition-colors cursor-pointer text-sm">服务条款</Link>
-              <Link href="#" className="text-gray-400 hover:text-green-400 transition-colors cursor-pointer text-sm">网站地图</Link>
             </div>
           </div>
         </div>

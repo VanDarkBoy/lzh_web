@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 interface Product {
   id: bigint;
   name: string;
-  category: string;
+  category: bigint;
   image: string;
   description: string;
   specs: string;
@@ -14,17 +14,13 @@ interface Product {
 }
 
 interface Category {
-  id: string;
+  id: bigint;
   name: string;
   count: number;
 }
 
-interface ProductGridProps {
-  scrollY: number;
-}
-
-export default function ProductGrid({ scrollY }: ProductGridProps) {
-  const [activeCategory, setActiveCategory] = useState<string>('');
+export default function ProductGrid() {
+  const [activeCategory, setActiveCategory] = useState<bigint>();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -147,12 +143,7 @@ export default function ProductGrid({ scrollY }: ProductGridProps) {
 
                   {/* 产品信息 */}
                   <div className="p-6">
-                    <div className="mb-3 text-sm font-semibold uppercase tracking-wide text-blue-600">
-                      {product.category === 'residential' && '家用储能系统'}
-                      {product.category === 'commercial' && '工商业ESS'}
-                      {product.category === 'rv' && '房车控制系统'}
-                      {product.category === 'power' && '动力电池'}
-                    </div>
+
 
                     <h3 className="mb-3 text-xl font-bold text-gray-900">{product.name}</h3>
                     <p className="mb-4 text-gray-600">{product.description}</p>

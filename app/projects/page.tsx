@@ -23,10 +23,9 @@ export default function ProjectsPage() {
       <Header />
       <main className="flex-1">
         <ProjectHero scrollY={scrollY} />
-        <ProjectCategories 
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-        />
+        <ProjectCategories
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory} scrollY={0}        />
         <ProjectGrid 
           scrollY={scrollY} 
           selectedCategory={selectedCategory}
