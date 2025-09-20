@@ -9,7 +9,8 @@ import Header from '../components/Header';
 interface ProductDetailData {
   id: number;
   name: string;
-  category: string;
+  category: bigint;
+  categoryName: string;
   description: string;
   fullDescription: string;
   image: string;
@@ -180,7 +181,7 @@ export default function ProductDetail() {
             <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               <div className={`transition-all duration-1000 ${heroInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
                 <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
-                  {product.category}
+                  {product.categoryName}
                 </span>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
