@@ -10,6 +10,7 @@ interface ProductFeaturesProps {
 const features = [
   {
     icon: "ri-stack-line",
+    productCategoryId: 1,
     title: "模块化设计",
     description: "所有产品采用模块化设计，客户可以根据实际需求扩展系统容量，灵活配置，轻松升级。",
     benefits: ["灵活扩容", "标准接口", "易于维护", "成本优化"]
@@ -17,18 +18,21 @@ const features = [
   {
     icon: "ri-shield-check-line",
     title: "LiFePO₄ 安全性",
+    productCategoryId: 1,
     description: "我们的系统采用 LiFePO₄ 电池，提供优异的安全性和长寿命，热稳定性极佳，多重保护机制。",
     benefits: ["热稳定", "安全可靠", "长寿命", "环保材料"]
   },
   {
     icon: "ri-shield-star-line",
     title: "IP65 环境适应性",
+    productCategoryId: 1,
     description: "产品符合 IP65 防护等级，能够适应各种环境条件，确保在恶劣天气下依然稳定运行。",
     benefits: ["防尘防水", "宽温范围", "户外适用", "稳定可靠"]
   },
   {
     icon: "ri-brain-line",
     title: "智能控制系统",
+    productCategoryId: 1,
     description: "集成智能控制技术，实时监控电池状态，智能优化充放电策略，确保系统最佳性能。",
     benefits: ["实时监控", "智能优化", "预警保护", "远程管理"]
   }

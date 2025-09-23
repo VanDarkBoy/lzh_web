@@ -91,7 +91,7 @@ export default function Home() {
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">产品解决方案</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">产品分类</h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 为不同应用场景提供专业的储能解决方案，满足从家庭到工业的全方位需求
               </p>
