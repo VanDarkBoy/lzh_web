@@ -1,86 +1,110 @@
 'use client';
 
+import {useEffect, useState} from 'react';
 import {useInView} from 'react-intersection-observer';
+import type {Category, PerformanceMetric, ProductFeatureItem} from './types';
 
 interface ProductFeaturesProps {
     scrollY: number;
+    selectedCategory: Category | null;
 }
 
-const features = [
-    {
-        id: 1,
-        productCategoryId: 1,
-        icon: "ri-stack-line",
-        title: "模块化设计",
-        description: "所有产品采用模块化设计，客户可以根据实际需求扩展系统容量，灵活配置，轻松升级。",
-        dealBenefits: ["灵活扩容", "标准接口", "易于维护", "成本优化"]
-    },
-    {
-        id: 2,
-        productCategoryId: 1,
-        icon: "ri-shield-check-line",
-        title: "LiFePO₄ 安全性",
-        description: "我们的系统采用 LiFePO₄ 电池，提供优异的安全性和长寿命，热稳定性极佳，多重保护机制。",
-        dealBenefits: ["热稳定", "安全可靠", "长寿命", "环保材料"]
-    },
-    {
-        id: 3,
-        productCategoryId: 1,
-        icon: "ri-shield-star-line",
-        title: "IP65 环境适应性",
-        description: "产品符合 IP65 防护等级，能够适应各种环境条件，确保在恶劣天气下依然稳定运行。",
-        dealBenefits: ["防尘防水", "宽温范围", "户外适用", "稳定可靠"]
-    },
-    {
-        id: 4,
-        productCategoryId: 1,
-        icon: "ri-brain-line",
-        title: "智能控制系统",
-        description: "集成智能控制技术，实时监控电池状态，智能优化充放电策略，确保系统最佳性能。",
-        dealBenefits: ["实时监控", "智能优化", "预警保护", "远程管理"]
-    }
-];
-
-const performanceData = [
-    {
-        id: 1,
-        productCategoryId: 1,
-        metric: "系统效率",
-        metricValue: "95%+",
-        description: "往返效率超过95%",
-        icon: "ri-flashlight-line"
-    },
-    {
-        id: 2,
-        productCategoryId: 1,
-        metric: "循环寿命",
-        metricValue: "6000+",
-        description: "循环充放电次数",
-        icon: "ri-refresh-line"
-    },
-    {
-        id: 3,
-        productCategoryId: 1,
-        metric: "使用寿命",
-        metricValue: "15+年",
-        description: "日历使用寿命",
-        icon: "ri-time-line"
-    },
-    {
-        id: 4,
-        productCategoryId: 1,
-        metric: "响应时间",
-        metricValue: "<10ms",
-        description: "系统响应速度",
-        icon: "ri-speed-line"
-    }
-];
-
-export default function ProductFeatures({scrollY}: ProductFeaturesProps) {
+export default function ProductFeatures({scrollY, selectedCategory}: ProductFeaturesProps) {
     const [ref, inView] = useInView({
         threshold: 0.1,
         triggerOnce: true,
     });
+    const [features, setFeatures] = useState<ProductFeatureItem[]>([]);
+    const [performanceData, setPerformanceData] = useState<PerformanceMetric[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        if (!selectedCategory) {
+            setFeatures([]);
+            setPerformanceData([]);
+            setError(null);
+            setLoading(false);
+            return () => controller.abort();
+        }
+
+        if (!process.env.NEXT_PUBLIC_API_BASE) {
+            setFeatures([]);
+            setPerformanceData([]);
+            setError('未配置产品功能接口地址');
+            setLoading(false);
+            return () => controller.abort();
+        }
+
+        const fetchFeatureData = async () => {
+            try {
+                setLoading(true);
+
+                const categoryIdParam = encodeURIComponent(String(selectedCategory.id));
+                const [featuresResponse, performanceResponse] = await Promise.all([
+                    fetch(
+                        `${process.env.NEXT_PUBLIC_API_BASE}/api/getProductFeatures?productCategoryId=${categoryIdParam}`,
+                        {signal: controller.signal}
+                    ),
+                    fetch(
+                        `${process.env.NEXT_PUBLIC_API_BASE}/api/getPerformanceMetrics?productCategoryId=${categoryIdParam}`,
+                        {signal: controller.signal}
+                    ),
+                ]);
+
+                if (!featuresResponse.ok) {
+                    throw new Error('获取产品功能失败');
+                }
+
+                if (!performanceResponse.ok) {
+                    throw new Error('获取性能指标失败');
+                }
+
+                const rawFeatures: unknown = await featuresResponse.json();
+                const rawPerformance: unknown = await performanceResponse.json();
+
+                const normalizedFeatures = Array.isArray(rawFeatures)
+                    ? (rawFeatures as ProductFeatureItem[])
+                    : Object.values((rawFeatures ?? {}) as Record<string, ProductFeatureItem>);
+                const normalizedPerformance = Array.isArray(rawPerformance)
+                    ? (rawPerformance as PerformanceMetric[])
+                    : Object.values((rawPerformance ?? {}) as Record<string, PerformanceMetric>);
+
+                const categoryId = String(selectedCategory.id);
+
+                setFeatures(
+                    normalizedFeatures.filter(
+                        (item) => String(item.productCategoryId) === categoryId
+                    )
+                );
+                setPerformanceData(
+                    normalizedPerformance.filter(
+                        (item) => String(item.productCategoryId) === categoryId
+                    )
+                );
+                setError(null);
+            } catch (err) {
+                if (err instanceof DOMException && err.name === 'AbortError') {
+                    return;
+                }
+
+                console.error('Error fetching product feature data:', err);
+                setFeatures([]);
+                setPerformanceData([]);
+                setError('加载产品功能数据失败，请稍后重试');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchFeatureData();
+
+        return () => controller.abort();
+    }, [selectedCategory]);
+
+    const hasCategory = Boolean(selectedCategory);
 
     return (
         <section
@@ -100,46 +124,74 @@ export default function ProductFeatures({scrollY}: ProductFeaturesProps) {
                     </p>
                 </div>
 
+                {error && (
+                    <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4 text-red-600 text-center">
+                        {error}
+                    </div>
+                )}
+
+                {!error && !loading && !hasCategory && (
+                    <div className="mb-8 rounded-lg border border-blue-100 bg-blue-50 p-4 text-blue-600 text-center">
+                        请选择一个产品分类以查看对应的功能与性能数据。
+                    </div>
+                )}
+
                 {/* 核心功能展示 */}
                 <div className="grid md:grid-cols-2 gap-12 mb-20">
-                    {features.map((feature, index) => (
-                        <div
-                            key={index}
-                            className={`transition-all duration-700 ${
-                                inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                            }`}
-                            style={{transitionDelay: `${index * 200}ms`}}
-                        >
+                    {loading ? (
+                        <div className="md:col-span-2 flex min-h-[160px] items-center justify-center text-gray-500">
+                            正在加载产品功能...
+                        </div>
+                    ) : error ? (
+                        <div className="md:col-span-2 rounded-lg border border-red-200 bg-red-50 p-6 text-center text-red-600">
+                            {error}
+                        </div>
+                    ) : !hasCategory ? (
+                        <div className="md:col-span-2 flex min-h-[160px] items-center justify-center text-gray-500">
+                            请选择产品分类以查看功能数据。
+                        </div>
+                    ) : features.length > 0 ? (
+                        features.map((feature, index) => (
                             <div
-                                className="bg-white p-8 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
-                                <div className="flex items-start gap-6">
-                                    <div
-                                        className="w-16 h-16 bg-blue-100 flex items-center justify-center flex-shrink-0">
-                                        <i className={`${feature.icon} w-8 h-8 flex items-center justify-center text-blue-700 text-2xl`}></i>
-                                    </div>
+                                key={feature.id ?? index}
+                                className={`transition-all duration-700 ${
+                                    inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                                }`}
+                                style={{transitionDelay: `${index * 200}ms`}}
+                            >
+                                <div className="bg-white p-8 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                                    <div className="flex items-start gap-6">
+                                        <div className="w-16 h-16 bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                            <i className={`${feature.icon} w-8 h-8 flex items-center justify-center text-blue-700 text-2xl`}></i>
+                                        </div>
 
-                                    <div className="flex-1">
-                                        <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                                            {feature.title}
-                                        </h3>
+                                        <div className="flex-1">
+                                            <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                                                {feature.title}
+                                            </h3>
 
-                                        <p className="text-gray-600 leading-relaxed mb-4">
-                                            {feature.description}
-                                        </p>
+                                            <p className="text-gray-600 leading-relaxed mb-4">
+                                                {feature.description}
+                                            </p>
 
-                                        <div className="grid grid-cols-2 gap-3">
-                                            {feature.dealBenefits.map((benefit, idx) => (
-                                                <div key={idx} className="flex items-center gap-2">
-                                                    <i className="ri-check-line w-4 h-4 flex items-center justify-center text-blue-600"></i>
-                                                    <span className="text-gray-700 text-sm">{benefit}</span>
-                                                </div>
-                                            ))}
+                                            <div className="grid grid-cols-2 gap-3">
+                                                {feature.dealBenefits.map((benefit, idx) => (
+                                                    <div key={idx} className="flex items-center gap-2">
+                                                        <i className="ri-check-line w-4 h-4 flex items-center justify-center text-blue-600"></i>
+                                                        <span className="text-gray-700 text-sm">{benefit}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        ))
+                    ) : (
+                        <div className="md:col-span-2 flex min-h-[160px] items-center justify-center text-gray-500">
+                            暂无该分类的产品功能数据。
                         </div>
-                    ))}
+                    )}
                 </div>
 
                 {/* 性能数据展示 */}
@@ -154,32 +206,49 @@ export default function ProductFeatures({scrollY}: ProductFeaturesProps) {
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {performanceData.map((data, index) => (
-                            <div
-                                key={index}
-                                className={`text-center p-6 bg-gray-50 hover:bg-blue-50 transition-all duration-500 ${
-                                    inView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                                }`}
-                                style={{transitionDelay: `${index * 150}ms`}}
-                            >
-                                <div
-                                    className="w-16 h-16 bg-blue-600 text-white flex items-center justify-center mx-auto mb-4">
-                                    <i className={`${data.icon} w-8 h-8 flex items-center justify-center text-2xl`}></i>
-                                </div>
-
-                                <div className="text-3xl font-bold text-blue-600 mb-2">
-                                    {data.metricValue}
-                                </div>
-
-                                <h4 className="font-semibold text-gray-900 mb-2">
-                                    {data.metric}
-                                </h4>
-
-                                <p className="text-sm text-gray-600">
-                                    {data.description}
-                                </p>
+                        {loading ? (
+                            <div className="md:col-span-2 lg:col-span-4 flex min-h-[140px] items-center justify-center text-gray-500">
+                                正在加载性能指标...
                             </div>
-                        ))}
+                        ) : error ? (
+                            <div className="md:col-span-2 lg:col-span-4 rounded-lg border border-red-200 bg-red-50 p-6 text-center text-red-600">
+                                {error}
+                            </div>
+                        ) : !hasCategory ? (
+                            <div className="md:col-span-2 lg:col-span-4 flex min-h-[140px] items-center justify-center text-gray-500">
+                                请选择产品分类以查看性能指标。
+                            </div>
+                        ) : performanceData.length > 0 ? (
+                            performanceData.map((data, index) => (
+                                <div
+                                    key={data.id ?? index}
+                                    className={`text-center p-6 bg-gray-50 hover:bg-blue-50 transition-all duration-500 ${
+                                        inView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                                    }`}
+                                    style={{transitionDelay: `${index * 150}ms`}}
+                                >
+                                    <div className="w-16 h-16 bg-blue-600 text-white flex items-center justify-center mx-auto mb-4">
+                                        <i className={`${data.icon} w-8 h-8 flex items-center justify-center text-2xl`}></i>
+                                    </div>
+
+                                    <div className="text-3xl font-bold text-blue-600 mb-2">
+                                        {data.metricValue}
+                                    </div>
+
+                                    <h4 className="font-semibold text-gray-900 mb-2">
+                                        {data.metric}
+                                    </h4>
+
+                                    <p className="text-sm text-gray-600">
+                                        {data.description}
+                                    </p>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="md:col-span-2 lg:col-span-4 flex min-h-[140px] items-center justify-center text-gray-500">
+                                暂无该分类的性能指标数据。
+                            </div>
+                        )}
                     </div>
                 </div>
 
