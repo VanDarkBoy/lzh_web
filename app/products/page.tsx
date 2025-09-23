@@ -29,7 +29,6 @@ export default function ProductsPage() {
         scrollY={scrollY}
         onCategorySelect={setSelectedCategory}
       />
-      {/*<ProductShowcase scrollY={scrollY} />*/}
       <ProductFeatures scrollY={scrollY} selectedCategory={selectedCategory} />
       <PurchaseSupport scrollY={scrollY} />
       <Footer />
