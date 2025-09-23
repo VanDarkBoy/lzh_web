@@ -3,23 +3,14 @@
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import type { Category } from './types';
 
 interface ProductCategoriesProps {
   scrollY: number;
+  onCategorySelect?: (category: Category | null) => void;
 }
 
-interface Category {
-  id: bigint;
-  name: string;
-  description: string;
-  details: string;
-  dealFeatures: string[];
-  applications: string;
-  image: string;
-  icon: string;
-}
-
-export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
+export default function ProductCategories({ scrollY, onCategorySelect }: ProductCategoriesProps) {
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
@@ -85,6 +76,12 @@ export default function ProductCategories({ scrollY }: ProductCategoriesProps) {
 
     return () => controller.abort();
   }, []);
+
+  useEffect(() => {
+    if (onCategorySelect) {
+      onCategorySelect(selectedCategory);
+    }
+  }, [onCategorySelect, selectedCategory]);
 
   const activeCategory = selectedCategory;
   const fallbackIcons = [

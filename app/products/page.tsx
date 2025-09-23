@@ -9,9 +9,11 @@ import ProductCategories from './ProductCategories';
 import ProductShowcase from './ProductShowcase';
 import ProductFeatures from './ProductFeatures';
 import PurchaseSupport from './PurchaseSupport';
+import type { Category } from './types';
 
 export default function ProductsPage() {
   const [scrollY, setScrollY] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -23,9 +25,12 @@ export default function ProductsPage() {
     <div className="min-h-screen bg-white">
       <Header />
       <ProductsHero scrollY={scrollY} />
-      <ProductCategories scrollY={scrollY} />
+      <ProductCategories
+        scrollY={scrollY}
+        onCategorySelect={setSelectedCategory}
+      />
       {/*<ProductShowcase scrollY={scrollY} />*/}
-      <ProductFeatures scrollY={scrollY} />
+      <ProductFeatures scrollY={scrollY} selectedCategory={selectedCategory} />
       <PurchaseSupport scrollY={scrollY} />
       <Footer />
     </div>
