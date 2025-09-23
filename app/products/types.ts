@@ -10,8 +10,8 @@ export interface Category {
 }
 
 export interface ProductFeatureItem {
-  id: number;
-  productCategoryId: number;
+  id: bigint;
+  productCategoryId: bigint;
   icon: string;
   title: string;
   description: string;
@@ -19,8 +19,8 @@ export interface ProductFeatureItem {
 }
 
 export interface PerformanceMetric {
-  id: number;
-  productCategoryId: number;
+  id: bigint;
+  productCategoryId: bigint;
   metric: string;
   metricValue: string;
   description: string;

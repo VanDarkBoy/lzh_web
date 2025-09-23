@@ -45,11 +45,11 @@ export default function ProductFeatures({scrollY, selectedCategory}: ProductFeat
                 const categoryIdParam = encodeURIComponent(String(selectedCategory.id));
                 const [featuresResponse, performanceResponse] = await Promise.all([
                     fetch(
-                        `${process.env.NEXT_PUBLIC_API_BASE}/api/getProductFeatures?productCategoryId=${categoryIdParam}`,
+                        `${process.env.NEXT_PUBLIC_API_BASE}/api/getCategoryFeatures?productCategoryId=${categoryIdParam}`,
                         {signal: controller.signal}
                     ),
                     fetch(
-                        `${process.env.NEXT_PUBLIC_API_BASE}/api/getPerformanceMetrics?productCategoryId=${categoryIdParam}`,
+                        `${process.env.NEXT_PUBLIC_API_BASE}/api/getCategoryPerformance?productCategoryId=${categoryIdParam}`,
                         {signal: controller.signal}
                     ),
                 ]);
