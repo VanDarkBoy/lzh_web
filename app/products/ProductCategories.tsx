@@ -5,6 +5,34 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import type { Category } from './types';
 
+type ProductCategoriesCopy = {
+  badgeLabel: string;
+  title: string;
+  titleHighlight: string;
+  description: string;
+  loadingCategoriesText: string;
+  emptyCategoriesText: string;
+  loadingDetailsText: string;
+  featuresTitle: string;
+  applicationsTitle: string;
+  primaryCtaLabel: string;
+  secondaryCtaLabel: string;
+};
+
+const defaultCopy: ProductCategoriesCopy = {
+  badgeLabel: '产品系列',
+  title: '产品',
+  titleHighlight: '分类',
+  description: '覆盖家用、工商业、动力等全场景应用，提供高效可靠的储能解决方案',
+  loadingCategoriesText: '正在加载产品分类...',
+  emptyCategoriesText: '暂无产品分类数据。',
+  loadingDetailsText: '正在加载产品信息...',
+  featuresTitle: '产品特色',
+  applicationsTitle: '应用场景',
+  primaryCtaLabel: '获取报价',
+  secondaryCtaLabel: '查看详情',
+};
+
 interface ProductCategoriesProps {
   scrollY: number;
   onCategorySelect?: (category: Category | null) => void;
@@ -19,6 +47,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [copy, setCopy] = useState<ProductCategoriesCopy>(defaultCopy);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -78,6 +107,42 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
   }, []);
 
   useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchCopy = async () => {
+      try {
+        const response = await fetch('/api/ProductCategories', {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error('获取产品分类文案失败');
+        }
+
+        const data = (await response.json()) as Partial<ProductCategoriesCopy>;
+
+        setCopy((prev) => ({
+          ...prev,
+          ...Object.fromEntries(
+            Object.entries(data).filter(([, value]) =>
+              typeof value === 'string' && value.trim().length > 0
+            )
+          ),
+        }));
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return;
+        }
+        console.error(err);
+      }
+    };
+
+    fetchCopy();
+
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
     if (onCategorySelect) {
       onCategorySelect(selectedCategory);
     }
@@ -103,13 +168,14 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <div className="inline-block px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-6">
-            产品系列
+            {copy.badgeLabel}
           </div>
           <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-6">
-            产品<span className="text-blue-700">分类</span>
+            {copy.title}
+            <span className="text-blue-700">{copy.titleHighlight}</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            覆盖家用、工商业、动力等全场景应用，提供高效可靠的储能解决方案
+            {copy.description}
           </p>
         </div>
 
@@ -122,7 +188,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
         <div className="grid lg:grid-cols-5 gap-8 mb-12">
           {loading ? (
             <div className="lg:col-span-5 flex min-h-[120px] items-center justify-center text-gray-500">
-              正在加载产品分类...
+              {copy.loadingCategoriesText}
             </div>
           ) : categories.length > 0 ? (
             categories.map((category, index) => {
@@ -182,7 +248,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
             })
           ) : (
             <div className="lg:col-span-5 flex min-h-[120px] items-center justify-center text-gray-500">
-              暂无产品分类数据。
+              {copy.emptyCategoriesText}
             </div>
           )}
         </div>
@@ -194,7 +260,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
         >
           {loading ? (
             <div className="flex min-h-[200px] items-center justify-center text-gray-500">
-              正在加载产品信息...
+              {copy.loadingDetailsText}
             </div>
           ) : activeCategory ? (
             <div className="grid lg:grid-cols-2 gap-0">
@@ -212,7 +278,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                 </div>
 
                 <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4">产品特色</h4>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">{copy.featuresTitle}</h4>
                   <div className="grid grid-cols-2 gap-3">
                     {activeCategory.dealFeatures.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2">
@@ -224,21 +290,21 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                 </div>
 
                 <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4">应用场景</h4>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">{copy.applicationsTitle}</h4>
                   <p className="text-gray-600">{activeCategory.applications}</p>
                 </div>
 
                 <div className="flex gap-4">
                   <Link href="/get-started">
                     <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
-                      获取报价
+                      {copy.primaryCtaLabel}
                     </button>
                   </Link>
                   <Link
                     href="/product-list"
                   >
                     <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
-                      查看详情
+                      {copy.secondaryCtaLabel}
                     </button>
                   </Link>
                 </div>
@@ -253,11 +319,11 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
               </div>
             </div>
-          ) : (
-            <div className="flex min-h-[200px] items-center justify-center text-gray-500">
-              暂无产品分类数据。
-            </div>
-          )}
+            ) : (
+              <div className="flex min-h-[200px] items-center justify-center text-gray-500">
+                {copy.emptyCategoriesText}
+              </div>
+            )}
         </div>
       </div>
     </section>
