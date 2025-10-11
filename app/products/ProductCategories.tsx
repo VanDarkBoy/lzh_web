@@ -5,33 +5,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import type { Category } from './types';
 
-type ProductCategoriesCopy = {
-  badgeLabel: string;
-  title: string;
-  titleHighlight: string;
-  description: string;
-  loadingCategoriesText: string;
-  emptyCategoriesText: string;
-  loadingDetailsText: string;
-  featuresTitle: string;
-  applicationsTitle: string;
-  primaryCtaLabel: string;
-  secondaryCtaLabel: string;
-};
-
-const defaultCopy: ProductCategoriesCopy = {
-  badgeLabel: '产品系列',
-  title: '产品',
-  titleHighlight: '分类',
-  description: '覆盖家用、工商业、动力等全场景应用，提供高效可靠的储能解决方案',
-  loadingCategoriesText: '正在加载产品分类...',
-  emptyCategoriesText: '暂无产品分类数据。',
-  loadingDetailsText: '正在加载产品信息...',
-  featuresTitle: '产品特色',
-  applicationsTitle: '应用场景',
-  primaryCtaLabel: '获取报价',
-  secondaryCtaLabel: '查看详情',
-};
+type ApiCategory = Omit<Category, 'id'> & { id: string | number };
 
 interface ProductCategoriesProps {
   scrollY: number;
@@ -53,31 +27,34 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
     const controller = new AbortController();
 
     const fetchCategories = async () => {
-      if (!process.env.NEXT_PUBLIC_API_BASE) {
-        setError('未配置产品分类接口地址');
-        setLoading(false);
-        return;
-      }
-
       try {
         setLoading(true);
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE}/api/getCategoriesAllDetail`,
-          {
-            signal: controller.signal,
-          }
-        );
+        const response = await fetch('/api/ProductCategories', {
+          signal: controller.signal,
+        });
 
         if (!response.ok) {
           throw new Error('获取产品分类失败');
         }
 
-        const data: Category[] = await response.json();
+        const data: ApiCategory[] = await response.json();
+        const normalizedCategories: Category[] = data.map((category) => ({
+          id: BigInt(category.id),
+          name: category.name,
+          description: category.description,
+          details: category.details,
+          dealFeatures: Array.isArray(category.dealFeatures)
+            ? category.dealFeatures
+            : [],
+          applications: category.applications,
+          image: category.image,
+          icon: category.icon,
+        }));
 
-        setCategories(data);
+        setCategories(normalizedCategories);
         setSelectedCategory((current) => {
           if (current) {
-            const matched = data.find(
+            const matched = normalizedCategories.find(
               (category) => category.id === current.id
             );
 
@@ -86,7 +63,9 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
             }
           }
 
-          return data.length > 0 ? data[0] : null;
+          return normalizedCategories.length > 0
+            ? normalizedCategories[0]
+            : null;
         });
         setError(null);
       } catch (err) {
