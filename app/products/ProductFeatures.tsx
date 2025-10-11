@@ -42,43 +42,6 @@ type ProductFeaturesContent = {
     };
 };
 
-const defaultContent: ProductFeaturesContent = {
-    sectionHeader: {
-        title: {
-            main: '产品功能',
-            highlight: '与优势',
-        },
-        description:
-            '领先的储能技术与严格的质量标准相结合，为客户提供安全可靠、高效智能的能源解决方案',
-        generalPrompt: '请选择一个产品分类以查看对应的功能与性能数据。',
-    },
-    featureSection: {
-        loading: '正在加载产品功能...',
-        empty: '暂无该分类的产品功能数据。',
-        selectCategory: '请选择产品分类以查看功能数据。',
-    },
-    performanceSection: {
-        title: '核心性能指标',
-        description: '业界领先的技术参数，确保卓越的产品性能',
-        loading: '正在加载性能指标...',
-        empty: '暂无该分类的性能指标数据。',
-        selectCategory: '请选择产品分类以查看性能指标。',
-    },
-    summarySection: {
-        title: '为什么选择 Lithium Valley 储能系统？',
-        stats: [
-            {value: '12+', label: '年行业经验'},
-            {value: '50+', label: '国家和地区'},
-            {value: '100k+', label: '用户信赖'},
-        ],
-        descriptionLines: [
-            '从家庭到企业，从固定到移动，我们提供全场景的储能解决方案。',
-            '先进的LiFePO₄技术、严格的质量控制、完善的售后服务，',
-            '让您的能源投资更安全、更可靠、更高效。',
-        ],
-    },
-};
-
 export default function ProductFeatures({scrollY, selectedCategory}: ProductFeaturesProps) {
     const [ref, inView] = useInView({
         threshold: 0.1,
@@ -88,14 +51,16 @@ export default function ProductFeatures({scrollY, selectedCategory}: ProductFeat
     const [performanceData, setPerformanceData] = useState<PerformanceMetric[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [content, setContent] = useState<ProductFeaturesContent>(defaultContent);
+    const [content, setContent] = useState<ProductFeaturesContent | null>(null);
     const [contentError, setContentError] = useState<string | null>(null);
+    const [isContentLoading, setIsContentLoading] = useState(true);
 
     useEffect(() => {
         const controller = new AbortController();
 
         const fetchContent = async () => {
             try {
+                setIsContentLoading(true);
                 const response = await fetch('/api/ProductFeatures', {
                     signal: controller.signal,
                     cache: 'no-store',
@@ -114,8 +79,10 @@ export default function ProductFeatures({scrollY, selectedCategory}: ProductFeat
                 }
 
                 console.error('Error fetching product features content:', err);
-                setContent(defaultContent);
-                setContentError('加载产品功能展示内容失败，将显示默认文案。');
+                setContent(null);
+                setContentError('加载产品功能展示内容失败，请稍后重试。');
+            } finally {
+                setIsContentLoading(false);
             }
         };
 
@@ -210,6 +177,26 @@ export default function ProductFeatures({scrollY, selectedCategory}: ProductFeat
     }, [selectedCategory]);
 
     const hasCategory = Boolean(selectedCategory);
+
+    if (!content) {
+        return (
+            <section
+                ref={ref}
+                className="py-20 bg-gray-50"
+                style={{
+                    transform: `translateY(${Math.max(0, (scrollY - 2400) * 0.02)}px)`
+                }}
+            >
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center text-gray-500 py-20">
+                        {isContentLoading
+                            ? '正在加载产品功能展示内容...'
+                            : contentError ?? '暂无产品功能展示内容。'}
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section
