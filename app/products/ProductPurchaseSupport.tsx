@@ -79,6 +79,44 @@ const faqData = [
   }
 ];
 
+const contentTxt = {
+  heading: {
+    titlePrefix: "购买渠道",
+    titleHighlight: "与支持",
+    description: "多渠道购买选择，全方位技术支持，让您的储能之旅更加轻松便捷"
+  },
+  tabs: {
+    purchase: "售前咨询",
+    support: "技术支持",
+    faq: "常见问题"
+  },
+  contact: {
+    title: "联系我们获取支持",
+    items: [
+      {
+        icon: "ri-phone-line",
+        label: "客服热线",
+        value: "400-888-8888"
+      },
+      {
+        icon: "ri-mail-line",
+        label: "技术邮箱",
+        value: "support@lithiumvalley.com"
+      },
+      {
+        icon: "ri-wechat-line",
+        label: "微信客服",
+        value: "LithiumValley2024"
+      }
+    ],
+    button: "立即获取技术支持"
+  },
+  faqFooter: {
+    prompt: "没有找到您需要的答案？我们的技术团队随时为您解答",
+    button: "联系技术专家"
+  }
+};
+
 export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps) {
   const [ref, inView] = useInView({
     threshold: 0.1,
@@ -98,10 +136,11 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-6">
-            购买渠道<span className="text-blue-700">与支持</span>
+            {contentTxt.heading.titlePrefix}
+            <span className="text-blue-700">{contentTxt.heading.titleHighlight}</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            多渠道购买选择，全方位技术支持，让您的储能之旅更加轻松便捷
+            {contentTxt.heading.description}
           </p>
         </div>
 
@@ -116,7 +155,7 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
                   : 'text-gray-600 hover:text-blue-600'
               }`}
             >
-              售前咨询
+              {contentTxt.tabs.purchase}
             </button>
             <button
               onClick={() => setActiveTab('support')}
@@ -126,7 +165,7 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
                   : 'text-gray-600 hover:text-blue-600'
               }`}
             >
-              技术支持
+              {contentTxt.tabs.support}
             </button>
             <button
               onClick={() => setActiveTab('faq')}
@@ -136,7 +175,7 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
                   : 'text-gray-600 hover:text-blue-600'
               }`}
             >
-              常见问题
+              {contentTxt.tabs.faq}
             </button>
           </div>
         </div>
@@ -227,29 +266,21 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
 
             {/* 联系方式 */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-8 lg:p-12 text-center shadow-2xl">
-              <h3 className="text-2xl font-bold mb-6">联系我们获取支持</h3>
-              
+              <h3 className="text-2xl font-bold mb-6">{contentTxt.contact.title}</h3>
+
               <div className="grid md:grid-cols-3 gap-8 mb-8">
-                <div>
-                  <i className="ri-phone-line w-8 h-8 flex items-center justify-center text-3xl mb-2 mx-auto"></i>
-                  <div className="font-semibold mb-1">客服热线</div>
-                  <div className="text-blue-100">400-888-8888</div>
-                </div>
-                <div>
-                  <i className="ri-mail-line w-8 h-8 flex items-center justify-center text-3xl mb-2 mx-auto"></i>
-                  <div className="font-semibold mb-1">技术邮箱</div>
-                  <div className="text-blue-100">support@lithiumvalley.com</div>
-                </div>
-                <div>
-                  <i className="ri-wechat-line w-8 h-8 flex items-center justify-center text-3xl mb-2 mx-auto"></i>
-                  <div className="font-semibold mb-1">微信客服</div>
-                  <div className="text-blue-100">LithiumValley2024</div>
-                </div>
+                {contentTxt.contact.items.map((item, index) => (
+                  <div key={index}>
+                    <i className={`${item.icon} w-8 h-8 flex items-center justify-center text-3xl mb-2 mx-auto`}></i>
+                    <div className="font-semibold mb-1">{item.label}</div>
+                    <div className="text-blue-100">{item.value}</div>
+                  </div>
+                ))}
               </div>
-              
+
               <Link href="/get-started">
                 <button className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 font-bold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer rounded-full">
-                  立即获取技术支持
+                  {contentTxt.contact.button}
                 </button>
               </Link>
             </div>
@@ -295,12 +326,10 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
               </div>
               
               <div className="text-center mt-12">
-                <p className="text-gray-600 mb-6">
-                  没有找到您需要的答案？我们的技术团队随时为您解答
-                </p>
+                <p className="text-gray-600 mb-6">{contentTxt.faqFooter.prompt}</p>
                 <Link href="/get-started">
                   <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
-                    联系技术专家
+                    {contentTxt.faqFooter.button}
                   </button>
                 </Link>
               </div>
