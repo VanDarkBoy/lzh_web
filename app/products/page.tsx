@@ -6,7 +6,6 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductsHero from './ProductsHero';
 import ProductCategories from './ProductCategories';
-import ProductShowcase from './ProductShowcase';
 import ProductFeatures from './ProductFeatures';
 import ProductPurchaseSupport from './ProductPurchaseSupport';
 import type { Category } from './types';
