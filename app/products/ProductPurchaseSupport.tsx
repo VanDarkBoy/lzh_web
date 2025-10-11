@@ -1,132 +1,123 @@
-
 'use client';
 
 import { useInView } from 'react-intersection-observer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 interface PurchaseSupportProps {
   scrollY: number;
 }
 
-const purchaseChannels = [
-  {
-    title: "在线咨询提交询盘",
-    description: "提交产品询盘获取详细方案",
-    icon: "ri-customer-service-line",
-    action: "提交询盘",
-    features: ["在线客服", "技术咨询", "方案定制", "实时报价"]
-  },
-  {
-    title: "成为经销商",
-    description: "加入我们的经销商网络，共享市场机遇",
-    icon: "ri-group-line",
-    action: "申请成为经销商",
-    features: ["区域代理", "销售支持", "培训服务", "市场推广"]
-  },
-  {
-    title: "项目合作",
-    description: "大型项目直接合作，提供端到端解决方案",
-    icon: "ri-building-line",
-    action: "项目咨询",
-    features: ["项目定制", "工程服务", "技术支持", "长期合作"]
-  }
-];
+interface PurchaseChannel {
+  title: string;
+  description: string;
+  icon: string;
+  action: string;
+  features: string[];
+}
 
-const supportServices = [
-  {
-    title: "24小时在线客服",
-    description: "全天候在线客服支持，快速响应客户需求",
-    icon: "ri-service-line",
-    availability: "7×24小时"
-  },
-  {
-    title: "技术支持热线",
-    description: "专业技术团队提供安装、调试和维护指导",
-    icon: "ri-phone-line",
-    availability: "工作日 9:00-18:00"
-  },
-  {
-    title: "远程诊断服务",
-    description: "通过智能监控系统提供远程故障诊断",
-    icon: "ri-computer-line",
-    availability: "实时监控"
-  },
-  {
-    title: "现场服务支持",
-    description: "必要时派遣工程师提供现场技术服务",
-    icon: "ri-tools-line",
-    availability: "预约服务"
-  }
-];
+interface SupportService {
+  title: string;
+  description: string;
+  icon: string;
+  availability: string;
+}
 
-const faqData = [
-  {
-    question: "如何选择合适的储能系统容量？",
-    answer: "容量选择需要考虑用电负荷、使用时长、预算等因素。我们的技术团队会根据您的具体需求提供专业的系统设计建议。"
-  },
-  {
-    question: "产品质保期是多长？",
-    answer: "我们的储能系统提供10年产品质保，电池核心组件质保期可达15年，让您的投资更有保障。"
-  },
-  {
-    question: "系统安装需要多长时间？",
-    answer: "根据系统规模不同，家用系统通常1-2天完成安装，商用系统3-7天，我们的模块化设计大大缩短了安装时间。"
-  },
-  {
-    question: "是否支持系统扩容？",
-    answer: "是的，我们的模块化设计支持后期扩容，您可以根据需求增长逐步扩展系统容量。"
-  }
-];
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
-const contentTxt = {
+interface ContactItem {
+  icon: string;
+  label: string;
+  value: string;
+}
+
+interface ContentText {
   heading: {
-    titlePrefix: "购买渠道",
-    titleHighlight: "与支持",
-    description: "多渠道购买选择，全方位技术支持，让您的储能之旅更加轻松便捷"
-  },
+    titlePrefix: string;
+    titleHighlight: string;
+    description: string;
+  };
   tabs: {
-    purchase: "售前咨询",
-    support: "技术支持",
-    faq: "常见问题"
-  },
+    purchase: string;
+    support: string;
+    faq: string;
+  };
   contact: {
-    title: "联系我们获取支持",
-    items: [
-      {
-        icon: "ri-phone-line",
-        label: "客服热线",
-        value: "400-888-8888"
-      },
-      {
-        icon: "ri-mail-line",
-        label: "技术邮箱",
-        value: "support@lithiumvalley.com"
-      },
-      {
-        icon: "ri-wechat-line",
-        label: "微信客服",
-        value: "LithiumValley2024"
-      }
-    ],
-    button: "立即获取技术支持"
-  },
+    title: string;
+    items: ContactItem[];
+    button: string;
+  };
   faqFooter: {
-    prompt: "没有找到您需要的答案？我们的技术团队随时为您解答",
-    button: "联系技术专家"
-  }
-};
+    prompt: string;
+    button: string;
+  };
+}
+
+interface ProductPurchaseSupportContent {
+  purchaseChannels: PurchaseChannel[];
+  supportServices: SupportService[];
+  faqData: FAQItem[];
+  contentTxt: ContentText;
+}
 
 export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps) {
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
-  const [activeTab, setActiveTab] = useState('purchase');
+  const [activeTab, setActiveTab] = useState<'purchase' | 'support' | 'faq'>('purchase');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [content, setContent] = useState<ProductPurchaseSupportContent | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await fetch('/api/ProductPurchaseSupport');
+
+        if (!response.ok) {
+          throw new Error(`请求失败，状态码：${response.status}`);
+        }
+
+        const data: ProductPurchaseSupportContent = await response.json();
+        setContent(data);
+      } catch (err) {
+        console.error('Failed to load product purchase support content', err);
+        setError('数据加载失败，请稍后重试。');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchContent();
+  }, []);
+
+  if (!content) {
+    return (
+      <section
+        ref={ref}
+        className="py-20 bg-white"
+        style={{
+          transform: `translateY(${Math.max(0, (scrollY - 3200) * 0.02)}px)`
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center text-gray-500 py-20">
+            {isLoading ? '正在加载支持信息...' : error ?? '暂无支持信息。'}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const { contentTxt, purchaseChannels, supportServices, faqData } = content;
 
   return (
-    <section 
+    <section
       ref={ref}
       className="py-20 bg-white"
       style={{
@@ -197,15 +188,15 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
                   <div className="w-16 h-16 bg-blue-100 flex items-center justify-center mb-6">
                     <i className={`${channel.icon} w-8 h-8 flex items-center justify-center text-blue-700 text-2xl`}></i>
                   </div>
-                  
+
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">
                     {channel.title}
                   </h3>
-                  
+
                   <p className="text-gray-600 leading-relaxed mb-6">
                     {channel.description}
                   </p>
-                  
+
                   <div className="space-y-2 mb-6">
                     {channel.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2">
@@ -214,7 +205,7 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
                       </div>
                     ))}
                   </div>
-                  
+
                   <Link href="/get-started">
                     <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
                       {channel.action}
@@ -244,7 +235,7 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
                     <div className="w-12 h-12 bg-blue-100 flex items-center justify-center flex-shrink-0">
                       <i className={`${service.icon} w-6 h-6 flex items-center justify-center text-blue-700 text-xl`}></i>
                     </div>
-                    
+
                     <div className="flex-1">
                       <div className="flex justify-between items-start mb-3">
                         <h3 className="text-lg font-semibold text-gray-900">
@@ -254,7 +245,7 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
                           {service.availability}
                         </span>
                       </div>
-                      
+
                       <p className="text-gray-600 leading-relaxed">
                         {service.description}
                       </p>
@@ -313,7 +304,7 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
                         expandedFaq === index ? 'transform rotate-180' : ''
                       }`}></i>
                     </button>
-                    
+
                     {expandedFaq === index && (
                       <div className="px-6 pb-6 border-t border-gray-100">
                         <p className="text-gray-600 leading-relaxed pt-4">
@@ -324,7 +315,7 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
                   </div>
                 ))}
               </div>
-              
+
               <div className="text-center mt-12">
                 <p className="text-gray-600 mb-6">{contentTxt.faqFooter.prompt}</p>
                 <Link href="/get-started">
