@@ -19,9 +19,6 @@ export default function ProductListHero({ scrollY }: ProductListHeroProps) {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
             产品列表
-            <span className="block text-3xl md:text-4xl text-blue-300 mt-4 font-normal">
-              PRODUCT LIST
-            </span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-200 leading-relaxed max-w-3xl mx-auto">
             探索 Lithium Valley 完整的储能产品系列，从家用到工业级解决方案

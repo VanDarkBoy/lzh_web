@@ -37,7 +37,7 @@ export default function ProductGrid() {
           fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/getAllProduct`, {
             signal: productsController.signal
           }),
-          fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/getAllCategories`, {
+          fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/product_list_categories`, {
             signal: categoriesController.signal
           })
         ]);

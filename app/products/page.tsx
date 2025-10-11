@@ -8,7 +8,7 @@ import ProductsHero from './ProductsHero';
 import ProductCategories from './ProductCategories';
 import ProductShowcase from './ProductShowcase';
 import ProductFeatures from './ProductFeatures';
-import PurchaseSupport from './PurchaseSupport';
+import ProductPurchaseSupport from './ProductPurchaseSupport';
 import type { Category } from './types';
 
 export default function ProductsPage() {
@@ -30,7 +30,7 @@ export default function ProductsPage() {
         onCategorySelect={setSelectedCategory}
       />
       <ProductFeatures scrollY={scrollY} selectedCategory={selectedCategory} />
-      <PurchaseSupport scrollY={scrollY} />
+      <ProductPurchaseSupport scrollY={scrollY} />
       <Footer />
     </div>
   );

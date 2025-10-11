@@ -20,9 +20,6 @@ export default function DownloadHero({ scrollY }: DownloadHeroProps) {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
             下载中心
-            <span className="block text-3xl md:text-4xl text-green-300 mt-4 font-normal">
-              DOWNLOAD CENTER
-            </span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-200 leading-relaxed max-w-3xl mx-auto">
             获取产品技术文档、规格说明书、安装指南等专业资料

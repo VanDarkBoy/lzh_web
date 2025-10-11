@@ -36,7 +36,7 @@ export default function Home() {
                 <span className="text-green-400">而是智慧能源</span>
               </h1>
               <p className="text-xl md:text-2xl mb-12 text-gray-200 leading-relaxed max-w-3xl mx-auto">
-                Lithium Valley 提供高安全、模块化的锂电池储能系统，涵盖住宅与商业应用，助力绿色能源与可持续发展
+                锂智慧提供高安全、模块化的锂电池储能系统，涵盖住宅与商业应用，助力绿色能源与可持续发展
               </p>
               
               {/* 核心亮点 */}

@@ -79,7 +79,7 @@ const faqData = [
   }
 ];
 
-export default function PurchaseSupport({ scrollY }: PurchaseSupportProps) {
+export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps) {
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,

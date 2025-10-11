@@ -28,18 +28,11 @@ export default function AboutHero({ scrollY }: AboutHeroProps) {
         }}
       >
         <div className="text-left max-w-3xl">
-          {/* 标签 */}
-          <div className="inline-block px-6 py-3 bg-blue-600/20 backdrop-blur-sm rounded-full text-blue-300 text-sm font-medium mb-8 border border-blue-400/30">
-            关于我们 About Us
-          </div>
-          
+
           {/* 主标题 */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight">
             锂谷科技
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
-              Lithium Valley
-            </span>
           </h1>
 
           {/* 描述 */}
