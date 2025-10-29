@@ -93,8 +93,9 @@ export default function MethodologySection({ scrollY }: MethodologySectionProps)
     return colors[color as keyof typeof colors] || colors.emerald;
   };
 
+
   return (
-    <section 
+    <section
       ref={ref}
       className="py-12 sm:py-16 lg:py-20 bg-gray-50"
       style={{
@@ -112,7 +113,7 @@ export default function MethodologySection({ scrollY }: MethodologySectionProps)
               <span className="text-emerald-700">Principles</span>
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed px-4">
-              Six fundamental principles that guide every aspect of our design process, 
+              Six fundamental principles that guide every aspect of our design process,
               ensuring buildings that are not just sustainable, but regenerative for both people and planet
             </p>
           </div>
@@ -122,6 +123,7 @@ export default function MethodologySection({ scrollY }: MethodologySectionProps)
           {principles.map((principle, index) => (
             <div
               key={index}
+                // @ts-ignore
               ref={el => cardRefs.current[index] = el}
               className={`bg-white p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-2 h-full flex flex-col ${
                 visibleCards.includes(index)
@@ -138,11 +140,11 @@ export default function MethodologySection({ scrollY }: MethodologySectionProps)
                   {principle.stats}
                 </div>
               </div>
-              
+
               <h3 className="text-xl sm:text-2xl font-medium text-gray-900 mb-4">
                 {principle.title}
               </h3>
-              
+
               <p className="text-gray-600 leading-relaxed flex-1 text-sm sm:text-base">
                 {principle.description}
               </p>
