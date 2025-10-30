@@ -9,6 +9,7 @@ interface ProductListHeroProps {
 interface HeroContent {
   title: string;
   description: string;
+  backgroundImage: string;
 }
 
 interface Category {
@@ -19,7 +20,8 @@ interface Category {
 
 const defaultHeroContent: HeroContent = {
   title: '产品列表',
-  description: '探索 Lithium Valley 完整的储能产品系列，从家用到工业级解决方案'
+  description: '探索 Lithium Valley 完整的储能产品系列，从家用到工业级解决方案',
+  backgroundImage: 'https://readdy.ai/api/search-image?query=Clean%20modern%20energy%20storage%20facility%20with%20multiple%20battery%20systems%20arranged%20in%20professional%20display%2C%20industrial%20ESS%20product%20showcase%20with%20white%20background%2C%20professional%20product%20photography%20for%20lithium%20battery%20storage%20systems&width=1920&height=1080&seq=product-list-hero&orientation=landscape'
 };
 
 const badgeColors = ['bg-green-400', 'bg-blue-400', 'bg-purple-400', 'bg-orange-400', 'bg-pink-400', 'bg-teal-400'];
@@ -48,7 +50,8 @@ export default function ProductListHero({ scrollY }: ProductListHeroProps) {
         if (isMounted) {
           setHeroContent({
             title: data?.title ?? defaultHeroContent.title,
-            description: data?.description ?? defaultHeroContent.description
+            description: data?.description ?? defaultHeroContent.description,
+            backgroundImage: data?.backgroundImage ?? defaultHeroContent.backgroundImage
           });
         }
       } catch (error) {
@@ -82,7 +85,7 @@ export default function ProductListHero({ scrollY }: ProductListHeroProps) {
   return (
     <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50"
       style={{
-        backgroundImage: `url('https://readdy.ai/api/search-image?query=Clean%20modern%20energy%20storage%20facility%20with%20multiple%20battery%20systems%20arranged%20in%20professional%20display%2C%20industrial%20ESS%20product%20showcase%20with%20white%20background%2C%20professional%20product%20photography%20for%20lithium%20battery%20storage%20systems&width=1920&height=1080&seq=product-list-hero&orientation=landscape')`,
+        backgroundImage: `${heroContent.backgroundImage}`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         transform: `translateY(${scrollY * 0.5}px)`
