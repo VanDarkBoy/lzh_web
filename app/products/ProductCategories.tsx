@@ -84,7 +84,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
 
     const fetchContent = async () => {
       try {
-        const response = await fetch('/api/ProductCategories', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductCategories`, {
           signal: controller.signal,
         });
 
@@ -129,6 +129,8 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
   const sectionHeader = content?.sectionHeader;
   const ctaButtons = content?.ctaButtons;
   const emptyStates = content?.emptyStates;
+  const categoriyDetail = content?.categoriyDetail;
+
 
   return (
       <section
@@ -253,7 +255,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                     </div>
 
                     <div className="mb-8">
-                      <h4 className="text-lg font-semibold text-gray-900 mb-4">产品特色</h4>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">{categoriyDetail?.productFeatures ?? ''}</h4>
                       <div className="grid grid-cols-2 gap-3">
                         {activeCategory.dealFeatures.map((feature, idx) => (
                             <div key={idx} className="flex items-center gap-2">
@@ -265,7 +267,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                     </div>
 
                     <div className="mb-8">
-                      <h4 className="text-lg font-semibold text-gray-900 mb-4">应用场景</h4>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">{categoriyDetail?.applicationScenarios ?? ''}</h4>
                       <p className="text-gray-600">{activeCategory.applications}</p>
                     </div>
 

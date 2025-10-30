@@ -19,6 +19,10 @@ const content: ProductCategoriesContent = {
     categories: '暂无产品分类数据。',
     details: '暂无产品分类数据。',
   },
+  categoriyDetail: {
+    productFeatures: "产品特色",
+    applicationScenarios: "应用场景",
+  },
 };
 
 export async function GET() {
