@@ -9,6 +9,25 @@ export interface Category {
   icon: string;
 }
 
+export interface ProductCategoriesContent {
+  sectionHeader: {
+    badge: string;
+    title: {
+      main: string;
+      highlight: string;
+    };
+    description: string;
+  };
+  ctaButtons: {
+    primary: string;
+    secondary: string;
+  };
+  emptyStates: {
+    categories: string;
+    details: string;
+  };
+}
+
 export interface ProductFeatureItem {
   id: bigint;
   productCategoryId: bigint;
