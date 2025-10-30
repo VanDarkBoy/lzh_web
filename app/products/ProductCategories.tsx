@@ -125,28 +125,10 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
     'ri-battery-charge-line'
   ];
 
-  const fallbackContent: ProductCategoriesContent = {
-    sectionHeader: {
-      badge: '产品系列',
-      title: {
-        main: '产品',
-        highlight: '分类',
-      },
-      description:
-        '覆盖家用、工商业、动力等全场景应用，提供高效可靠的储能解决方案',
-    },
-    ctaButtons: {
-      primary: '获取报价',
-      secondary: '查看详情',
-    },
-    emptyStates: {
-      categories: '暂无产品分类数据。',
-      details: '暂无产品分类数据。',
-    },
-  };
-
-  const displayContent = content ?? fallbackContent;
   const displayError = error ?? contentError;
+  const sectionHeader = content?.sectionHeader;
+  const ctaButtons = content?.ctaButtons;
+  const emptyStates = content?.emptyStates;
 
   return (
       <section
@@ -159,16 +141,16 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-6">
-              {displayContent.sectionHeader.badge}
+              {sectionHeader?.badge ?? ''}
             </div>
             <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-6">
-              {displayContent.sectionHeader.title.main}
+              {sectionHeader?.title?.main ?? ''}
               <span className="text-blue-700">
-                {displayContent.sectionHeader.title.highlight}
+                {sectionHeader?.title?.highlight ?? ''}
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              {displayContent.sectionHeader.description}
+              {sectionHeader?.description ?? ''}
             </p>
           </div>
 
@@ -241,7 +223,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                 })
             ) : (
                 <div className="lg:col-span-5 flex min-h-[120px] items-center justify-center text-gray-500">
-                  {displayContent.emptyStates.categories}
+                  {emptyStates?.categories ?? ''}
                 </div>
             )}
           </div>
@@ -290,14 +272,14 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                     <div className="flex gap-4">
                       <Link href="/get-started">
                         <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
-                          {displayContent.ctaButtons.primary}
+                          {ctaButtons?.primary ?? ''}
                         </button>
                       </Link>
                       <Link
                           href="/product-list"
                       >
                         <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
-                          {displayContent.ctaButtons.secondary}
+                          {ctaButtons?.secondary ?? ''}
                         </button>
                       </Link>
                     </div>
@@ -314,7 +296,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                 </div>
             ) : (
                 <div className="flex min-h-[200px] items-center justify-center text-gray-500">
-                  {displayContent.emptyStates.details}
+                  {emptyStates?.details ?? ''}
                 </div>
             )}
           </div>
