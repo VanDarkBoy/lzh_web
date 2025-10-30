@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 type FormData = {
   name: string;
@@ -9,6 +9,35 @@ type FormData = {
   company: string;
   product: string;
   inquiry: string;
+};
+
+type ContactFormContent = {
+  successMessage: string;
+  failureMessage: string;
+  networkErrorMessage: string;
+  heroTitle: string;
+  heroDescription: string;
+  serviceTitle: string;
+  serviceDescription: string;
+  solutionTitle: string;
+  solutionDescription: string;
+  supportTitle: string;
+  supportDescription: string;
+  successHeading: string;
+  continueButton: string;
+  nameLabel: string;
+  namePlaceholder: string;
+  companyLabel: string;
+  emailLabel: string;
+  phoneLabel: string;
+  phonePlaceholder: string;
+  productLabel: string;
+  productPlaceholder: string;
+  inquiryLabel: string;
+  inquiryPlaceholder: string;
+  contactFollowUp: string;
+  submittingText: string;
+  submitText: string;
 };
 
 const initialFormState: FormData = {
@@ -20,11 +49,75 @@ const initialFormState: FormData = {
   inquiry: ''
 };
 
+const defaultContent: ContactFormContent = {
+  successMessage: '提交成功！我们的团队将在 24 小时内与您取得联系。',
+  failureMessage: '提交失败，请稍后重试。',
+  networkErrorMessage: '网络请求出现问题，请稍后重试。',
+  heroTitle: '告诉我们您的能源需求',
+  heroDescription:
+    '提交表单即可获得专属顾问服务。我们将根据您的场景提供定制化的储能解决方案，帮助您快速推进项目落地。',
+  serviceTitle: '全程顾问服务',
+  serviceDescription:
+    '从方案设计到交付运营，顾问团队将与您保持紧密沟通，确保每个阶段顺利推进。',
+  solutionTitle: '定制化储能方案',
+  solutionDescription:
+    '针对家用、商用或工业场景，为您评估容量、并网、能效等关键指标，输出最优解决方案。',
+  supportTitle: '持续运营支持',
+  supportDescription:
+    '提供远程监控、运维培训与售后响应，确保储能系统长期稳定、安全运行。',
+  successHeading: '提交成功',
+  continueButton: '继续填写新的需求',
+  nameLabel: '联系人姓名 *',
+  namePlaceholder: '请输入姓名',
+  companyLabel: '公司 / 组织',
+  emailLabel: '邮箱 *',
+  phoneLabel: '联系电话',
+  phonePlaceholder: '方便联系的电话',
+  productLabel: '感兴趣的产品或方案',
+  productPlaceholder: '如：工商业储能系统',
+  inquiryLabel: '咨询内容 *',
+  inquiryPlaceholder: '请描述您的项目背景、储能容量需求、应用场景或其他关键信息',
+  contactFollowUp: '我们将在 24 小时内与您联系，提供初步方案与报价建议。',
+  submittingText: '正在提交...',
+  submitText: '提交咨询'
+};
+
 export default function ContactForm() {
   const [formData, setFormData] = useState<FormData>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [content, setContent] = useState<ContactFormContent>(defaultContent);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchContent = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE}/api/ContactForm`
+        );
+        if (!response.ok) {
+          throw new Error('Failed to fetch contact form content');
+        }
+
+        const result = await response.json();
+        const payload: Partial<ContactFormContent> = result?.data ?? result;
+
+        if (isMounted && payload && typeof payload === 'object') {
+          setContent((prev) => ({ ...prev, ...payload }));
+        }
+      } catch (error) {
+        console.error('Failed to load contact form content', error);
+      }
+    };
+
+    fetchContent();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -53,13 +146,13 @@ export default function ContactForm() {
       const data = await response.json();
 
       if (data?.code === 200) {
-        setSuccessMessage('提交成功！我们的团队将在 24 小时内与您取得联系。');
+        setSuccessMessage(content.successMessage);
         setFormData(initialFormState);
       } else {
-        setErrorMessage(data?.msg || '提交失败，请稍后重试。');
+        setErrorMessage(data?.msg || content.failureMessage);
       }
     } catch (error) {
-      setErrorMessage('网络请求出现问题，请稍后重试。');
+      setErrorMessage(content.networkErrorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -80,10 +173,10 @@ export default function ContactForm() {
         <div className="mb-12 text-center lg:text-left">
           <span className="inline-flex items-center rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Get started</span>
           <h1 className="mt-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
-            告诉我们您的能源需求
+            {content.heroTitle}
           </h1>
           <p className="mt-4 text-lg text-slate-300 sm:text-xl lg:max-w-3xl">
-            提交表单即可获得专属顾问服务。我们将根据您的场景提供定制化的储能解决方案，帮助您快速推进项目落地。
+            {content.heroDescription}
           </p>
         </div>
 
@@ -93,9 +186,9 @@ export default function ContactForm() {
               <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20 text-2xl">
                 <i className="ri-customer-service-2-line text-emerald-300"></i>
               </div>
-              <h2 className="text-2xl font-semibold">全程顾问服务</h2>
+              <h2 className="text-2xl font-semibold">{content.serviceTitle}</h2>
               <p className="mt-3 text-sm text-slate-300">
-                从方案设计到交付运营，顾问团队将与您保持紧密沟通，确保每个阶段顺利推进。
+                {content.serviceDescription}
               </p>
             </div>
 
@@ -103,9 +196,9 @@ export default function ContactForm() {
               <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20 text-2xl">
                 <i className="ri-flashlight-line text-emerald-300"></i>
               </div>
-              <h2 className="text-2xl font-semibold">定制化储能方案</h2>
+              <h2 className="text-2xl font-semibold">{content.solutionTitle}</h2>
               <p className="mt-3 text-sm text-slate-300">
-                针对家用、商用或工业场景，为您评估容量、并网、能效等关键指标，输出最优解决方案。
+                {content.solutionDescription}
               </p>
             </div>
 
@@ -113,9 +206,9 @@ export default function ContactForm() {
               <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20 text-2xl">
                 <i className="ri-shield-check-line text-emerald-300"></i>
               </div>
-              <h2 className="text-2xl font-semibold">持续运营支持</h2>
+              <h2 className="text-2xl font-semibold">{content.supportTitle}</h2>
               <p className="mt-3 text-sm text-slate-300">
-                提供远程监控、运维培训与售后响应，确保储能系统长期稳定、安全运行。
+                {content.supportDescription}
               </p>
             </div>
           </div>
@@ -126,7 +219,9 @@ export default function ContactForm() {
                 <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
                   <i className="ri-check-line text-3xl text-emerald-600"></i>
                 </div>
-                <h3 className="text-2xl font-semibold text-slate-900">提交成功</h3>
+                <h3 className="text-2xl font-semibold text-slate-900">
+                  {content.successHeading}
+                </h3>
                 <p className="mt-4 max-w-sm text-base text-slate-600">
                   {successMessage}
                 </p>
@@ -135,7 +230,7 @@ export default function ContactForm() {
                   onClick={() => setSuccessMessage('')}
                   className="mt-8 inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
                 >
-                  继续填写新的需求
+                  {content.continueButton}
                 </button>
               </div>
             ) : (
@@ -152,7 +247,7 @@ export default function ContactForm() {
                       htmlFor="name"
                       className="mb-2 block text-sm font-semibold text-slate-700"
                     >
-                      联系人姓名 *
+                      {content.nameLabel}
                     </label>
                     <input
                       id="name"
@@ -160,7 +255,7 @@ export default function ContactForm() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      placeholder="请输入姓名"
+                      placeholder={content.namePlaceholder}
                       className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
                       type="text"
                     />
@@ -170,7 +265,7 @@ export default function ContactForm() {
                       htmlFor="company"
                       className="mb-2 block text-sm font-semibold text-slate-700"
                     >
-                      公司 / 组织
+                      {content.companyLabel}
                     </label>
                     <input
                       id="company"
@@ -190,7 +285,7 @@ export default function ContactForm() {
                       htmlFor="email"
                       className="mb-2 block text-sm font-semibold text-slate-700"
                     >
-                      邮箱 *
+                      {content.emailLabel}
                     </label>
                     <input
                       id="email"
@@ -208,7 +303,7 @@ export default function ContactForm() {
                       htmlFor="phone"
                       className="mb-2 block text-sm font-semibold text-slate-700"
                     >
-                      联系电话
+                      {content.phoneLabel}
                     </label>
                     <input
                       id="phone"
@@ -216,7 +311,7 @@ export default function ContactForm() {
                       type="tel"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="方便联系的电话"
+                      placeholder={content.phonePlaceholder}
                       className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
                     />
                   </div>
@@ -227,14 +322,14 @@ export default function ContactForm() {
                     htmlFor="product"
                     className="mb-2 block text-sm font-semibold text-slate-700"
                   >
-                    感兴趣的产品或方案
+                    {content.productLabel}
                   </label>
                   <input
                     id="product"
                     name="product"
                     value={formData.product}
                     onChange={handleChange}
-                    placeholder="如：工商业储能系统"
+                    placeholder={content.productPlaceholder}
                     className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
                     type="text"
                   />
@@ -245,7 +340,7 @@ export default function ContactForm() {
                     htmlFor="inquiry"
                     className="mb-2 block text-sm font-semibold text-slate-700"
                   >
-                    咨询内容 *
+                    {content.inquiryLabel}
                   </label>
                   <textarea
                     id="inquiry"
@@ -254,7 +349,7 @@ export default function ContactForm() {
                     onChange={handleChange}
                     rows={5}
                     maxLength={600}
-                    placeholder="请描述您的项目背景、储能容量需求、应用场景或其他关键信息"
+                    placeholder={content.inquiryPlaceholder}
                     className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
                   />
                   <p className="mt-2 text-xs text-slate-400">
@@ -267,10 +362,10 @@ export default function ContactForm() {
                   disabled={isSubmitting}
                   className="flex w-full items-center justify-center rounded-full bg-emerald-600 px-6 py-4 text-base font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-emerald-400"
                 >
-                  {isSubmitting ? '正在提交...' : '提交咨询'}
+                  {isSubmitting ? content.submittingText : content.submitText}
                 </button>
                 <p className="text-center text-xs text-slate-400">
-                  我们将在 24 小时内与您联系，提供初步方案与报价建议。
+                  {content.contactFollowUp}
                 </p>
               </form>
             )}
