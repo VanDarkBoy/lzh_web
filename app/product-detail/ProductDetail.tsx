@@ -57,6 +57,15 @@ interface ProductDetailCopy {
   monitoringSupport: string;
   provenTrackRecord: string;
   scalableSystems: string;
+
+  capacity: string;
+  voltage: string;
+  current: string;
+  cycles: string;
+  efficiency: string;
+  warranty: string;
+  operating: string;
+  protection: string;
 }
 
 const defaultCopy: ProductDetailCopy = {
@@ -85,6 +94,16 @@ const defaultCopy: ProductDetailCopy = {
   monitoringSupport: '全天候监控和支持服务',
   provenTrackRecord: '跨行业良好的业绩记录',
   scalableSystems: '根据您的需求量身定制的可扩展系统',
+
+  capacity: '容量',
+  voltage: '电压',
+  current: '电流',
+  cycles: '循环次数',
+  efficiency: '电耗',
+  warranty: '质保',
+  operating: '环境温度',
+  protection: '防水级别',
+
 };
 
 type ErrorMessageKey = 'invalidProductId' | 'productNotFoundMessage' | 'loadFailedMessage';
@@ -366,7 +385,7 @@ export default function ProductDetail() {
                 <dl className="space-y-4">
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      capacity
+                      {copy.capacity}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.capacity}
@@ -374,7 +393,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      voltage
+                      {copy.voltage}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.voltage}
@@ -382,7 +401,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      current
+                      {copy.current}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.current}
@@ -390,7 +409,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      cycles
+                      {copy.cycles}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.cycles}
@@ -398,7 +417,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      efficiency
+                      {copy.efficiency}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.efficiency}
@@ -406,7 +425,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      warranty
+                      {copy.warranty}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.warranty}
@@ -414,7 +433,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      operating
+                      {copy.operating}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.operating}
@@ -422,7 +441,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      protection
+                      {copy.protection}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.protection}
