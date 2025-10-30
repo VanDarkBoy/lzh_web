@@ -20,6 +20,64 @@ interface ProductDetailData {
   dealApplications: string[];
 }
 
+interface ProductDetailCopy {
+  invalidProductId: string;
+  productDetailRequestError: string;
+  productNotFoundMessage: string;
+  loadFailedMessage: string;
+  loadingLabel: string;
+  detailFailedTitle: string;
+  goHomeLabel: string;
+  productNotFoundTitle: string;
+  contactSalesLabel: string;
+  downloadSpecsLabel: string;
+  technicalSpecificationsTitle: string;
+  technicalSpecificationsDescription: string;
+  keySpecificationsTitle: string;
+  keyFeaturesTitle: string;
+  applicationsTitle: string;
+  ctaTitle: string;
+  ctaDescription: string;
+  scheduleConsultationLabel: string;
+  downloadFullManualLabel: string;
+  whyChooseUsTitle: string;
+  trustedByDescription: string;
+  endToEndSolutions: string;
+  monitoringSupport: string;
+  provenTrackRecord: string;
+  scalableSystems: string;
+}
+
+const defaultCopy: ProductDetailCopy = {
+  invalidProductId: '未提供有效的产品ID',
+  productDetailRequestError: '获取产品详情失败',
+  productNotFoundMessage: '未找到对应的产品信息',
+  loadFailedMessage: '加载产品详情失败，请稍后重试',
+  loadingLabel: '正在加载产品详情...',
+  detailFailedTitle: '产品详情加载失败',
+  goHomeLabel: '回到主页',
+  productNotFoundTitle: '未找到产品',
+  contactSalesLabel: '联系销售',
+  downloadSpecsLabel: '下载规格',
+  technicalSpecificationsTitle: '技术规格',
+  technicalSpecificationsDescription: '详细的技术规格和性能参数',
+  keySpecificationsTitle: '关键规格',
+  keyFeaturesTitle: '关键功能',
+  applicationsTitle: '应用方案',
+  ctaTitle: '准备部署世界一流的储能解决方案了吗？',
+  ctaDescription: '我们的专家将帮助您设计和实施从咨询到部署的完美系统。',
+  scheduleConsultationLabel: '安排咨询',
+  downloadFullManualLabel: '下载完整的手册',
+  whyChooseUsTitle: '为什么选择我们？',
+  trustedByDescription: '受到全球行业领导者的信任',
+  endToEndSolutions: '端到端储能解决方案',
+  monitoringSupport: '全天候监控和支持服务',
+  provenTrackRecord: '跨行业良好的业绩记录',
+  scalableSystems: '根据您的需求量身定制的可扩展系统',
+};
+
+type ErrorMessageKey = 'invalidProductId' | 'productNotFoundMessage' | 'loadFailedMessage';
+
 const sanitizeProductId = (value: string | null | undefined): string => {
   if (!value) {
     return '';
@@ -66,14 +124,59 @@ export default function ProductDetail() {
 
   const [product, setProduct] = useState<ProductDetailData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errorKey, setErrorKey] = useState<ErrorMessageKey | null>(null);
+  const [copy, setCopy] = useState<ProductDetailCopy>(defaultCopy);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchCopy = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE}/api/getProductDetail/ProductDetail`,
+          { signal: controller.signal }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch product detail copy');
+        }
+
+        const rawCopy: unknown = await response.json();
+
+        if (rawCopy && typeof rawCopy === 'object') {
+          const nextCopy: ProductDetailCopy = { ...defaultCopy };
+          const copyRecord = rawCopy as Record<string, unknown>;
+
+          (Object.keys(defaultCopy) as Array<keyof ProductDetailCopy>).forEach((key) => {
+            const value = copyRecord[key];
+
+            if (typeof value === 'string' && value.trim().length > 0) {
+              nextCopy[key] = value;
+            }
+          });
+
+          setCopy(nextCopy);
+        }
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return;
+        }
+
+        console.error('Error fetching product detail copy:', err);
+      }
+    };
+
+    fetchCopy();
+
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
 
     if (!productId) {
       setProduct(null);
-      setError('未提供有效的产品ID');
+      setErrorKey('invalidProductId');
       setLoading(false);
       return () => controller.abort();
     }
@@ -87,7 +190,7 @@ export default function ProductDetail() {
         );
 
         if (!response.ok) {
-          throw new Error('获取产品详情失败');
+          throw new Error(copy.productDetailRequestError);
         }
 
         const rawData: unknown = await response.json();
@@ -105,10 +208,10 @@ export default function ProductDetail() {
 
         if (!parsedProduct) {
           setProduct(null);
-          setError('未找到对应的产品信息');
+          setErrorKey('productNotFoundMessage');
         } else {
           setProduct(parsedProduct);
-          setError(null);
+          setErrorKey(null);
         }
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') {
@@ -116,7 +219,7 @@ export default function ProductDetail() {
         }
 
         console.error('Error fetching product detail:', err);
-        setError('加载产品详情失败，请稍后重试');
+        setErrorKey('loadFailedMessage');
       } finally {
         setLoading(false);
       }
@@ -125,29 +228,29 @@ export default function ProductDetail() {
     fetchProduct();
 
     return () => controller.abort();
-  }, [productId]);
+  }, [copy.productDetailRequestError, productId]);
 
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
         <Header />
         <main className="flex-1 pt-20 sm:pt-24 flex items-center justify-center text-gray-500">
-          正在加载产品详情...
+          {copy.loadingLabel}
         </main>
       </div>
     );
   }
 
-  if (error) {
+  if (errorKey) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
         <Header />
         <main className="flex-1 pt-20 sm:pt-24 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-semibold text-gray-900 mb-4">产品详情加载失败</h1>
-            <p className="text-gray-600 mb-6">{error}</p>
+            <h1 className="text-2xl font-semibold text-gray-900 mb-4">{copy.detailFailedTitle}</h1>
+            <p className="text-gray-600 mb-6">{copy[errorKey]}</p>
             <Link href="/" className="text-blue-600 hover:text-blue-700">
-              回到主页
+              {copy.goHomeLabel}
             </Link>
           </div>
         </main>
@@ -161,9 +264,9 @@ export default function ProductDetail() {
         <Header />
         <main className="flex-1 pt-20 sm:pt-24 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">未找到产品</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{copy.productNotFoundTitle}</h1>
             <Link href="/" className="text-blue-600 hover:text-blue-700">
-              回到主页
+              {copy.goHomeLabel}
             </Link>
           </div>
         </main>
@@ -195,11 +298,11 @@ export default function ProductDetail() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap cursor-pointer">
                     <i className="ri-phone-line mr-2 w-4 h-4 items-center justify-center inline-flex"></i>
-                    联系销售
+                    {copy.contactSalesLabel}
                   </button>
                   <button className="border border-gray-300 text-gray-700 px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap cursor-pointer">
                     <i className="ri-download-line mr-2 w-4 h-4 items-center justify-center inline-flex"></i>
-                    下载规格
+                    {copy.downloadSpecsLabel}
                   </button>
                 </div>
               </div>
@@ -239,16 +342,16 @@ export default function ProductDetail() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className={`text-center mb-12 transition-all duration-1000 ${specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                技术规格
+                {copy.technicalSpecificationsTitle}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                详细的技术规格和性能参数
+                {copy.technicalSpecificationsDescription}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2">
               <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6">关键规格</h3>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-6">{copy.keySpecificationsTitle}</h3>
                 <dl className="space-y-4">
                   {Object.entries(product.specifications).map(([key, value]) => (
                     <div key={key} className="flex flex-col sm:flex-row sm:items-center">
@@ -265,7 +368,7 @@ export default function ProductDetail() {
 
               <div className="space-y-8">
                 <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">关键功能</h3>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">{copy.keyFeaturesTitle}</h3>
                   <ul className="space-y-4">
                     {product.dealFeatures.map((feature, index) => (
                       <li key={index} className="flex items-start">
@@ -281,7 +384,7 @@ export default function ProductDetail() {
                 </div>
 
                 <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">应用方案</h3>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">{copy.applicationsTitle}</h3>
                   <ul className="space-y-3">
                     {product.dealApplications.map((application, index) => (
                       <li key={index} className="flex items-start text-base text-gray-700">
@@ -303,17 +406,17 @@ export default function ProductDetail() {
               <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-center">
                 <div className="lg:col-span-3">
                   <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-                    准备部署世界一流的储能解决方案了吗？
+                    {copy.ctaTitle}
                   </h2>
                   <p className="text-lg text-blue-100 mb-8 leading-relaxed">
-                    我们的专家将帮助您设计和实施从咨询到部署的完美系统。
+                    {copy.ctaDescription}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button className="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors whitespace-nowrap cursor-pointer">
-                      安排咨询
+                      {copy.scheduleConsultationLabel}
                     </button>
                     <button className="border border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-colors whitespace-nowrap cursor-pointer">
-                      下载完整的手册
+                      {copy.downloadFullManualLabel}
                     </button>
                   </div>
                 </div>
@@ -325,27 +428,27 @@ export default function ProductDetail() {
                         <i className="ri-flashlight-line text-2xl"></i>
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold">为什么选择我们？</h3>
-                        <p className="text-blue-100 text-sm">受到全球行业领导者的信任</p>
+                        <h3 className="text-xl font-semibold">{copy.whyChooseUsTitle}</h3>
+                        <p className="text-blue-100 text-sm">{copy.trustedByDescription}</p>
                       </div>
                     </div>
 
                     <ul className="space-y-4 text-blue-50 text-sm">
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>端到端储能解决方案</span>
+                        <span>{copy.endToEndSolutions}</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>全天候监控和支持服务</span>
+                        <span>{copy.monitoringSupport}</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>跨行业良好的业绩记录</span>
+                        <span>{copy.provenTrackRecord}</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>根据您的需求量身定制的可扩展系统</span>
+                        <span>{copy.scalableSystems}</span>
                       </li>
                     </ul>
                   </div>
