@@ -15,7 +15,18 @@ interface ProductDetailData {
   fullDescription: string;
   image: string;
   dealGallery: string[];
-  specifications: Record<string, string>;
+
+  // -------
+  capacity: string;
+  voltage: string;
+  current: string;
+  cycles: string;
+  efficiency: string;
+  warranty: string;
+  operating: string;
+  protection: string;
+
+  // -------
   dealFeatures: string[];
   dealApplications: string[];
 }
@@ -133,7 +144,7 @@ export default function ProductDetail() {
     const fetchCopy = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE}/api/getProductDetail/ProductDetail`,
+          `${process.env.NEXT_PUBLIC_API_BASE}/api/ProductDetail`,
           { signal: controller.signal }
         );
 
@@ -353,16 +364,70 @@ export default function ProductDetail() {
               <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
                 <h3 className="text-2xl font-semibold text-gray-900 mb-6">{copy.keySpecificationsTitle}</h3>
                 <dl className="space-y-4">
-                  {Object.entries(product.specifications).map(([key, value]) => (
-                    <div key={key} className="flex flex-col sm:flex-row sm:items-center">
-                      <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                        {key}
-                      </dt>
-                      <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
-                        {value}
-                      </dd>
-                    </div>
-                  ))}
+                  <div  className="flex flex-col sm:flex-row sm:items-center">
+                    <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
+                      capacity
+                    </dt>
+                    <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
+                      {product.capacity}
+                    </dd>
+                  </div>
+                  <div  className="flex flex-col sm:flex-row sm:items-center">
+                    <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
+                      voltage
+                    </dt>
+                    <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
+                      {product.voltage}
+                    </dd>
+                  </div>
+                  <div  className="flex flex-col sm:flex-row sm:items-center">
+                    <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
+                      current
+                    </dt>
+                    <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
+                      {product.current}
+                    </dd>
+                  </div>
+                  <div  className="flex flex-col sm:flex-row sm:items-center">
+                    <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
+                      cycles
+                    </dt>
+                    <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
+                      {product.cycles}
+                    </dd>
+                  </div>
+                  <div  className="flex flex-col sm:flex-row sm:items-center">
+                    <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
+                      efficiency
+                    </dt>
+                    <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
+                      {product.efficiency}
+                    </dd>
+                  </div>
+                  <div  className="flex flex-col sm:flex-row sm:items-center">
+                    <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
+                      warranty
+                    </dt>
+                    <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
+                      {product.warranty}
+                    </dd>
+                  </div>
+                  <div  className="flex flex-col sm:flex-row sm:items-center">
+                    <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
+                      operating
+                    </dt>
+                    <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
+                      {product.operating}
+                    </dd>
+                  </div>
+                  <div  className="flex flex-col sm:flex-row sm:items-center">
+                    <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
+                      protection
+                    </dt>
+                    <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
+                      {product.protection}
+                    </dd>
+                  </div>
                 </dl>
               </div>
 
