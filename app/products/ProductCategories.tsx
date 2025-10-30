@@ -3,7 +3,7 @@
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import type { Category } from './types';
+import type { Category, ProductCategoriesContent } from './types';
 
 interface ProductCategoriesProps {
   scrollY: number;
@@ -19,6 +19,8 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [content, setContent] = useState<ProductCategoriesContent | null>(null);
+  const [contentError, setContentError] = useState<string | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -78,6 +80,37 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
   }, []);
 
   useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchContent = async () => {
+      try {
+        const response = await fetch('/api/ProductCategories', {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error('加载产品分类文案失败');
+        }
+
+        const data: ProductCategoriesContent = await response.json();
+        setContent(data);
+        setContentError(null);
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return;
+        }
+        setContentError(
+          err instanceof Error ? err.message : '加载产品分类文案失败，请稍后重试'
+        );
+      }
+    };
+
+    fetchContent();
+
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
     if (onCategorySelect) {
       onCategorySelect(selectedCategory);
     }
@@ -92,6 +125,29 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
     'ri-battery-charge-line'
   ];
 
+  const fallbackContent: ProductCategoriesContent = {
+    sectionHeader: {
+      badge: '产品系列',
+      title: {
+        main: '产品',
+        highlight: '分类',
+      },
+      description:
+        '覆盖家用、工商业、动力等全场景应用，提供高效可靠的储能解决方案',
+    },
+    ctaButtons: {
+      primary: '获取报价',
+      secondary: '查看详情',
+    },
+    emptyStates: {
+      categories: '暂无产品分类数据。',
+      details: '暂无产品分类数据。',
+    },
+  };
+
+  const displayContent = content ?? fallbackContent;
+  const displayError = error ?? contentError;
+
   return (
       <section
           ref={ref}
@@ -103,19 +159,22 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-6">
-              产品系列
+              {displayContent.sectionHeader.badge}
             </div>
             <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-6">
-              产品<span className="text-blue-700">分类</span>
+              {displayContent.sectionHeader.title.main}
+              <span className="text-blue-700">
+                {displayContent.sectionHeader.title.highlight}
+              </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              覆盖家用、工商业、动力等全场景应用，提供高效可靠的储能解决方案
+              {displayContent.sectionHeader.description}
             </p>
           </div>
 
-          {error && (
+          {displayError && (
               <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4 text-red-600">
-                {error}
+                {displayError}
               </div>
           )}
 
@@ -182,7 +241,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                 })
             ) : (
                 <div className="lg:col-span-5 flex min-h-[120px] items-center justify-center text-gray-500">
-                  暂无产品分类数据。
+                  {displayContent.emptyStates.categories}
                 </div>
             )}
           </div>
@@ -231,14 +290,14 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                     <div className="flex gap-4">
                       <Link href="/get-started">
                         <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
-                          获取报价
+                          {displayContent.ctaButtons.primary}
                         </button>
                       </Link>
                       <Link
                           href="/product-list"
                       >
                         <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 font-medium transition-all duration-300 whitespace-nowrap cursor-pointer rounded-full">
-                          查看详情
+                          {displayContent.ctaButtons.secondary}
                         </button>
                       </Link>
                     </div>
@@ -255,7 +314,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
                 </div>
             ) : (
                 <div className="flex min-h-[200px] items-center justify-center text-gray-500">
-                  暂无产品分类数据。
+                  {displayContent.emptyStates.details}
                 </div>
             )}
           </div>
