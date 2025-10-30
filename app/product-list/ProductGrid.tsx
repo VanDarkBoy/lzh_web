@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Product {
   id: bigint;
@@ -19,16 +19,92 @@ interface Category {
   count: number;
 }
 
+interface ProductGridContent {
+  errors: {
+    fetchProducts: string;
+    fetchCategories: string;
+    loadFailed: string;
+  };
+  states: {
+    loading: string;
+    viewDetails: string;
+    empty: string;
+  };
+}
+
+const defaultContent: ProductGridContent = {
+  errors: {
+    fetchProducts: '获取产品列表失败',
+    fetchCategories: '获取产品分类失败',
+    loadFailed: '加载产品数据失败，请稍后重试'
+  },
+  states: {
+    loading: '正在加载产品信息...',
+    viewDetails: '查看详情',
+    empty: '暂无符合条件的产品。'
+  }
+};
+
 export default function ProductGrid() {
   const [activeCategory, setActiveCategory] = useState<bigint>();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [content, setContent] = useState<ProductGridContent>(defaultContent);
+  const [contentError, setContentError] = useState<string | null>(null);
+  const contentRef = useRef<ProductGridContent>(defaultContent);
+
+  useEffect(() => {
+    contentRef.current = content;
+  }, [content]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchContent = async () => {
+      if (!process.env.NEXT_PUBLIC_API_BASE) {
+        setContentError('未配置产品列表文案接口地址');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductGrid`, {
+          signal: controller.signal
+        });
+
+        if (!response.ok) {
+          throw new Error('加载产品列表文案失败');
+        }
+
+        const data: ProductGridContent = await response.json();
+        setContent(data);
+        contentRef.current = data;
+        setContentError(null);
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return;
+        }
+        setContentError(
+          err instanceof Error ? err.message : '加载产品列表文案失败，请稍后重试'
+        );
+      }
+    };
+
+    fetchContent();
+
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const productsController = new AbortController();
     const categoriesController = new AbortController();
+
+    if (!process.env.NEXT_PUBLIC_API_BASE) {
+      setError('未配置产品列表接口地址');
+      setLoading(false);
+      return;
+    }
 
     const fetchProducts = async () => {
       try {
@@ -43,11 +119,11 @@ export default function ProductGrid() {
         ]);
 
         if (!productsResponse.ok) {
-          throw new Error('获取产品列表失败');
+          throw new Error(contentRef.current.errors.fetchProducts);
         }
 
         if (!categoriesResponse.ok) {
-          throw new Error('获取产品分类失败');
+          throw new Error(contentRef.current.errors.fetchCategories);
         }
 
         const productsData: Product[] = await productsResponse.json();
@@ -62,7 +138,7 @@ export default function ProductGrid() {
         if (err instanceof DOMException && err.name === 'AbortError') {
           return;
         }
-        setError('加载产品数据失败，请稍后重试');
+        setError(contentRef.current.errors.loadFailed);
       } finally {
         setLoading(false);
       }
@@ -76,7 +152,7 @@ export default function ProductGrid() {
     };
   }, []);
 
-  const filteredProducts =products.filter(product => product.category === activeCategory);
+  const filteredProducts = products.filter(product => product.category === activeCategory);
 
   return (
     <section className="py-20 bg-gray-50">
@@ -110,6 +186,11 @@ export default function ProductGrid() {
           </aside>
 
           <div className="flex-1">
+            {contentError && (
+              <div className="mx-auto mb-8 max-w-3xl rounded-xl border border-yellow-200 bg-yellow-50 px-6 py-4 text-center text-yellow-700 shadow">
+                {contentError}
+              </div>
+            )}
             {error && (
               <div className="mx-auto mb-8 max-w-3xl rounded-xl bg-red-50 px-6 py-4 text-center text-red-600 shadow">
                 {error}
@@ -120,7 +201,7 @@ export default function ProductGrid() {
             <div data-product-shop>
               {loading ? (
                 <div className="flex min-h-[200px] items-center justify-center text-gray-500">
-                  正在加载产品信息...
+                  {content.states.loading}
                 </div>
               ) : filteredProducts.length > 0 ? (
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -164,7 +245,7 @@ export default function ProductGrid() {
                       href={`/product-detail?id=${product.id.toString()}`}
                       className="inline-flex items-center justify-center rounded-lg border border-blue-600 px-4 py-2 text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white"
                     >
-                      查看详情
+                      {content.states.viewDetails}
                       <svg
                         className="ml-2 h-4 w-4"
                         fill="none"
@@ -186,7 +267,7 @@ export default function ProductGrid() {
                 </div>
               ) : (
                 <div className="flex min-h-[200px] items-center justify-center rounded-xl bg-white text-gray-500 shadow">
-                  暂无符合条件的产品。
+                  {content.states.empty}
                 </div>
               )}
             </div>
