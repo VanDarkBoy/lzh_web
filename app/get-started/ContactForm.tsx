@@ -42,7 +42,7 @@ export default function ContactForm() {
     setErrorMessage('');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/Contact`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/Inquiry`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
