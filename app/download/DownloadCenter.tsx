@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import { DownloadPageContent } from './content';
+
 interface DownloadItem {
   id: string;
   name: string;
@@ -18,7 +20,11 @@ interface Category {
   count: number;
 }
 
-export default function DownloadCenter() {
+interface DownloadCenterProps {
+  messages: DownloadPageContent['messages'];
+}
+
+export default function DownloadCenter({ messages }: DownloadCenterProps) {
   const [downloadItems, setDownloadItems] = useState<DownloadItem[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -42,11 +48,11 @@ export default function DownloadCenter() {
         ]);
 
         if (!itemsResponse.ok) {
-          throw new Error('获取资料列表失败');
+          throw new Error(messages.fetchItemsError);
         }
 
         if (!categoriesResponse.ok) {
-          throw new Error('获取资料分类失败');
+          throw new Error(messages.fetchCategoriesError);
         }
 
         const itemsData: DownloadItem[] = await itemsResponse.json();
@@ -68,7 +74,7 @@ export default function DownloadCenter() {
         if (err instanceof DOMException && err.name === 'AbortError') {
           return;
         }
-        setError(err instanceof Error ? err.message : '加载资料失败，请稍后重试');
+        setError(err instanceof Error ? err.message : messages.genericError);
       } finally {
         setLoading(false);
       }
@@ -80,7 +86,7 @@ export default function DownloadCenter() {
       itemsController.abort();
       categoriesController.abort();
     };
-  }, []);
+  }, [messages]);
 
   const filteredItems =
     activeCategory === 'all'
@@ -89,7 +95,8 @@ export default function DownloadCenter() {
 
   const handleDownload = async (item: DownloadItem) => {
     if (!process.env.NEXT_PUBLIC_API_BASE) {
-      console.error('未配置下载接口地址');
+      console.error(messages.missingApiBase);
+      alert(messages.missingApiBase);
       return;
     }
 
@@ -99,14 +106,14 @@ export default function DownloadCenter() {
       const response = await fetch(requestUrl);
 
       if (!response.ok) {
-        throw new Error('获取下载链接失败');
+        throw new Error(messages.fetchDownloadLinkError);
       }
 
       const data = (await response.json()) as { url?: unknown };
       const fileUrl = typeof data.url === 'string' ? data.url.trim() : '';
 
       if (!fileUrl) {
-        throw new Error('下载链接无效');
+        throw new Error(messages.invalidDownloadLink);
       }
 
       const anchor = document.createElement('a');
@@ -118,7 +125,7 @@ export default function DownloadCenter() {
       document.body.removeChild(anchor);
     } catch (err) {
       console.error('下载失败', err);
-      alert(err instanceof Error ? err.message : '获取下载链接失败，请稍后重试');
+      alert(err instanceof Error ? err.message : messages.retryDownloadLinkError);
     }
   };
 
@@ -150,7 +157,7 @@ export default function DownloadCenter() {
         </div>
 
         {loading ? (
-          <div className="flex min-h-[200px] items-center justify-center text-gray-500">正在加载资料...</div>
+          <div className="flex min-h-[200px] items-center justify-center text-gray-500">{messages.loadingText}</div>
         ) : filteredItems.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredItems.map((item, index) => (
@@ -180,15 +187,13 @@ export default function DownloadCenter() {
                   onClick={() => handleDownload(item)}
                   className="w-full py-2 px-4 rounded-lg font-semibold transition-colors cursor-pointer whitespace-nowrap bg-green-600 text-white hover:bg-green-700"
                 >
-                  立即下载
+                  {messages.downloadButtonText}
                 </button>
               </div>
             ))}
           </div>
         ) : (
-          <div className="flex min-h-[200px] items-center justify-center text-gray-500">
-            当前分类下暂无可下载资料。
-          </div>
+          <div className="flex min-h-[200px] items-center justify-center text-gray-500">{messages.emptyStateText}</div>
         )}
       </div>
 
