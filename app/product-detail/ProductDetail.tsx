@@ -337,15 +337,15 @@ export default function ProductDetail() {
                       </li>
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>24/7 monitoring and support services</span>
+                        <span>全天候监控和支持服务</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>Proven track record across industries</span>
+                        <span>跨行业良好的业绩记录</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>Scalable systems tailored to your needs</span>
+                        <span>根据您的需求量身定制的可扩展系统</span>
                       </li>
                     </ul>
                   </div>
