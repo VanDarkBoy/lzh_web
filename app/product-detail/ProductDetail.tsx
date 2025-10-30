@@ -31,7 +31,7 @@ interface ProductDetailData {
   dealApplications: string[];
 }
 
-interface ProductDetailCopy {
+interface PageContent {
   invalidProductId: string;
   productDetailRequestError: string;
   productNotFoundMessage: string;
@@ -68,7 +68,7 @@ interface ProductDetailCopy {
   protection: string;
 }
 
-const defaultCopy: ProductDetailCopy = {
+const defaultPageContent: PageContent = {
   invalidProductId: '未提供有效的产品ID',
   productDetailRequestError: '获取产品详情失败',
   productNotFoundMessage: '未找到对应的产品信息',
@@ -155,7 +155,7 @@ export default function ProductDetail() {
   const [product, setProduct] = useState<ProductDetailData | null>(null);
   const [loading, setLoading] = useState(true);
   const [errorKey, setErrorKey] = useState<ErrorMessageKey | null>(null);
-  const [copy, setCopy] = useState<ProductDetailCopy>(defaultCopy);
+  const [pageContent, setPageContent] = useState<PageContent>(defaultPageContent);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -174,10 +174,10 @@ export default function ProductDetail() {
         const rawCopy: unknown = await response.json();
 
         if (rawCopy && typeof rawCopy === 'object') {
-          const nextCopy: ProductDetailCopy = { ...defaultCopy };
+          const nextCopy: PageContent = { ...defaultPageContent };
           const copyRecord = rawCopy as Record<string, unknown>;
 
-          (Object.keys(defaultCopy) as Array<keyof ProductDetailCopy>).forEach((key) => {
+          (Object.keys(defaultPageContent) as Array<keyof PageContent>).forEach((key) => {
             const value = copyRecord[key];
 
             if (typeof value === 'string' && value.trim().length > 0) {
@@ -185,7 +185,7 @@ export default function ProductDetail() {
             }
           });
 
-          setCopy(nextCopy);
+          setPageContent(nextCopy);
         }
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') {
@@ -220,7 +220,7 @@ export default function ProductDetail() {
         );
 
         if (!response.ok) {
-          throw new Error(copy.productDetailRequestError);
+          throw new Error(pageContent.productDetailRequestError);
         }
 
         const rawData: unknown = await response.json();
@@ -258,14 +258,14 @@ export default function ProductDetail() {
     fetchProduct();
 
     return () => controller.abort();
-  }, [copy.productDetailRequestError, productId]);
+  }, [pageContent.productDetailRequestError, productId]);
 
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
         <Header />
         <main className="flex-1 pt-20 sm:pt-24 flex items-center justify-center text-gray-500">
-          {copy.loadingLabel}
+          {pageContent.loadingLabel}
         </main>
       </div>
     );
@@ -277,10 +277,10 @@ export default function ProductDetail() {
         <Header />
         <main className="flex-1 pt-20 sm:pt-24 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-semibold text-gray-900 mb-4">{copy.detailFailedTitle}</h1>
-            <p className="text-gray-600 mb-6">{copy[errorKey]}</p>
+            <h1 className="text-2xl font-semibold text-gray-900 mb-4">{pageContent.detailFailedTitle}</h1>
+            <p className="text-gray-600 mb-6">{pageContent[errorKey]}</p>
             <Link href="/" className="text-blue-600 hover:text-blue-700">
-              {copy.goHomeLabel}
+              {pageContent.goHomeLabel}
             </Link>
           </div>
         </main>
@@ -294,9 +294,9 @@ export default function ProductDetail() {
         <Header />
         <main className="flex-1 pt-20 sm:pt-24 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">{copy.productNotFoundTitle}</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{pageContent.productNotFoundTitle}</h1>
             <Link href="/" className="text-blue-600 hover:text-blue-700">
-              {copy.goHomeLabel}
+              {pageContent.goHomeLabel}
             </Link>
           </div>
         </main>
@@ -328,11 +328,11 @@ export default function ProductDetail() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap cursor-pointer">
                     <i className="ri-phone-line mr-2 w-4 h-4 items-center justify-center inline-flex"></i>
-                    {copy.contactSalesLabel}
+                    {pageContent.contactSalesLabel}
                   </button>
                   <button className="border border-gray-300 text-gray-700 px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap cursor-pointer">
                     <i className="ri-download-line mr-2 w-4 h-4 items-center justify-center inline-flex"></i>
-                    {copy.downloadSpecsLabel}
+                    {pageContent.downloadSpecsLabel}
                   </button>
                 </div>
               </div>
@@ -372,20 +372,20 @@ export default function ProductDetail() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className={`text-center mb-12 transition-all duration-1000 ${specsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                {copy.technicalSpecificationsTitle}
+                {pageContent.technicalSpecificationsTitle}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                {copy.technicalSpecificationsDescription}
+                {pageContent.technicalSpecificationsDescription}
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2">
               <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6">{copy.keySpecificationsTitle}</h3>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-6">{pageContent.keySpecificationsTitle}</h3>
                 <dl className="space-y-4">
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      {copy.capacity}
+                      {pageContent.capacity}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.capacity}
@@ -393,7 +393,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      {copy.voltage}
+                      {pageContent.voltage}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.voltage}
@@ -401,7 +401,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      {copy.current}
+                      {pageContent.current}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.current}
@@ -409,7 +409,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      {copy.cycles}
+                      {pageContent.cycles}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.cycles}
@@ -417,7 +417,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      {copy.efficiency}
+                      {pageContent.efficiency}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.efficiency}
@@ -425,7 +425,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      {copy.warranty}
+                      {pageContent.warranty}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.warranty}
@@ -433,7 +433,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      {copy.operating}
+                      {pageContent.operating}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.operating}
@@ -441,7 +441,7 @@ export default function ProductDetail() {
                   </div>
                   <div  className="flex flex-col sm:flex-row sm:items-center">
                     <dt className="text-sm font-medium text-gray-500 sm:w-1/3">
-                      {copy.protection}
+                      {pageContent.protection}
                     </dt>
                     <dd className="mt-1 text-base text-gray-900 sm:mt-0 sm:w-2/3">
                       {product.protection}
@@ -452,7 +452,7 @@ export default function ProductDetail() {
 
               <div className="space-y-8">
                 <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">{copy.keyFeaturesTitle}</h3>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">{pageContent.keyFeaturesTitle}</h3>
                   <ul className="space-y-4">
                     {product.dealFeatures.map((feature, index) => (
                       <li key={index} className="flex items-start">
@@ -468,7 +468,7 @@ export default function ProductDetail() {
                 </div>
 
                 <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">{copy.applicationsTitle}</h3>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">{pageContent.applicationsTitle}</h3>
                   <ul className="space-y-3">
                     {product.dealApplications.map((application, index) => (
                       <li key={index} className="flex items-start text-base text-gray-700">
@@ -490,17 +490,17 @@ export default function ProductDetail() {
               <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-center">
                 <div className="lg:col-span-3">
                   <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-                    {copy.ctaTitle}
+                    {pageContent.ctaTitle}
                   </h2>
                   <p className="text-lg text-blue-100 mb-8 leading-relaxed">
-                    {copy.ctaDescription}
+                    {pageContent.ctaDescription}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button className="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors whitespace-nowrap cursor-pointer">
-                      {copy.scheduleConsultationLabel}
+                      {pageContent.scheduleConsultationLabel}
                     </button>
                     <button className="border border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-colors whitespace-nowrap cursor-pointer">
-                      {copy.downloadFullManualLabel}
+                      {pageContent.downloadFullManualLabel}
                     </button>
                   </div>
                 </div>
@@ -512,27 +512,27 @@ export default function ProductDetail() {
                         <i className="ri-flashlight-line text-2xl"></i>
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold">{copy.whyChooseUsTitle}</h3>
-                        <p className="text-blue-100 text-sm">{copy.trustedByDescription}</p>
+                        <h3 className="text-xl font-semibold">{pageContent.whyChooseUsTitle}</h3>
+                        <p className="text-blue-100 text-sm">{pageContent.trustedByDescription}</p>
                       </div>
                     </div>
 
                     <ul className="space-y-4 text-blue-50 text-sm">
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>{copy.endToEndSolutions}</span>
+                        <span>{pageContent.endToEndSolutions}</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>{copy.monitoringSupport}</span>
+                        <span>{pageContent.monitoringSupport}</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>{copy.provenTrackRecord}</span>
+                        <span>{pageContent.provenTrackRecord}</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <i className="ri-checkbox-circle-line text-xl"></i>
-                        <span>{copy.scalableSystems}</span>
+                        <span>{pageContent.scalableSystems}</span>
                       </li>
                     </ul>
                   </div>
