@@ -28,6 +28,7 @@ interface ProductGridContent {
   states: {
     loading: string;
     viewDetails: string;
+    productsCategories: string;
     empty: string;
   };
 }
@@ -41,6 +42,7 @@ const defaultContent: ProductGridContent = {
   states: {
     loading: '正在加载产品信息...',
     viewDetails: '查看详情',
+    productsCategories: '产品分类',
     empty: '暂无符合条件的产品。'
   }
 };
@@ -161,7 +163,7 @@ export default function ProductGrid() {
           {/* 分类筛选 */}
           <aside className="lg:w-64">
             <div className="mx-auto max-w-xl rounded-2xl bg-white p-6 shadow-lg lg:sticky lg:top-24">
-              <h2 className="mb-6 text-center text-lg font-semibold text-gray-800 lg:text-left">产品分类</h2>
+              <h2 className="mb-6 text-center text-lg font-semibold text-gray-800 lg:text-left">{content.states.productsCategories}</h2>
               <div className="flex flex-wrap justify-center gap-3 lg:flex-col lg:items-stretch">
                 {categories.map((category) => (
                   <button
