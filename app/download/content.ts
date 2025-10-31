@@ -3,6 +3,7 @@ export interface DownloadPageContent {
     title: string;
     subtitle: string;
     highlights: string[];
+    backgroundImage: string;
   };
   messages: {
     fetchItemsError: string;
@@ -22,7 +23,8 @@ export const fallbackDownloadPageContent: DownloadPageContent = {
   hero: {
     title: '下载中心',
     subtitle: '获取产品技术文档、规格说明书、安装指南等专业资料',
-    highlights: ['产品规格书', '安装手册', '技术参数', '认证证书']
+    highlights: ['产品规格书', '安装手册', '技术参数', '认证证书'],
+    backgroundImage: 'https://lithiumvalley.com/images/20251030_092655_f9a0fc4ce4b1.jpg',
   },
   messages: {
     fetchItemsError: '获取资料列表失败',
@@ -51,14 +53,15 @@ export function normalizeDownloadPageContent(input: unknown): DownloadPageConten
   };
 
   if (data.hero) {
-    const { title, subtitle, highlights } = data.hero;
+    const { title, subtitle, highlights,backgroundImage } = data.hero;
     normalized.hero = {
-      title: typeof title === 'string' && title.trim() ? title : fallbackDownloadPageContent.hero.title,
+      backgroundImage: backgroundImage.trim() ? backgroundImage : fallbackDownloadPageContent.hero.backgroundImage,
+      title: title.trim() ? title : fallbackDownloadPageContent.hero.title,
       subtitle:
-        typeof subtitle === 'string' && subtitle.trim() ? subtitle : fallbackDownloadPageContent.hero.subtitle,
+        subtitle.trim() ? subtitle : fallbackDownloadPageContent.hero.subtitle,
       highlights:
         Array.isArray(highlights) && highlights.length > 0
-          ? highlights.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+          ? highlights.filter((item): item is string => item.trim().length > 0)
           : fallbackDownloadPageContent.hero.highlights
     };
 

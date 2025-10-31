@@ -14,7 +14,7 @@ export default function DownloadHero({ scrollY, content }: DownloadHeroProps) {
   return (
     <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 to-green-50"
       style={{
-        backgroundImage: `url('https://readdy.ai/api/search-image?query=Professional%20technical%20documentation%20center%20with%20organized%20files%20and%20digital%20documents%2C%20clean%20modern%20office%20environment%20with%20technical%20manuals%20and%20specifications%20displayed%20on%20screens%2C%20high-tech%20documentation%20library%20with%20organized%20storage%20systems&width=1920&height=1080&seq=download-hero&orientation=landscape')`,
+        backgroundImage: `url(${content.backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         transform: `translateY(${scrollY * 0.5}px)`
