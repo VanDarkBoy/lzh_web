@@ -4,10 +4,13 @@
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import type { ProjectContent } from './projectContent';
+
 interface ProjectCategoriesProps {
   scrollY: number;
   selectedCategory: number | 'All';
   onCategoryChange: (category: number | 'All') => void;
+  content: ProjectContent['categories'];
 }
 
 interface Category {
@@ -38,7 +41,7 @@ const fallbackCategories: Category[] = [
   }
 ];
 
-export default function ProjectCategories({ scrollY, selectedCategory, onCategoryChange }: ProjectCategoriesProps) {
+export default function ProjectCategories({ scrollY, selectedCategory, onCategoryChange, content }: ProjectCategoriesProps) {
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
@@ -52,7 +55,7 @@ export default function ProjectCategories({ scrollY, selectedCategory, onCategor
       const apiBase = process.env.NEXT_PUBLIC_API_BASE;
 
       if (!apiBase) {
-        console.error('未配置项目分类接口地址');
+        console.error(content.loadError);
         return;
       }
 
@@ -62,7 +65,7 @@ export default function ProjectCategories({ scrollY, selectedCategory, onCategor
         });
 
         if (!response.ok) {
-          throw new Error('获取项目分类失败');
+          throw new Error(content.fetchError);
         }
 
         const data: unknown = await response.json();
@@ -89,14 +92,14 @@ export default function ProjectCategories({ scrollY, selectedCategory, onCategor
         if (error instanceof DOMException && error.name === 'AbortError') {
           return;
         }
-        console.error('加载项目分类失败:', error);
+        console.error(`${content.loadError}:`, error);
       }
     };
 
     fetchCategories();
 
     return () => controller.abort();
-  }, []);
+  }, [content.fetchError, content.loadError]);
 
   return (
     <section
@@ -112,12 +115,12 @@ export default function ProjectCategories({ scrollY, selectedCategory, onCategor
             inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-light text-gray-900 mb-4 sm:mb-6">
-              应用
+              {content.title}
               <br />
-              <span className="text-emerald-700">案例</span>
+              <span className="text-emerald-700">{content.highlight}</span>
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed px-4">
-              从家用储能到工商业储能，我们的解决方案在各个领域都有成功应用
+              {content.description}
             </p>
           </div>
         </div>

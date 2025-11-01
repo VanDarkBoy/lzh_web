@@ -1,10 +1,13 @@
 'use client';
 
+import type { ProjectContent } from './projectContent';
+
 interface ProjectHeroProps {
     scrollY: number;
+    content: ProjectContent['hero'];
 }
 
-export default function ProjectHero({scrollY}: ProjectHeroProps) {
+export default function ProjectHero({scrollY, content}: ProjectHeroProps) {
     return (
         <section className="relative h-screen flex items-center justify-center overflow-hidden">
             <div
@@ -22,37 +25,23 @@ export default function ProjectHero({scrollY}: ProjectHeroProps) {
 
             <div className="relative z-20 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-light text-white mb-6 sm:mb-8 leading-tight">
-                    落地
+                    {content.title}
                     <br/>
-                    <span className="text-emerald-400">案例</span>
+                    <span className="text-emerald-400">{content.highlight}</span>
                 </h1>
                 <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed">
-                    发现我们在满足现代生活需求的同时与自然协调的可持续建筑组合</p>
+                    {content.description}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 max-w-4xl mx-auto">
-                    <div className="text-center">
-                        <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-400 mb-2">
-                            50+
+                    {content.stats.map((stat) => (
+                        <div key={`${stat.label}-${stat.value}`} className="text-center">
+                            <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-400 mb-2">
+                                {stat.value}
+                            </div>
+                            <div className="text-white/80 text-sm sm:text-base lg:text-lg font-light tracking-wide">
+                                {stat.label}
+                            </div>
                         </div>
-                        <div className="text-white/80 text-sm sm:text-base lg:text-lg font-light tracking-wide">
-                            项目
-                        </div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-400 mb-2">
-                            15
-                        </div>
-                        <div className="text-white/80 text-sm sm:text-base lg:text-lg font-light tracking-wide">
-                            国家
-                        </div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-400 mb-2">
-                            85%
-                        </div>
-                        <div className="text-white/80 text-sm sm:text-base lg:text-lg font-light tracking-wide">
-                            节能
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
 
