@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 interface ProjectCategoriesProps {
@@ -9,7 +10,14 @@ interface ProjectCategoriesProps {
   onCategoryChange: (category: string) => void;
 }
 
-const categories = [
+interface Category {
+  id: string;
+  name: string;
+  count: number;
+  icon: string;
+}
+
+const fallbackCategories: Category[] = [
   {
     id: '1',
     name: '全部案例',
@@ -35,9 +43,48 @@ export default function ProjectCategories({ scrollY, selectedCategory, onCategor
     threshold: 0.1,
     triggerOnce: true,
   });
+  const [categories, setCategories] = useState<Category[]>(fallbackCategories);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchCategories = async () => {
+      const apiBase = process.env.NEXT_PUBLIC_API_BASE;
+
+      if (!apiBase) {
+        console.error('未配置项目分类接口地址');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${apiBase}/api/getCategoriesAllDetail`, {
+          signal: controller.signal
+        });
+
+        if (!response.ok) {
+          throw new Error('获取项目分类失败');
+        }
+
+        const data: Category[] = await response.json();
+
+        if (Array.isArray(data) && data.length > 0) {
+          setCategories(data);
+        }
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          return;
+        }
+        console.error('加载项目分类失败:', error);
+      }
+    };
+
+    fetchCategories();
+
+    return () => controller.abort();
+  }, []);
 
   return (
-    <section 
+    <section
       ref={ref}
       className="py-12 sm:py-16 lg:py-20 bg-white"
       style={{
