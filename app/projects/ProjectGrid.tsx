@@ -60,11 +60,11 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
             : [];
 
         const normalizedProjects: ProjectItem[] = rawProjects.map((project, index) => ({
-          id: project.id ?? project.caseId ?? project.case_id ?? project._id ?? `project-${index}`,
+          id: project.id ?? project.id ?? project.id ?? project.id ?? `project-${index}`,
           title: project.title ?? project.caseTitle ?? project.name ?? '未命名案例',
-          description: project.description ?? project.caseDesc ?? project.summary ?? '敬请期待更多案例详情。',
-          categoryId: String(project.categoryId ?? project.category_id ?? project.category ?? '未知'),
-          categoryName: String(project.categoryName ?? project.category_id ?? project.categoryName ?? '未知'),
+          description: project.description ?? project.description ?? project.summary ?? '敬请期待更多案例详情。',
+          categoryId: String(project.categoryId ?? project.categoryId ?? project.categoryId ?? '未知'),
+          categoryName: String(project.categoryName ?? project.categoryName ?? project.categoryName ?? '未知'),
           location: project.location ?? project.city ?? project.region ?? '未知地点',
           caseTime: project.caseTime ?? project.year ?? project.date ?? '未知时间',
           image: project.image ?? project.cover ?? project.thumbnail ?? '',
@@ -107,8 +107,8 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
     if (selectedCategory === 'All') {
       return projects;
     }
-
-    return projects.filter((project) => project.categoryId === selectedCategory);
+    let projectItems = projects.filter((project) => project.categoryId === selectedCategory);
+    return projectItems;
   }, [projects, selectedCategory]);
 
   const showSkeleton = loading && projects.length === 0;
