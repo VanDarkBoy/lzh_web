@@ -6,20 +6,20 @@ import { useInView } from 'react-intersection-observer';
 
 interface ProjectGridProps {
   scrollY: number;
-  selectedCategory: string;
+  selectedCategory: number | 'All';
 }
 
 interface ProjectItem {
   id: number | string;
   title: string;
   description: string;
-  categoryId: string;
+  categoryId: number;
   categoryName: string;
   location: string;
   caseTime: string;
   image: string;
-  stats?: string;
-  size?: string;
+  stats: string;
+  size: string;
 }
 
 export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridProps) {
@@ -59,18 +59,28 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
             ? payload.data
             : [];
 
-        const normalizedProjects: ProjectItem[] = rawProjects.map((project, index) => ({
-          id: project.id ?? project.id ?? project.id ?? project.id ?? `project-${index}`,
-          title: project.title ?? project.caseTitle ?? project.name ?? '未命名案例',
-          description: project.description ?? project.description ?? project.summary ?? '敬请期待更多案例详情。',
-          categoryId: String(project.categoryId ?? project.categoryId ?? project.categoryId ?? '未知'),
-          categoryName: String(project.categoryName ?? project.categoryName ?? project.categoryName ?? '未知'),
-          location: project.location ?? project.city ?? project.region ?? '未知地点',
-          caseTime: project.caseTime ?? project.year ?? project.date ?? '未知时间',
-          image: project.image ?? project.cover ?? project.thumbnail ?? '',
-          stats: project.stats ?? project.highlight ?? project.result ?? '查看更多',
-          size: project.size ?? project.capacity ?? project.scale ?? '--',
-        }));
+        const normalizedProjects: ProjectItem[] = rawProjects.map((project, index) => {
+          const resolvedId =
+            project.id ?? project.caseId ?? project.projectId ?? `project-${index}`;
+          const resolvedCategoryId = project.categoryId ?? project.caseCategoryId ?? project.typeId;
+
+          const categoryIdNumber = typeof resolvedCategoryId === 'number'
+            ? resolvedCategoryId
+            : Number(resolvedCategoryId) || -1;
+
+          return {
+            id: resolvedId,
+            title: project.title ?? project.caseTitle ?? project.name ?? '未命名案例',
+            description: project.description ?? project.summary ?? '敬请期待更多案例详情。',
+            categoryId: categoryIdNumber,
+            categoryName: String(project.categoryName ?? project.caseCategoryName ?? project.typeName ?? '未知'),
+            location: project.location ?? project.city ?? project.region ?? '未知地点',
+            caseTime: project.caseTime ?? project.year ?? project.date ?? '未知时间',
+            image: project.image ?? project.cover ?? project.thumbnail ?? '',
+            stats: project.stats ?? project.highlight ?? project.result ?? '查看更多',
+            size: project.size ?? project.capacity ?? project.scale ?? '--',
+          };
+        });
 
         if (!isMounted) {
           return;
@@ -107,8 +117,7 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
     if (selectedCategory === 'All') {
       return projects;
     }
-    let projectItems = projects.filter((project) => project.categoryId === selectedCategory);
-    return projectItems;
+    return projects.filter((project) => project.categoryId === selectedCategory);
   }, [projects, selectedCategory]);
 
   const showSkeleton = loading && projects.length === 0;
