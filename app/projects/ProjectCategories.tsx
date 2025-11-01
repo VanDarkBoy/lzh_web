@@ -11,19 +11,19 @@ interface ProjectCategoriesProps {
 
 const categories = [
   {
-    id: 'All',
+    id: '1',
     name: '全部案例',
     count: 14,
     icon: 'ri-apps-line'
   },
   {
-    id: 'Residential',
+    id: '2',
     name: '家用储能',
     count: 7,
     icon: 'ri-home-line'
   },
   {
-    id: 'Commercial',
+    id: '3',
     name: '工商业储能',
     count: 7,
     icon: 'ri-building-line'

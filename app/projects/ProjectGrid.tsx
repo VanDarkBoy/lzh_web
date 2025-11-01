@@ -15,9 +15,9 @@ const allProjects = [
     id: 1,
     title: "智能家庭储能系统",
     description: "10kWh家用储能系统，集成太阳能板，实现家庭用电自给自足",
-    category: "Residential",
+    categoryId: "1",
     location: "深圳市南山区",
-    year: "2025",
+    caseTime: "2025",
     image: "https://readdy.ai/api/search-image?query=Modern%20smart%20home%20with%20solar%20panels%20and%20energy%20storage%20system%2C%20residential%20building%20with%20integrated%20renewable%20energy%2C%20family%20house%20with%20battery%20storage%20unit%2C%20clean%20architectural%20photography&width=600&height=800&seq=home-storage-1&orientation=portrait",
     stats: "节能85%",
     size: "10kWh"
@@ -26,9 +26,9 @@ const allProjects = [
     id: 2,
     title: "别墅储能解决方案",
     description: "大容量家用储能系统，支持全屋备电和峰谷电价套利",
-    category: "Residential",
+    categoryId: "1",
     location: "上海市浦东新区",
-    year: "2024",
+    caseTime: "2024",
     image: "https://readdy.ai/api/search-image?query=Luxury%20villa%20with%20large%20capacity%20home%20energy%20storage%20system%2C%20modern%20residential%20house%20with%20solar%20roof%20and%20battery%20backup%2C%20elegant%20home%20energy%20solution&width=600&height=800&seq=villa-storage-2&orientation=portrait",
     stats: "20kWh容量",
     size: "20kWh"
@@ -37,9 +37,9 @@ const allProjects = [
     id: 3,
     title: "小区储能微网项目",
     description: "社区级储能系统，为小区住户提供清洁能源和应急备电",
-    category: "Residential",
+    categoryId: "2",
     location: "北京市海淀区",
-    year: "2023",
+    caseTime: "2023",
     image: "https://readdy.ai/api/search-image?query=Residential%20community%20with%20microgrid%20energy%20storage%20system%2C%20modern%20apartment%20complex%20with%20shared%20renewable%20energy%20infrastructure%2C%20community%20solar%20and%20battery%20storage&width=600&height=800&seq=community-storage-3&orientation=portrait",
     stats: "服务200户",
     size: "500kWh"
@@ -48,9 +48,9 @@ const allProjects = [
     id: 4,
     title: "农村户用储能系统",
     description: "偏远地区家庭储能解决方案，结合光伏发电提供可靠电力",
-    category: "Residential",
+    categoryId: "2",
     location: "广西桂林市",
-    year: "2022",
+    caseTime: "2022",
     image: "https://readdy.ai/api/search-image?query=Rural%20home%20with%20off-grid%20solar%20energy%20storage%20system%2C%20countryside%20house%20with%20solar%20panels%20and%20battery%20storage%2C%20remote%20area%20renewable%20energy%20solution&width=600&height=800&seq=rural-storage-4&orientation=portrait",
     stats: "离网运行",
     size: "15kWh"
@@ -59,9 +59,9 @@ const allProjects = [
     id: 5,
     title: "高端住宅储能项目",
     description: "豪华住宅配备智能储能系统，实现能源管理优化",
-    category: "Residential",
+    categoryId: "3",
     location: "杭州市西湖区",
-    year: "2021",
+    caseTime: "2021",
     image: "https://readdy.ai/api/search-image?query=Luxury%20residential%20house%20with%20smart%20energy%20storage%20management%20system%2C%20high-end%20home%20with%20advanced%20battery%20technology%2C%20premium%20residential%20energy%20solution&width=600&height=800&seq=luxury-storage-5&orientation=portrait",
     stats: "智能管理",
     size: "25kWh"
@@ -70,9 +70,9 @@ const allProjects = [
     id: 6,
     title: "联排别墅储能群",
     description: "多户联排别墅共享储能系统，降低用电成本",
-    category: "Residential",
+    categoryId: "3",
     location: "成都市高新区",
-    year: "2020",
+    caseTime: "2020",
     image: "https://readdy.ai/api/search-image?query=Row%20of%20townhouses%20with%20shared%20energy%20storage%20system%2C%20modern%20residential%20development%20with%20community%20battery%20storage%2C%20multiple%20family%20homes%20with%20solar%20energy&width=600&height=800&seq=townhouse-storage-6&orientation=portrait",
     stats: "共享储能",
     size: "100kWh"
@@ -81,9 +81,9 @@ const allProjects = [
     id: 7,
     title: "经济适用房储能试点",
     description: "经济适用房配置小型储能系统，降低居民用电负担",
-    category: "Residential",
+    categoryId: "4",
     location: "武汉市江汉区",
-    year: "2019",
+    caseTime: "2019",
     image: "https://readdy.ai/api/search-image?query=Affordable%20housing%20complex%20with%20small%20scale%20energy%20storage%20systems%2C%20economic%20residential%20buildings%20with%20solar%20panels%2C%20cost-effective%20home%20energy%20solution&width=600&height=800&seq=affordable-storage-7&orientation=portrait",
     stats: "成本节约40%",
     size: "5kWh"
@@ -94,9 +94,9 @@ const allProjects = [
     id: 8,
     title: "科技园区储能项目",
     description: "大型科技园区配置储能系统，优化用电成本和电力质量",
-    category: "Commercial",
+    categoryId: "4",
     location: "深圳市南山科技园",
-    year: "2025",
+    caseTime: "2025",
     image: "https://readdy.ai/api/search-image?query=Modern%20technology%20park%20with%20large%20scale%20energy%20storage%20system%2C%20commercial%20complex%20with%20renewable%20energy%20infrastructure%2C%20business%20district%20with%20battery%20storage%20facility&width=600&height=800&seq=tech-park-storage-8&orientation=portrait",
     stats: "2MW/4MWh",
     size: "4MWh"
@@ -105,9 +105,9 @@ const allProjects = [
     id: 9,
     title: "制造工厂储能系统",
     description: "制造业工厂部署储能系统，实现削峰填谷和应急备电",
-    category: "Commercial",
+    categoryId: "5",
     location: "东莞市松山湖",
-    year: "2024",
+    caseTime: "2024",
     image: "https://readdy.ai/api/search-image?query=Manufacturing%20factory%20with%20industrial%20energy%20storage%20system%2C%20large%20industrial%20facility%20with%20battery%20storage%20and%20solar%20panels%2C%20commercial%20manufacturing%20energy%20solution&width=600&height=800&seq=factory-storage-9&orientation=portrait",
     stats: "削峰30%",
     size: "3MWh"
@@ -116,9 +116,9 @@ const allProjects = [
     id: 10,
     title: "购物中心储能项目",
     description: "大型购物中心配置储能系统，保障商业运营稳定性",
-    category: "Commercial",
+    categoryId: "5",
     location: "广州市天河区",
-    year: "2023",
+    caseTime: "2023",
     image: "https://readdy.ai/api/search-image?query=Large%20shopping%20mall%20with%20commercial%20energy%20storage%20system%2C%20retail%20complex%20with%20renewable%20energy%20infrastructure%2C%20commercial%20building%20with%20battery%20backup%20system&width=600&height=800&seq=mall-storage-10&orientation=portrait",
     stats: "不间断运营",
     size: "2.5MWh"
@@ -127,9 +127,9 @@ const allProjects = [
     id: 11,
     title: "数据中心储能解决方案",
     description: "数据中心关键负载储能系统，确保数据安全和业务连续性",
-    category: "Commercial",
+    categoryId: "1",
     location: "上海市张江高科",
-    year: "2022",
+    caseTime: "2022",
     image: "https://readdy.ai/api/search-image?query=Data%20center%20facility%20with%20critical%20load%20energy%20storage%20system%2C%20modern%20server%20facility%20with%20backup%20battery%20systems%2C%20commercial%20data%20center%20with%20renewable%20energy&width=600&height=800&seq=datacenter-storage-11&orientation=portrait",
     stats: "99.9%可用性",
     size: "5MWh"
@@ -138,9 +138,9 @@ const allProjects = [
     id: 12,
     title: "物流园区储能系统",
     description: "大型物流园区储能项目，支持电动车充电和仓储运营",
-    category: "Commercial",
+    categoryId: "1",
     location: "杭州市萧山区",
-    year: "2021",
+    caseTime: "2021",
     image: "https://readdy.ai/api/search-image?query=Logistics%20park%20with%20energy%20storage%20system%20and%20electric%20vehicle%20charging%2C%20warehouse%20complex%20with%20renewable%20energy%20infrastructure%2C%20commercial%20logistics%20facility&width=600&height=800&seq=logistics-storage-12&orientation=portrait",
     stats: "支持100台充电桩",
     size: "6MWh"
@@ -149,9 +149,9 @@ const allProjects = [
     id: 13,
     title: "酒店集团储能项目",
     description: "连锁酒店配置储能系统，降低运营成本提升服务质量",
-    category: "Commercial",
+    categoryId: "2",
     location: "三亚市海棠湾",
-    year: "2020",
+    caseTime: "2020",
     image: "https://readdy.ai/api/search-image?query=Luxury%20hotel%20resort%20with%20energy%20storage%20system%2C%20commercial%20hospitality%20building%20with%20solar%20energy%20and%20battery%20storage%2C%20hotel%20complex%20with%20renewable%20energy&width=600&height=800&seq=hotel-storage-13&orientation=portrait",
     stats: "运营成本降低25%",
     size: "1.5MWh"
@@ -160,9 +160,9 @@ const allProjects = [
     id: 14,
     title: "医院储能备电系统",
     description: "医疗机构关键储能系统，保障医疗设备正常运转",
-    category: "Commercial",
+    categoryId: "2",
     location: "北京市朝阳区",
-    year: "2019",
+    caseTime: "2019",
     image: "https://readdy.ai/api/search-image?query=Hospital%20medical%20facility%20with%20critical%20energy%20storage%20backup%20system%2C%20healthcare%20building%20with%20renewable%20energy%20infrastructure%2C%20medical%20center%20with%20battery%20storage&width=600&height=800&seq=hospital-storage-14&orientation=portrait",
     stats: "关键设备保障",
     size: "3.5MWh"
@@ -177,7 +177,7 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
 
   const filteredProjects = selectedCategory === 'All' 
     ? allProjects 
-    : allProjects.filter(project => project.category === selectedCategory);
+    : allProjects.filter(project => project.categoryId === selectedCategory);
 
   return (
     <section ref={ref} className="py-12 sm:py-16 lg:py-20 bg-gray-50">
@@ -204,13 +204,13 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
                   
                   <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
                     <span className="bg-emerald-600 text-white px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full font-medium">
-                      {project.category === 'Residential' ? '家用储能' : '工商业储能'}
+                      {project.categoryId}
                     </span>
                   </div>
                   
                   <div className="absolute top-3 sm:top-4 right-3 sm:right-4">
                     <span className="bg-white/90 text-gray-800 px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full font-medium">
-                      {project.year}
+                      {project.caseTime}
                     </span>
                   </div>
 
