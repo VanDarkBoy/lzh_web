@@ -57,7 +57,7 @@ export default function ProjectCategories({ scrollY, selectedCategory, onCategor
       }
 
       try {
-        const response = await fetch(`${apiBase}/api/getCategoriesAllDetail`, {
+        const response = await fetch(`${apiBase}/api/product_list_categories`, {
           signal: controller.signal
         });
 
