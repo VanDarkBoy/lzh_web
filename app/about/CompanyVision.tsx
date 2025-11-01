@@ -8,10 +8,6 @@ export default function CompanyVision() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* 左侧内容 */}
           <div>
-            <div className="inline-block px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-6">
-              愿景与使命
-            </div>
-            
             <h2 className="text-4xl font-bold text-gray-900 mb-8">
               愿景与使命
             </h2>
