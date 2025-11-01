@@ -1,12 +1,15 @@
 
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+
+import type { ProjectContent } from './projectContent';
 
 interface ProjectGridProps {
   scrollY: number;
   selectedCategory: number | 'All';
+  content: ProjectContent['grid'];
 }
 
 interface ProjectItem {
@@ -22,14 +25,20 @@ interface ProjectItem {
   size: string;
 }
 
-export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridProps) {
+export default function ProjectGrid({ scrollY, selectedCategory, content }: ProjectGridProps) {
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const loadErrorMessageRef = useRef(content.loadError);
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+
+  useEffect(() => {
+    loadErrorMessageRef.current = content.loadError;
+    setError((current) => (current ? content.loadError : current));
+  }, [content.loadError]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -96,7 +105,7 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
           return;
         }
         console.error('Failed to load project cases', err);
-        setError('案例数据加载失败，请稍后重试。');
+        setError(loadErrorMessageRef.current);
         setProjects([]);
       } finally {
         if (isMounted) {
@@ -206,8 +215,8 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
         {!loading && !error && filteredProjects.length === 0 && (
           <div className="text-center py-12 sm:py-20">
             <i className="ri-battery-line text-4xl sm:text-6xl text-gray-300 mb-4 sm:mb-6 w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center mx-auto"></i>
-            <h3 className="text-xl sm:text-2xl font-light text-gray-500 mb-3 sm:mb-4">暂无相关案例</h3>
-            <p className="text-sm sm:text-base text-gray-400">请选择其他分类查看更多应用案例</p>
+            <h3 className="text-xl sm:text-2xl font-light text-gray-500 mb-3 sm:mb-4">{content.emptyTitle}</h3>
+            <p className="text-sm sm:text-base text-gray-400">{content.emptyDescription}</p>
           </div>
         )}
 
@@ -215,7 +224,7 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
           <div className="text-center py-12 sm:py-20">
             <i className="ri-error-warning-line text-4xl sm:text-5xl text-red-400 mb-4 sm:mb-6 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center mx-auto"></i>
             <h3 className="text-xl sm:text-2xl font-light text-red-500 mb-3 sm:mb-4">{error}</h3>
-            <p className="text-sm sm:text-base text-gray-400">请检查网络连接或稍后再试。</p>
+            <p className="text-sm sm:text-base text-gray-400">{content.retrySuggestion}</p>
           </div>
         )}
       </div>
