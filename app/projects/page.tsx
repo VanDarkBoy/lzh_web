@@ -10,7 +10,7 @@ import ProjectCategories from './ProjectCategories';
 
 export default function ProjectsPage() {
   const [scrollY, setScrollY] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState<number | 'All'>('All');
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);

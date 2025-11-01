@@ -6,12 +6,12 @@ import { useInView } from 'react-intersection-observer';
 
 interface ProjectCategoriesProps {
   scrollY: number;
-  selectedCategory: string;
-  onCategoryChange: (category: string) => void;
+  selectedCategory: number | 'All';
+  onCategoryChange: (category: number | 'All') => void;
 }
 
 interface Category {
-  id: string;
+  id: number;
   name: string;
   count: number;
   icon: string;
@@ -19,19 +19,19 @@ interface Category {
 
 const fallbackCategories: Category[] = [
   {
-    id: '1',
+    id: 1,
     name: '全部案例',
     count: 14,
     icon: 'ri-apps-line'
   },
   {
-    id: '2',
+    id: 2,
     name: '家用储能',
     count: 7,
     icon: 'ri-home-line'
   },
   {
-    id: '3',
+    id: 3,
     name: '工商业储能',
     count: 7,
     icon: 'ri-building-line'
@@ -65,10 +65,25 @@ export default function ProjectCategories({ scrollY, selectedCategory, onCategor
           throw new Error('获取项目分类失败');
         }
 
-        const data: Category[] = await response.json();
+        const data: unknown = await response.json();
 
         if (Array.isArray(data) && data.length > 0) {
-          setCategories(data);
+          const normalizedCategories: Category[] = data.map((item) => {
+            const category = (item ?? {}) as Record<string, unknown>;
+            const rawId = category['id'];
+            const rawName = category['name'];
+            const rawCount = category['count'];
+            const rawIcon = category['icon'];
+
+            return {
+              id: typeof rawId === 'number' ? rawId : Number(rawId) || 0,
+              name: typeof rawName === 'string' ? rawName : '未知分类',
+              count: typeof rawCount === 'number' ? rawCount : Number(rawCount) || 0,
+              icon: typeof rawIcon === 'string' ? rawIcon : 'ri-folder-line',
+            };
+          });
+
+          setCategories(normalizedCategories);
         }
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {
