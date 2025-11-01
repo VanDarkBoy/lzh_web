@@ -14,6 +14,7 @@ interface ProjectItem {
   title: string;
   description: string;
   categoryId: string;
+  categoryName: string;
   location: string;
   caseTime: string;
   image: string;
@@ -63,6 +64,7 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
           title: project.title ?? project.caseTitle ?? project.name ?? '未命名案例',
           description: project.description ?? project.caseDesc ?? project.summary ?? '敬请期待更多案例详情。',
           categoryId: String(project.categoryId ?? project.category_id ?? project.category ?? '未知'),
+          categoryName: String(project.categoryName ?? project.category_id ?? project.categoryName ?? '未知'),
           location: project.location ?? project.city ?? project.region ?? '未知地点',
           caseTime: project.caseTime ?? project.year ?? project.date ?? '未知时间',
           image: project.image ?? project.cover ?? project.thumbnail ?? '',
@@ -151,7 +153,7 @@ export default function ProjectGrid({ scrollY, selectedCategory }: ProjectGridPr
                   
                   <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
                     <span className="bg-emerald-600 text-white px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full font-medium">
-                      {project.categoryId}
+                      {project.categoryName}
                     </span>
                   </div>
                   
