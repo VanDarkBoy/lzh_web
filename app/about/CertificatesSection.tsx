@@ -1,91 +1,44 @@
 'use client';
 
-export default function CertificatesSection() {
-  const certifications = [
-    {
-      code: 'CE',
-      name: 'CE认证',
-      description: '欧盟安全认证标志',
-      icon: 'ri-checkbox-circle-line',
-      color: 'blue'
-    },
-    {
-      code: 'IEC',
-      name: 'IEC国际标准',
-      description: '国际电工委员会标准',
-      icon: 'ri-global-line',
-      color: 'green'
-    },
-    {
-      code: 'UN38.3',
-      name: 'UN38.3运输认证',
-      description: '锂电池运输安全标准',
-      icon: 'ri-truck-line',
-      color: 'orange'
-    },
-    {
-      code: 'ISO9001',
-      name: 'ISO9001质量管理',
-      description: '质量管理体系认证',
-      icon: 'ri-award-line',
-      color: 'purple'
-    },
-    {
-      code: 'IATF16949',
-      name: 'IATF16949汽车标准',
-      description: '汽车行业质量管理体系',
-      icon: 'ri-car-line',
-      color: 'indigo'
-    },
-    {
-      code: 'ISO14001',
-      name: 'ISO14001环境管理',
-      description: '环境管理体系认证',
-      icon: 'ri-leaf-line',
-      color: 'emerald'
-    },
-    {
-      code: 'ISO45001',
-      name: 'ISO45001职业健康',
-      description: '职业健康安全管理体系',
-      icon: 'ri-shield-check-line',
-      color: 'red'
-    },
-    {
-      code: 'BSCI',
-      name: 'BSCI社会责任',
-      description: '商业社会标准倡议认证',
-      icon: 'ri-team-line',
-      color: 'teal'
-    },
-    {
-      code: 'CCS',
-      name: 'CCS船级社认证',
-      description: '中国船级社产品认证',
-      icon: 'ri-ship-line',
-      color: 'cyan'
-    },
-    {
-      code: 'RoHS',
-      name: 'RoHS环保认证',
-      description: '限制有害物质指令认证',
-      icon: 'ri-recycle-line',
-      color: 'lime'
-    }
-  ];
+interface CertificationItem {
+  code: string;
+  name: string;
+  description: string;
+  icon: string;
+  color: string;
+}
 
-  const patents = [
-    { number: '245+', label: '专利数量' },
-    { number: '50+', label: '发明专利' }
-  ];
+interface PatentItem {
+  number: string;
+  label: string;
+}
 
-  const achievements = [
-    '国家高新技术企业',
-    '质量管理体系证书：ISO9001、IATF16949',
-    '环境管理证书：ISO14001',
-    '社会责任报告：BSCI',
-    '产品认证证书：CE、UN38.3、CCS、RoHS等'
-  ];
+export interface CertificatesContent {
+  sectionTitle: string;
+  description: string;
+  certificationsTitle: string;
+  certifications: CertificationItem[];
+  patentsTitle: string;
+  patents: PatentItem[];
+  achievementsTitle: string;
+  achievements: string[];
+}
+
+interface CertificatesSectionProps {
+  content: CertificatesContent;
+}
+
+export default function CertificatesSection({ content }: CertificatesSectionProps) {
+  const {
+    sectionTitle,
+    description,
+    certificationsTitle,
+    certifications,
+    patentsTitle,
+    patents,
+    achievementsTitle,
+    achievements
+  } = content;
 
   const getColorClasses = (color: string) => {
     const colorMap = {
@@ -108,18 +61,14 @@ export default function CertificatesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* 标题部分 */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">
-            专利与奖项
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            建立完善的知识产权及保护体系，持有多项国际权威认证，确保产品质量与安全性达到全球最高标准
-          </p>
+          <h2 className="text-4xl font-bold text-gray-900 mb-6">{sectionTitle}</h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">{description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* 认证展示 */}
           <div className="lg:col-span-2">
-            <h3 className="text-2xl font-bold text-gray-900 mb-8">国际认证</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-8">{certificationsTitle}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {certifications.map((cert, index) => (
                 <div
@@ -156,7 +105,7 @@ export default function CertificatesSection() {
           <div className="space-y-8">
             {/* 专利数量 */}
             <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">专利成果</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">{patentsTitle}</h3>
               <div className="space-y-6">
                 {patents.map((patent, index) => (
                   <div key={index} className="text-center">
@@ -173,7 +122,7 @@ export default function CertificatesSection() {
 
             {/* 资质荣誉 */}
             <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">资质荣誉</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">{achievementsTitle}</h3>
               <div className="space-y-4">
                 {achievements.map((achievement, index) => (
                   <div key={index} className="flex items-start space-x-3">
