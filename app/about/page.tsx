@@ -5,10 +5,10 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AboutHero, { HeroContent } from './AboutHero';
 import CompanyVision, { VisionContent } from './CompanyVision';
-import GlobalPresence, { GlobalPresenceContent, TechnicalSection } from './GlobalPresence';
+import GlobalPresence, { GlobalPresenceContent } from './GlobalPresence';
 import CompanyHistory, { CompanyHistoryContent } from './CompanyHistory';
 import CertificatesSection, { CertificatesContent } from './CertificatesSection';
-import CompanyCapabilities from './CompanyCapabilities';
+import CompanyCapabilities, { TechnicalSection } from './CompanyCapabilities';
 
 interface AboutContent {
   hero: HeroContent;
@@ -247,7 +247,7 @@ export default function AboutPage() {
         <AboutHero scrollY={scrollY} content={heroContent} />
         <CompanyVision content={visionContent} />
         <GlobalPresence content={globalPresenceContent} />
-        <CompanyCapabilities scrollY={0} />
+        <CompanyCapabilities scrollY={0} content={globalPresenceContent.technical} />
         <CertificatesSection content={certificatesContent} />
         <CompanyHistory content={historyContent} />
         {loading && (
