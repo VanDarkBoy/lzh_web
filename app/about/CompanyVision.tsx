@@ -1,7 +1,36 @@
 
 'use client';
 
-export default function CompanyVision() {
+export interface VisionContent {
+  sectionTitle: string;
+  visionTitle: string;
+  visionDescription: string;
+  missionTitle: string;
+  missionDescription: string;
+  valuesTitle: string;
+  valuesDescription: string;
+  customerPolicyTitle: string;
+  customerPolicyDescription: string;
+  image?: string;
+}
+
+interface CompanyVisionProps {
+  content: VisionContent;
+}
+
+export default function CompanyVision({ content }: CompanyVisionProps) {
+  const {
+    sectionTitle,
+    visionTitle,
+    visionDescription,
+    missionTitle,
+    missionDescription,
+    valuesTitle,
+    valuesDescription,
+    customerPolicyTitle,
+    customerPolicyDescription,
+    image
+  } = content;
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -9,7 +38,7 @@ export default function CompanyVision() {
           {/* 左侧内容 */}
           <div>
             <h2 className="text-4xl font-bold text-gray-900 mb-8">
-              愿景与使命
+              {sectionTitle}
             </h2>
 
             <div className="space-y-8">
@@ -20,10 +49,9 @@ export default function CompanyVision() {
                     <i className="ri-eye-line text-white text-xl w-6 h-6 flex items-center justify-center"></i>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">愿景</h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      致力于成为客户信任的能源系统集成商<br />
-                      全球化的新能源生活方式赋能者，为人类的可持续发展作出贡献
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{visionTitle}</h3>
+                    <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+                      {visionDescription}
                     </p>
                   </div>
                 </div>
@@ -36,9 +64,9 @@ export default function CompanyVision() {
                     <i className="ri-target-line text-white text-xl w-6 h-6 flex items-center justify-center"></i>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">使命</h3>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{missionTitle}</h3>
                     <p className="text-gray-600 leading-relaxed">
-                      为世界绿色能源贡献锂谷智慧
+                      {missionDescription}
                     </p>
                   </div>
                 </div>
@@ -51,9 +79,9 @@ export default function CompanyVision() {
                     <i className="ri-heart-line text-white text-xl w-6 h-6 flex items-center justify-center"></i>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">价值观</h3>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{valuesTitle}</h3>
                     <div className="text-gray-600 leading-relaxed">
-                      大胆想，立刻做，做难的事必有所得
+                      {valuesDescription}
                     </div>
                   </div>
                 </div>
@@ -66,9 +94,9 @@ export default function CompanyVision() {
                     <i className="ri-shield-check-line text-white text-xl w-6 h-6 flex items-center justify-center"></i>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">客户方针</h3>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{customerPolicyTitle}</h3>
                     <p className="text-gray-600 leading-relaxed">
-                      客户至上、质量为本、开拓创新、助力双碳
+                      {customerPolicyDescription}
                     </p>
                   </div>
                 </div>
@@ -78,9 +106,12 @@ export default function CompanyVision() {
 
           {/* 右侧图片 */}
           <div className="relative">
-            <img 
-              src="https://readdy.ai/api/search-image?query=Modern%20energy%20storage%20technology%20vision%20with%20green%20sustainable%20future%2C%20professional%20corporate%20photography%20showing%20renewable%20energy%20systems%2C%20clean%20technology%20with%20solar%20panels%20and%20battery%20storage%2C%20blue%20and%20green%20environmental%20colors&width=600&height=700&seq=vision-mission&orientation=portrait"
-              alt="愿景与使命"
+            <img
+              src={
+                image ||
+                'https://readdy.ai/api/search-image?query=Modern%20energy%20storage%20technology%20vision%20with%20green%20sustainable%20future%2C%20professional%20corporate%20photography%20showing%20renewable%20energy%20systems%2C%20clean%20technology%20with%20solar%20panels%20and%20battery%20storage%2C%20blue%20and%20green%20environmental%20colors&width=600&height=700&seq=vision-mission&orientation=portrait'
+              }
+              alt={sectionTitle}
               className="w-full h-auto rounded-2xl shadow-lg"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>

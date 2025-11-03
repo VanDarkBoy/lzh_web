@@ -1,17 +1,48 @@
 'use client';
 
-interface AboutHeroProps {
-  scrollY: number;
+interface HeroStatistic {
+  value: string;
+  label: string;
 }
 
-export default function AboutHero({ scrollY }: AboutHeroProps) {
+export interface HeroContent {
+  title: string;
+  description: string;
+  stats: HeroStatistic[];
+  affiliation?: {
+    title: string;
+    subtitle?: string;
+  };
+  cta?: {
+    primary?: string;
+    secondary?: string;
+  };
+  backgroundImage?: string;
+}
+
+interface AboutHeroProps {
+  scrollY: number;
+  content: HeroContent;
+}
+
+export default function AboutHero({ scrollY, content }: AboutHeroProps) {
   const parallaxOffset = scrollY * 0.3;
+  const {
+    title,
+    description,
+    stats,
+    affiliation,
+    cta,
+    backgroundImage
+  } = content;
 
   return (
     <section 
       className="relative h-screen flex items-center justify-center overflow-hidden"
       style={{
-        backgroundImage: `url('https://readdy.ai/api/search-image?query=Modern%20energy%20storage%20facility%20with%20professional%20corporate%20building%2C%20blue%20and%20green%20technology%20colors%2C%20clean%20industrial%20architecture%20with%20lithium%20battery%20systems%2C%20professional%20business%20photography%20style%20with%20corporate%20headquarters%20design&width=1920&height=1080&seq=about-hero-corporate&orientation=landscape')`,
+        backgroundImage:
+          `url('${backgroundImage ||
+            "https://readdy.ai/api/search-image?query=Modern%20energy%20storage%20facility%20with%20professional%20corporate%20building%2C%20blue%20and%20green%20technology%20colors%2C%20clean%20industrial%20architecture%20with%20lithium%20battery%20systems%2C%20professional%20business%20photography%20style%20with%20corporate%20headquarters%20design&width=1920&height=1080&seq=about-hero-corporate&orientation=landscape"}'))`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed'
@@ -31,53 +62,47 @@ export default function AboutHero({ scrollY }: AboutHeroProps) {
 
           {/* 主标题 */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight">
-            锂谷科技
+            {title}
             <br />
           </h1>
 
           {/* 描述 */}
           <p className="text-xl sm:text-2xl text-gray-200 mb-12 leading-relaxed max-w-2xl">
-            致力于动力系统及储能系统一站式解决方案的研发、制造和销售。
+            {description}
           </p>
 
           {/* 数据统计 */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">12+</div>
-              <div className="text-gray-300 text-sm">年行业经验</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">8万</div>
-              <div className="text-gray-300 text-sm">平方工厂面积</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">6200万</div>
-              <div className="text-gray-300 text-sm">注册实缴资本金</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">10GWh+</div>
-              <div className="text-gray-300 text-sm">年度交付量</div>
-            </div>
+            {stats.map((item, index) => (
+              <div key={`${item.label}-${index}`} className="text-center">
+                <div className="text-3xl font-bold text-white mb-2">{item.value}</div>
+                <div className="text-gray-300 text-sm">{item.label}</div>
+              </div>
+            ))}
           </div>
 
           {/* 企业归属信息 */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-12 border border-white/20">
-            <div className="flex items-center justify-center space-x-4">
-              <i className="ri-building-2-line text-blue-400 text-2xl w-6 h-6 flex items-center justify-center"></i>
-              <div className="text-center">
-                <div className="text-white font-semibold text-lg">隶属宗申动力</div>
-                <div className="text-blue-300 text-sm">(001696.SZ)</div>
+          {affiliation && (
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-12 border border-white/20">
+              <div className="flex items-center justify-center space-x-4">
+                <i className="ri-building-2-line text-blue-400 text-2xl w-6 h-6 flex items-center justify-center"></i>
+                <div className="text-center">
+                  <div className="text-white font-semibold text-lg">{affiliation.title}</div>
+                  {affiliation.subtitle && (
+                    <div className="text-blue-300 text-sm">{affiliation.subtitle}</div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* CTA按钮 */}
           <div className="flex flex-col sm:flex-row gap-4">
             <button className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors whitespace-nowrap">
-              了解更多
+              {cta?.primary || '了解更多'}
             </button>
             <button className="px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-semibold rounded-lg transition-colors whitespace-nowrap">
-              联系我们
+              {cta?.secondary || '联系我们'}
             </button>
           </div>
         </div>
