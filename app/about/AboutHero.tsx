@@ -9,15 +9,15 @@ export interface HeroContent {
   title: string;
   description: string;
   stats: HeroStatistic[];
-  affiliation?: {
+  affiliation: {
     title: string;
     subtitle?: string;
   };
-  cta?: {
-    primary?: string;
-    secondary?: string;
+  cta: {
+    primary: string;
+    secondary: string;
   };
-  backgroundImage?: string;
+  backgroundImage: string;
 }
 
 interface AboutHeroProps {
@@ -40,9 +40,7 @@ export default function AboutHero({ scrollY, content }: AboutHeroProps) {
     <section 
       className="relative h-screen flex items-center justify-center overflow-hidden"
       style={{
-        backgroundImage:
-          `url('${backgroundImage ||
-            "https://readdy.ai/api/search-image?query=Modern%20energy%20storage%20facility%20with%20professional%20corporate%20building%2C%20blue%20and%20green%20technology%20colors%2C%20clean%20industrial%20architecture%20with%20lithium%20battery%20systems%2C%20professional%20business%20photography%20style%20with%20corporate%20headquarters%20design&width=1920&height=1080&seq=about-hero-corporate&orientation=landscape"}'))`,
+        backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed'

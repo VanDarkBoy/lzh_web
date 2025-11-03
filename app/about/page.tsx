@@ -31,12 +31,13 @@ const defaultContent: AboutContent = {
       { value: '10GWh+', label: '年度交付量' }
     ],
     affiliation: { title: '隶属宗申动力', subtitle: '(001696.SZ)' },
-    cta: { primary: '了解更多', secondary: '联系我们' }
+    cta: { primary: '了解更多', secondary: '联系我们' },
+    backgroundImage: "https://readdy.ai/api/search-image?query=Modern%20energy%20storage%20facility%20with%20professional%20corporate%20building%2C%20blue%20and%20green%20technology%20colors%2C%20clean%20industrial%20architecture%20with%20lithium%20battery%20systems%2C%20professional%20business%20photography%20style%20with%20corporate%20headquarters%20design&width=1920&height=1080&seq=about-hero-corporate&orientation=landscape"
   },
   vision: {
     sectionTitle: '愿景与使命',
     visionTitle: '愿景',
-    visionDescription: '致力于成为客户信任的能源系统集成商\n全球化的新能源生活方式赋能者，为人类的可持续发展作出贡献',
+    visionDescription: '致力于成为客户信任的能源系统集成商',
     missionTitle: '使命',
     missionDescription: '为世界绿色能源贡献锂谷智慧',
     valuesTitle: '价值观',
