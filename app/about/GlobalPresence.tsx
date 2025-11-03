@@ -17,15 +17,13 @@ interface OverviewStat {
   value: string;
   label: string;
   description: string;
-  icon?: string;
-  color?: string;
+  icon: string;
+  color: string;
 }
 
 export interface GlobalPresenceContent {
   overviewTitle: string;
   overviewDescription: string;
-  mapImage?: string;
-  locations?: Location[];
   stats: OverviewStat[];
 }
 
@@ -213,39 +211,19 @@ const defaultLocations: Location[] = [
   }
 ];
 
-interface MapContentResponse {
-  locations?: Location[];
-  mapImage?: string;
-}
 
 export default function GlobalPresence({ content }: GlobalPresenceProps) {
   const [hoveredLocation, setHoveredLocation] = useState<Location | null>(null);
-
   const {
     overviewTitle,
     overviewDescription,
-    mapImage,
     stats,
-    locations
   } = content;
 
-  const [mapImageUrl, setMapImageUrl] = useState<string | undefined>(mapImage);
   const [locationData, setLocationData] = useState<Location[]>(() => {
-    if (locations && locations.length > 0) {
-      return locations;
-    }
     return defaultLocations;
   });
 
-  useEffect(() => {
-    setLocationData((currentLocations) => {
-      if (locations && locations.length > 0) {
-        return locations;
-      }
-      return currentLocations.length > 0 ? currentLocations : defaultLocations;
-    });
-    setMapImageUrl(mapImage);
-  }, [locations, mapImage]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -260,15 +238,10 @@ export default function GlobalPresence({ content }: GlobalPresenceProps) {
           throw new Error('无法获取地图内容');
         }
 
-        const data = (await response.json()) as MapContentResponse;
+        const data = (await response.json()) as Location[];
 
-        if (data.locations && Array.isArray(data.locations) && data.locations.length > 0) {
-          setLocationData(data.locations);
-        }
+          setLocationData(data);
 
-        if (data.mapImage) {
-          setMapImageUrl(data.mapImage);
-        }
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {
           return;
@@ -330,8 +303,7 @@ export default function GlobalPresence({ content }: GlobalPresenceProps) {
           <div className="relative w-full max-w-5xl mx-auto">
             <img
               src={
-                mapImageUrl ||
-                'https://readdy.ai/api/search-image?query=Clean%20world%20map%20silhouette%20with%20professional%20blue%20and%20gray%20colors%20for%20global%20company%20locations%2C%20minimal%20design%20with%20clear%20continent%20outlines%2C%20corporate%20style%20geography%20map%20for%20business%20presentation&width=1000&height=500&seq=global-map-clean&orientation=landscape'
+              'https://lithiumvalley.com/images/20251103_123158_70628140100f.jpg'
               }
               alt="全球布局地图"
               className="w-full h-auto opacity-80"
