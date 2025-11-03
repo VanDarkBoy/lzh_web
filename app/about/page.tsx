@@ -13,43 +13,12 @@ import CompanyCapabilities, { TechnicalSection } from './CompanyCapabilities';
 interface AboutContent {
   hero: HeroContent;
   vision: VisionContent;
+  technical: TechnicalSection;
   globalPresence: GlobalPresenceContent;
   certificates: CertificatesContent;
   history: CompanyHistoryContent;
 }
 
-const defaultTechnicalSection: TechnicalSection = {
-  title: '强大的技术实力',
-  description: '从研发设计到制造测试，我们具备完整的产业链能力，为客户提供一站式解决方案',
-  historyTitle: '12年来致力于新能源解决方案',
-  historyDescription: '自2013年成立以来，专注于锂电池储能技术创新，涵盖家庭、工商业、动力等全场景应用。',
-  solutionsTitle: '全场景解决方案',
-  solutions: ['家用住宅储能系统', '工商业储能系统', '动力电池', '房车控制系统', '铅酸替代电池'],
-  capabilitiesTitle: '综合研发能力',
-  capabilities: [
-    {
-      title: '设计能力',
-      items: ['设计', 'BMS设计', 'EMS设计', 'PACK设计', '系统设计', '工业设计', '逆变器设计', '软件设计']
-    },
-    {
-      title: '研发能力',
-      items: ['BMS研发', 'EMS研发', '仿真', '自动化', '电化学', '电子电路', '热管理']
-    },
-    {
-      title: '专业研发中心及团队',
-      items: [
-        '我们专注于家用与工商业储能系统、电池管理、动力电池及铅酸电池替代方案，并提供房车控制系统的设计与开发。通过创新技术，我们致力于提供高效、可靠的储能解决方案，满足各类市场需求。'
-      ]
-    }
-  ],
-  manufacturingTitle: '制造实力',
-  manufacturingDescription: '凭借这一切，锂谷具备了"端到端"的集成交付能力，使我们的产品超越了行业规范。',
-  manufacturingHighlights: ['先进的MES系统', '全自动生产线', 'IATF16949体系', '品质管理系统'],
-  testingTitle: '全面的测试能力',
-  testingDescription:
-    '配备先进的检测仪器和测试设备，多达200台/套。产品通过国际及北美主要测试标准如IEC、ISO、UL，可通过严苛的性能、可靠性、安全性测试等。',
-  testingItems: ['电芯测试', '电池系统测试', '电池管理系统测试', '材料测试', '充电器测试', '储能测试', 'DC-DC测试', '交流发电机测试', '混合逆变器测试']
-};
 
 const defaultContent: AboutContent = {
   hero: {
@@ -84,9 +53,36 @@ const defaultContent: AboutContent = {
       { value: '3', label: '国内办公室', description: '深圳、武汉、南京', icon: 'ri-home-office-line', color: 'purple' },
       { value: '9', label: '海外分部', description: '覆盖五大洲主要市场', icon: 'ri-global-line', color: 'blue' },
       { value: '2', label: '海外仓库', description: '匈牙利、波兰', icon: 'ri-store-line', color: 'orange' }
-    ],
-    technical: defaultTechnicalSection
+    ]
+
   },
+  technical: {
+    title: '强大的技术实力',
+    description: '从研发设计到制造测试，我们具备完整的产业链能力，为客户提供一站式解决方案',
+    historyTitle: '12年来致力于新能源解决方案',
+    historyDescription: '自2013年成立以来，专注于锂电池储能技术创新，涵盖家庭、工商业、动力等全场景应用。',
+    solutionsTitle: '全场景解决方案',
+    solutions: ['家用住宅储能系统', '工商业储能系统', '动力电池', '房车控制系统', '铅酸替代电池'],
+    capabilitiesTitle: '综合研发能力',
+    capabilities: [
+      {
+        title: '设计能力',
+        items: ['设计', 'BMS设计', 'EMS设计', 'PACK设计', '系统设计', '工业设计', '逆变器设计', '软件设计']
+      },
+      {
+        title: '研发能力',
+        items: ['BMS研发', 'EMS研发', '仿真', '自动化', '电化学', '电子电路', '热管理']
+      }
+    ],
+    manufacturingTitle: '制造实力',
+    manufacturingDescription: '凭借这一切，锂谷具备了"端到端"的集成交付能力，使我们的产品超越了行业规范。',
+    manufacturingHighlights: ['先进的MES系统', '全自动生产线', 'IATF16949体系', '品质管理系统'],
+    testingTitle: '全面的测试能力',
+    testingDescription:
+        '配备先进的检测仪器和测试设备，多达200台/套。产品通过国际及北美主要测试标准如IEC、ISO、UL，可通过严苛的性能、可靠性、安全性测试等。',
+    testingItems: ['电芯测试', '电池系统测试', '电池管理系统测试', '材料测试', '充电器测试', '储能测试', 'DC-DC测试', '交流发电机测试', '混合逆变器测试']
+  },
+
   certificates: {
     sectionTitle: '专利与奖项',
     description: '建立完善的知识产权及保护体系，持有多项国际权威认证，确保产品质量与安全性达到全球最高标准',
@@ -176,7 +172,8 @@ const buildContent = (incoming?: Partial<AboutContent>): AboutContent => ({
   vision: incoming?.vision ?? defaultContent.vision,
   globalPresence: incoming?.globalPresence ?? defaultContent.globalPresence,
   certificates: incoming?.certificates ?? defaultContent.certificates,
-  history: incoming?.history ?? defaultContent.history
+  history: incoming?.history ?? defaultContent.history,
+  technical: incoming?.technical ?? defaultContent.technical,
 });
 
 export default function AboutPage() {
@@ -239,6 +236,8 @@ export default function AboutPage() {
   const globalPresenceContent = useMemo(() => content.globalPresence, [content]);
   const certificatesContent = useMemo(() => content.certificates, [content]);
   const historyContent = useMemo(() => content.history, [content]);
+  const technicalContent = useMemo(() => content.technical, [content]);
+
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -247,7 +246,7 @@ export default function AboutPage() {
         <AboutHero scrollY={scrollY} content={heroContent} />
         <CompanyVision content={visionContent} />
         <GlobalPresence content={globalPresenceContent} />
-        <CompanyCapabilities scrollY={0} content={globalPresenceContent.technical} />
+        <CompanyCapabilities scrollY={0} content={technicalContent} />
         <CertificatesSection content={certificatesContent} />
         <CompanyHistory content={historyContent} />
         {loading && (

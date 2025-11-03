@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { TechnicalSection } from './CompanyCapabilities';
 
 interface Location {
   id: string;
@@ -28,7 +27,6 @@ export interface GlobalPresenceContent {
   mapImage?: string;
   locations?: Location[];
   stats: OverviewStat[];
-  technical: TechnicalSection;
 }
 
 interface GlobalPresenceProps {
@@ -223,7 +221,6 @@ export default function GlobalPresence({ content }: GlobalPresenceProps) {
     overviewDescription,
     mapImage,
     stats,
-    technical,
     locations
   } = content;
 
@@ -370,83 +367,6 @@ export default function GlobalPresence({ content }: GlobalPresenceProps) {
               </div>
             );
           })}
-        </div>
-
-        {/* 技术实力部分 */}
-        <div className="mt-20 bg-white rounded-2xl shadow-lg p-10 space-y-12">
-          <div className="text-center space-y-4">
-            <h3 className="text-3xl font-bold text-gray-900">{technical.title}</h3>
-            <p className="text-lg text-gray-600 leading-relaxed">{technical.description}</p>
-            {technical.historyTitle && (
-              <div className="space-y-2">
-                <h4 className="text-xl font-semibold text-blue-600">{technical.historyTitle}</h4>
-                <p className="text-gray-600 leading-relaxed">{technical.historyDescription}</p>
-              </div>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="space-y-4">
-              {technical.solutionsTitle && (
-                <h4 className="text-xl font-semibold text-gray-900">{technical.solutionsTitle}</h4>
-              )}
-              <ul className="space-y-3 text-gray-700">
-                {technical.solutions.map((solution, index) => (
-                  <li key={`${solution}-${index}`} className="flex items-start space-x-3">
-                    <span className="mt-1 w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span>{solution}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="text-xl font-semibold text-gray-900">{technical.capabilitiesTitle}</h4>
-              <div className="space-y-6">
-                {technical.capabilities.map((capability, index) => (
-                  <div key={`${capability.title}-${index}`}>
-                    <h5 className="text-lg font-semibold text-blue-600 mb-2">{capability.title}</h5>
-                    <ul className="space-y-2 text-gray-700 text-sm">
-                      {capability.items.map((item, idx) => (
-                        <li key={`${item}-${idx}`} className="flex items-start space-x-2">
-                          <span className="mt-1 w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-8">
-              <div className="space-y-3">
-                <h4 className="text-xl font-semibold text-gray-900">{technical.manufacturingTitle}</h4>
-                <p className="text-gray-600 leading-relaxed">{technical.manufacturingDescription}</p>
-                <ul className="space-y-2 text-gray-700 text-sm">
-                  {technical.manufacturingHighlights.map((highlight, index) => (
-                    <li key={`${highlight}-${index}`} className="flex items-start space-x-2">
-                      <span className="mt-1 w-1.5 h-1.5 bg-green-400 rounded-full"></span>
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="space-y-3">
-                <h4 className="text-xl font-semibold text-gray-900">{technical.testingTitle}</h4>
-                <p className="text-gray-600 leading-relaxed">{technical.testingDescription}</p>
-                <ul className="space-y-2 text-gray-700 text-sm">
-                  {technical.testingItems.map((item, index) => (
-                    <li key={`${item}-${index}`} className="flex items-start space-x-2">
-                      <span className="mt-1 w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
