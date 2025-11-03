@@ -8,6 +8,7 @@ export interface ProjectContent {
     title: string;
     highlight: string;
     description: string;
+    backgroundImage: string;
     stats: ProjectContentStat[];
   };
   categories: {
@@ -30,6 +31,7 @@ export const defaultProjectContent: ProjectContent = {
     title: '落地',
     highlight: '案例',
     description: '发现我们在满足现代生活需求的同时与自然协调的可持续建筑组合',
+    backgroundImage: 'https://lithiumvalley.com/images/20251101_090739_c03529f698de.jpg',
     stats: [
       { value: '50+', label: '项目' },
       { value: '15', label: '国家' },
@@ -96,6 +98,7 @@ export function normalizeProjectContent(payload: unknown): ProjectContent {
   return {
     hero: {
       title: getString(hero.title, defaultProjectContent.hero.title),
+      backgroundImage:  getString(hero.backgroundImage, defaultProjectContent.hero.backgroundImage),
       highlight: getString(hero.highlight, defaultProjectContent.hero.highlight),
       description: getString(hero.description, defaultProjectContent.hero.description),
       stats: getStats(hero.stats, defaultProjectContent.hero.stats),

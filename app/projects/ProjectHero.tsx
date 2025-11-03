@@ -13,7 +13,7 @@ export default function ProjectHero({scrollY, content}: ProjectHeroProps) {
             <div
                 className="absolute inset-0 z-0"
                 style={{
-                    backgroundImage: `url('https://readdy.ai/api/search-image?query=Minimalist%20modern%20sustainable%20architecture%20building%20with%20clean%20lines%20and%20natural%20materials%2C%20single%20elegant%20eco-friendly%20structure%20with%20glass%20and%20wood%20elements%2C%20simple%20composition%20with%20natural%20lighting%2C%20architectural%20photography%20with%20clean%20background%2C%20professional%20and%20serene%20design%20aesthetic%2C%20contemporary%20green%20building%20design&width=1920&height=1080&seq=projects-hero-simple&orientation=landscape')`,
+                    backgroundImage: `url(${content.backgroundImage})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundAttachment: 'fixed',
