@@ -97,10 +97,10 @@ export default function AboutHero({ scrollY, content }: AboutHeroProps) {
           {/* CTA按钮 */}
           <div className="flex flex-col sm:flex-row gap-4">
             <button className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors whitespace-nowrap">
-              {cta?.primary || '了解更多'}
+              {cta.primary}
             </button>
             <button className="px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-semibold rounded-lg transition-colors whitespace-nowrap">
-              {cta?.secondary || '联系我们'}
+              {cta.secondary}
             </button>
           </div>
         </div>
