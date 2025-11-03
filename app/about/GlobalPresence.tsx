@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { TechnicalSection } from './CompanyCapabilities';
 
 interface Location {
   id: string;
@@ -19,28 +20,6 @@ interface OverviewStat {
   description: string;
   icon?: string;
   color?: string;
-}
-
-interface TechnicalCapability {
-  title: string;
-  items: string[];
-}
-
-export interface TechnicalSection {
-  title: string;
-  description: string;
-  historyTitle?: string;
-  historyDescription?: string;
-  solutionsTitle?: string;
-  solutions: string[];
-  capabilitiesTitle: string;
-  capabilities: TechnicalCapability[];
-  manufacturingTitle: string;
-  manufacturingDescription: string;
-  manufacturingHighlights: string[];
-  testingTitle: string;
-  testingDescription: string;
-  testingItems: string[];
 }
 
 export interface GlobalPresenceContent {
