@@ -11,7 +11,7 @@ export interface VisionContent {
   valuesDescription: string;
   customerPolicyTitle: string;
   customerPolicyDescription: string;
-  image?: string;
+  image: string;
 }
 
 interface CompanyVisionProps {
@@ -107,10 +107,7 @@ export default function CompanyVision({ content }: CompanyVisionProps) {
           {/* 右侧图片 */}
           <div className="relative">
             <img
-              src={
-                image ||
-                'https://readdy.ai/api/search-image?query=Modern%20energy%20storage%20technology%20vision%20with%20green%20sustainable%20future%2C%20professional%20corporate%20photography%20showing%20renewable%20energy%20systems%2C%20clean%20technology%20with%20solar%20panels%20and%20battery%20storage%2C%20blue%20and%20green%20environmental%20colors&width=600&height=700&seq=vision-mission&orientation=portrait'
-              }
+              src={image}
               alt={sectionTitle}
               className="w-full h-auto rounded-2xl shadow-lg"
             />

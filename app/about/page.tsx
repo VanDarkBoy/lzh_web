@@ -43,7 +43,8 @@ const defaultContent: AboutContent = {
     valuesTitle: '价值观',
     valuesDescription: '大胆想，立刻做，做难的事必有所得',
     customerPolicyTitle: '客户方针',
-    customerPolicyDescription: '客户至上、质量为本、开拓创新、助力双碳'
+    customerPolicyDescription: '客户至上、质量为本、开拓创新、助力双碳',
+    image: 'https://readdy.ai/api/search-image?query=Modern%20energy%20storage%20technology%20vision%20with%20green%20sustainable%20future%2C%20professional%20corporate%20photography%20showing%20renewable%20energy%20systems%2C%20clean%20technology%20with%20solar%20panels%20and%20battery%20storage%2C%20blue%20and%20green%20environmental%20colors&width=600&height=700&seq=vision-mission&orientation=portrait'
   },
   globalPresence: {
     overviewTitle: '全球领先品牌',
