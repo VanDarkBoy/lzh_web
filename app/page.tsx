@@ -77,7 +77,7 @@ export default function Home() {
                     探索产品
                   </button>
                 </Link>
-                <Link href="/contact">
+                <Link href="/get-started">
                   <button className="px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-gray-900 transition-colors text-lg font-semibold cursor-pointer whitespace-nowrap">
                     立即联系
                   </button>
@@ -335,7 +335,7 @@ export default function Home() {
               我们的专业团队将为您提供一对一咨询服务，制定最适合您需求的储能解决方案
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact">
+              <Link href="/get-started">
                 <button className="px-8 py-4 bg-white text-green-600 rounded-lg hover:bg-gray-100 transition-colors text-lg font-semibold cursor-pointer whitespace-nowrap">
                   立即联系
                 </button>
