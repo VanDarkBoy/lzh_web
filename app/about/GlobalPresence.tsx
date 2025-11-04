@@ -272,7 +272,7 @@ export default function GlobalPresence({ content }: GlobalPresenceProps) {
     }
   };
 
-  const getStatColorClasses = (color?: string) => {
+  const getStatColorClasses = (color: string) => {
     const colorMap: Record<string, { icon: string; background: string }> = {
       green: { icon: 'text-green-600', background: 'bg-green-100' },
       purple: { icon: 'text-purple-600', background: 'bg-purple-100' },
