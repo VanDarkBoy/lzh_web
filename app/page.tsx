@@ -22,11 +22,26 @@ type Category = {
   link?: string;
 };
 
+interface ProjectItem {
+  id: number;
+  title: string;
+  description: string;
+  location: string;
+  caseTime: string;
+  image: string;
+  categoryName: string;
+  stats: string;
+  size: string;
+}
+
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [categoriesError, setCategoriesError] = useState<string | null>(null);
+  const [projects, setProjects] = useState<ProjectItem[]>([]);
+  const [isLoadingProjects, setIsLoadingProjects] = useState(true);
+  const [projectsError, setProjectsError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -52,6 +67,26 @@ export default function Home() {
     };
 
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/getAllProductCaseHome`);
+        if (!response.ok) {
+          throw new Error('获取成功案例失败');
+        }
+        const data: ProjectItem[] = await response.json();
+        setProjects(data);
+      } catch (error) {
+        console.error('Failed to fetch home projects:', error);
+        setProjectsError('暂时无法加载成功案例，请稍后重试');
+      } finally {
+        setIsLoadingProjects(false);
+      }
+    };
+
+    fetchProjects();
   }, []);
 
   return (
@@ -183,141 +218,51 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* 2025年案例 */}
-              <div className="group cursor-pointer">
-                <div className="relative overflow-hidden rounded-xl mb-6">
-                  <img 
-                    src="https://readdy.ai/api/search-image?query=Modern%20smart%20home%20with%20advanced%20energy%20storage%20system%2C%20contemporary%20residential%20building%20with%20integrated%20solar%20panels%20and%20sleek%20battery%20storage%2C%20futuristic%20home%20energy%20management%20with%20intelligent%20controls%20and%20monitoring%20displays&width=400&height=240&seq=case-2025&orientation=landscape" 
-                    alt="智能家庭储能系统" 
-                    className="w-full h-48 object-cover object-top transform group-hover:scale-105 transition-transform duration-300"
-                  />
-                  
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">家用储能</span>
-                  </div>
-                  
-                  <div className="absolute top-3 right-3">
-                    <span className="bg-black/70 text-white px-2 py-1 rounded text-sm">2025</span>
-                  </div>
-                  
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                    <div className="flex items-center text-white text-sm mb-1">
-                      <i className="ri-map-pin-line w-4 h-4 flex items-center justify-center mr-1"></i>
-                      北京市海淀区
-                    </div>
-                    <div className="flex items-center text-white text-sm">
-                      <i className="ri-battery-line w-4 h-4 flex items-center justify-center mr-1"></i>
-                      500kWh
-                    </div>
-                  </div>
-                </div>
-                
-                <h3 className="text-lg font-bold text-gray-900 mb-2">智能家庭储能系统</h3>
-                <p className="text-gray-600 text-sm mb-3">10kWh家用储能系统，集成太阳能板，实现家庭用电自给自足</p>
-                <div className="text-green-600 font-semibold text-sm">节能85%</div>
-              </div>
+              {isLoadingProjects && (
+                <div className="col-span-full text-center text-gray-500">正在加载成功案例...</div>
+              )}
+              {projectsError && !isLoadingProjects && (
+                <div className="col-span-full text-center text-red-500">{projectsError}</div>
+              )}
+              {!isLoadingProjects && !projectsError && projects.length === 0 && (
+                <div className="col-span-full text-center text-gray-500">暂无成功案例</div>
+              )}
+              {projects.map((project) => (
+                <div key={project.id} className="group cursor-pointer">
+                  <div className="relative overflow-hidden rounded-xl mb-6">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-48 object-cover object-top transform group-hover:scale-105 transition-transform duration-300"
+                    />
 
-              {/* 2024年案例 */}
-              <div className="group cursor-pointer">
-                <div className="relative overflow-hidden rounded-xl mb-6">
-                  <img 
-                    src="https://readdy.ai/api/search-image?query=Large%20luxury%20villa%20with%20comprehensive%20energy%20storage%20solution%2C%20premium%20residential%20property%20with%20multiple%20battery%20systems%20and%20solar%20integration%2C%20high-end%20home%20with%20sustainable%20energy%20infrastructure&width=400&height=240&seq=case-2024&orientation=landscape" 
-                    alt="别墅储能解决方案" 
-                    className="w-full h-48 object-cover object-top transform group-hover:scale-105 transition-transform duration-300"
-                  />
-                  
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">家用储能</span>
-                  </div>
-                  
-                  <div className="absolute top-3 right-3">
-                    <span className="bg-black/70 text-white px-2 py-1 rounded text-sm">2024</span>
-                  </div>
-                  
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                    <div className="flex items-center text-white text-sm mb-1">
-                      <i className="ri-map-pin-line w-4 h-4 flex items-center justify-center mr-1"></i>
-                      上海市浦东新区
+                    <div className="absolute top-3 left-3">
+                      <span className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        {project.categoryName}
+                      </span>
                     </div>
-                    <div className="flex items-center text-white text-sm">
-                      <i className="ri-battery-line w-4 h-4 flex items-center justify-center mr-1"></i>
-                      300kWh
-                    </div>
-                  </div>
-                </div>
-                
-                <h3 className="text-lg font-bold text-gray-900 mb-2">别墅储能解决方案</h3>
-                <p className="text-gray-600 text-sm mb-3">大容量家用储能系统，支持全屋备电和峰谷套利电价管理</p>
-                <div className="text-green-600 font-semibold text-sm">20kWh容量</div>
-              </div>
 
-              {/* 2023年案例 */}
-              <div className="group cursor-pointer">
-                <div className="relative overflow-hidden rounded-xl mb-6">
-                  <img 
-                    src="https://readdy.ai/api/search-image?query=Modern%20residential%20community%20with%20distributed%20energy%20storage%20systems%2C%20apartment%20complex%20with%20integrated%20renewable%20energy%20and%20battery%20storage%2C%20community-scale%20microgrid%20with%20clean%20energy%20infrastructure&width=400&height=240&seq=case-2023&orientation=landscape" 
-                    alt="小区储能微网项目" 
-                    className="w-full h-48 object-cover object-top transform group-hover:scale-105 transition-transform duration-300"
-                  />
-                  
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">家用储能</span>
-                  </div>
-                  
-                  <div className="absolute top-3 right-3">
-                    <span className="bg-black/70 text-white px-2 py-1 rounded text-sm">2023</span>
-                  </div>
-                  
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                    <div className="flex items-center text-white text-sm mb-1">
-                      <i className="ri-map-pin-line w-4 h-4 flex items-center justify-center mr-1"></i>
-                      北京市朝阳区
+                    <div className="absolute top-3 right-3">
+                      <span className="bg-black/70 text-white px-2 py-1 rounded text-sm">{project.caseTime}</span>
                     </div>
-                    <div className="flex items-center text-white text-sm">
-                      <i className="ri-battery-line w-4 h-4 flex items-center justify-center mr-1"></i>
-                      500kWh
-                    </div>
-                  </div>
-                </div>
-                
-                <h3 className="text-lg font-bold text-gray-900 mb-2">小区储能微网项目</h3>
-                <p className="text-gray-600 text-sm mb-3">社区级储能系统，为小区住户提供清洁能源和应急备电</p>
-                <div className="text-green-600 font-semibold text-sm">覆盖200户</div>
-              </div>
 
-              {/* 2022年案例 */}
-              <div className="group cursor-pointer">
-                <div className="relative overflow-hidden rounded-xl mb-6">
-                  <img 
-                    src="https://readdy.ai/api/search-image?query=Rural%20farmhouse%20with%20rooftop%20solar%20panels%20and%20home%20energy%20storage%20system%2C%20countryside%20residence%20with%20sustainable%20energy%20solution%2C%20agricultural%20setting%20with%20clean%20energy%20technology%20integration&width=400&height=240&seq=case-2022&orientation=landscape" 
-                    alt="农村户用储能系统" 
-                    className="w-full h-48 object-cover object-top transform group-hover:scale-105 transition-transform duration-300"
-                  />
-                  
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">家用储能</span>
-                  </div>
-                  
-                  <div className="absolute top-3 right-3">
-                    <span className="bg-black/70 text-white px-2 py-1 rounded text-sm">2022</span>
-                  </div>
-                  
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                    <div className="flex items-center text-white text-sm mb-1">
-                      <i className="ri-map-pin-line w-4 h-4 flex items-center justify-center mr-1"></i>
-                      山东省临沂市
-                    </div>
-                    <div className="flex items-center text-white text-sm">
-                      <i className="ri-battery-line w-4 h-4 flex items-center justify-center mr-1"></i>
-                      150kWh
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                      <div className="flex items-center text-white text-sm mb-1">
+                        <i className="ri-map-pin-line w-4 h-4 flex items-center justify-center mr-1"></i>
+                        {project.location}
+                      </div>
+                      <div className="flex items-center text-white text-sm">
+                        <i className="ri-battery-line w-4 h-4 flex items-center justify-center mr-1"></i>
+                        {project.size}
+                      </div>
                     </div>
                   </div>
+
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{project.title}</h3>
+                  <p className="text-gray-600 text-sm mb-3">{project.description}</p>
+                  <div className="text-green-600 font-semibold text-sm">{project.stats}</div>
                 </div>
-                
-                <h3 className="text-lg font-bold text-gray-900 mb-2">农村户用储能系统</h3>
-                <p className="text-gray-600 text-sm mb-3">偏远地区家庭储能解决方案，结合光伏发电提供稳定电力</p>
-                <div className="text-green-600 font-semibold text-sm">高效运行</div>
-              </div>
+              ))}
             </div>
 
             <div className="text-center mt-12">
