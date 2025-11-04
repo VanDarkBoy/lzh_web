@@ -11,7 +11,7 @@ type NavItem = {
     isCTA?: boolean;
 };
 
-const NAV_ITEMS: NavItem[] = [
+const DEFAULT_NAV_ITEMS: NavItem[] = [
     {href: '/', label: '首页'},
     {href: '/about', label: '关于我们'},
     {href: '/products', label: '产品中心'},
@@ -32,6 +32,7 @@ const mobileLinkClass =
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+    const [navItems, setNavItems] = useState<NavItem[]>(DEFAULT_NAV_ITEMS);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -53,6 +54,41 @@ export default function Header() {
             }
         }, 100);
     };
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        const loadNavItems = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_BASE}/api/header`,
+                    {signal: controller.signal}
+                );
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load header data: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (Array.isArray(data)) {
+                    setNavItems(data);
+                } else if (Array.isArray(data?.navItems)) {
+                    setNavItems(data.navItems);
+                }
+            } catch (error) {
+                if ((error as Error).name !== 'AbortError') {
+                    console.error('Error fetching header navigation items:', error);
+                }
+            }
+        };
+
+        loadNavItems();
+
+        return () => {
+            controller.abort();
+        };
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -111,7 +147,7 @@ export default function Header() {
                         </div>
 
                         <nav className="hidden md:flex items-center space-x-8">
-                            {NAV_ITEMS.filter((item) => !item.mobileOnly).map((item) => (
+                            {navItems.filter((item) => !item.mobileOnly).map((item) => (
                                 <Link
                                     key={item.href}
                                     href={item.href}
@@ -135,7 +171,7 @@ export default function Header() {
                         isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
                     }`}>
                         <nav className="py-4 space-y-1 border-t border-gray-200">
-                            {NAV_ITEMS.filter((item) => !item.desktopOnly).map((item) => (
+                            {navItems.filter((item) => !item.desktopOnly).map((item) => (
                                 <Link
                                     key={item.href}
                                     href={item.href}
