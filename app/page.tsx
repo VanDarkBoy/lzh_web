@@ -147,15 +147,10 @@ export default function Home() {
                 <div className="col-span-full text-center text-gray-500">暂无产品分类</div>
               )}
               {categories.map((category, index) => {
-                const href = category.link
-                  ? category.link
-                  : category.slug
-                  ? `/products?category=${encodeURIComponent(category.slug)}`
-                  : `/products?category=${encodeURIComponent(category.name)}`;
                 const gradientClass = CATEGORY_GRADIENTS[index % CATEGORY_GRADIENTS.length];
 
                 return (
-                  <Link key={category.id} href={href} className="group">
+                  <Link key={category.id} href={`/products?category=${category.id}`} className="group">
                     <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer">
                       <div className={`h-48 bg-gradient-to-br ${gradientClass} rounded-lg mb-6 overflow-hidden`}>
                         <img
