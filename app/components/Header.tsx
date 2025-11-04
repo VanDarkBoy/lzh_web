@@ -8,7 +8,7 @@ type NavItem = {
     label: string;
     mobileOnly?: boolean;
     desktopOnly?: boolean;
-    isCTA?: boolean;
+    isCta?: boolean;
 };
 
 const DEFAULT_NAV_ITEMS: NavItem[] = [
@@ -18,8 +18,7 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     {href: '/product-list', label: '产品列表'},
     {href: '/download', label: '下载中心'},
     {href: '/projects', label: '应用案例'},
-    {href: '/get-started', label: '获取报价'},
-    {href: '/contact', label: '联系我们'}
+    {href: '/get-started', label: '获取报价',isCta:true}
 ];
 
 const desktopLinkClass =
@@ -151,7 +150,7 @@ export default function Header() {
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    className={item.isCTA ? desktopCTALinkClass : desktopLinkClass}
+                                    className={item.isCta ? desktopCTALinkClass : desktopLinkClass}
                                 >
                                     {item.label}
                                 </Link>
@@ -176,7 +175,7 @@ export default function Header() {
                                     key={item.href}
                                     href={item.href}
                                     className={
-                                        item.isCTA
+                                        item.isCta
                                             ? `${mobileLinkClass} bg-blue-600 text-white hover:bg-blue-700 hover:text-white`
                                             : mobileLinkClass
                                     }

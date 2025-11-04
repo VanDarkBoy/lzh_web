@@ -20,28 +20,6 @@ export default function Footer() {
               </p>
             </div>
 
-            {/*<div>*/}
-            {/*  <h4 className="text-xl font-semibold mb-6 text-white">快速链接</h4>*/}
-            {/*  <ul className="space-y-3">*/}
-            {/*    <li><Link href="/" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer text-base">首页</Link></li>*/}
-            {/*    <li><Link href="/about" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer text-base">关于我们</Link></li>*/}
-            {/*    <li><Link href="/products" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer text-base">产品中心</Link></li>*/}
-            {/*    <li><Link href="/product-list" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer text-base">产品列表</Link></li>*/}
-            {/*    <li><Link href="/download" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer text-base">下载中心</Link></li>*/}
-            {/*    <li><Link href="/contact" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer text-base">联系我们</Link></li>*/}
-            {/*  </ul>*/}
-            {/*</div>*/}
-
-            {/*<div>*/}
-            {/*  <h4 className="text-xl font-semibold mb-6 text-white">产品系列</h4>*/}
-            {/*  <ul className="space-y-3">*/}
-            {/*    <li><Link href="/products?category=residential" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer text-base">住宅储能系统</Link></li>*/}
-            {/*    <li><Link href="/products?category=commercial" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer text-base">工商业储能</Link></li>*/}
-            {/*    <li><Link href="/products?category=rv" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer text-base">房车储能</Link></li>*/}
-            {/*    <li><Link href="/products?category=power" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer text-base">动力电池</Link></li>*/}
-            {/*  </ul>*/}
-            {/*</div>*/}
-
             <div>
               <h4 className="text-xl font-semibold mb-6 text-white">联系方式</h4>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-base text-gray-300">
