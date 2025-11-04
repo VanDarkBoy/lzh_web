@@ -6,13 +6,52 @@ import Link from 'next/link';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
+const CATEGORY_GRADIENTS = [
+  'from-blue-100 to-blue-200',
+  'from-green-100 to-green-200',
+  'from-purple-100 to-purple-200',
+  'from-orange-100 to-orange-200',
+];
+
+type Category = {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  slug?: string;
+  link?: string;
+};
+
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [categoriesError, setCategoriesError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/getCategoriesHome`);
+        if (!response.ok) {
+          throw new Error('获取产品分类失败');
+        }
+        const data: Category[] = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Failed to fetch home categories:', error);
+        setCategoriesError('暂时无法加载产品分类，请稍后重试');
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   return (
@@ -98,73 +137,42 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" data-product-shop>
-              <Link href="/products?category=residential" className="group">
-                <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer">
-                  <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg mb-6 overflow-hidden">
-                    <img 
-                      src="https://readdy.ai/api/search-image?query=Modern%20residential%20home%20energy%20storage%20system%20with%20sleek%20white%20design%2C%20wall-mounted%20lithium%20battery%20unit%20with%20digital%20display%2C%20safe%20and%20compact%20home%20ESS%20installation%20in%20clean%20modern%20interior&width=400&height=300&seq=home-storage-category&orientation=landscape" 
-                      alt="家用储能系统" 
-                      className="w-full h-full object-cover object-top"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">家用储能</h3>
-                  <p className="text-gray-600 mb-4">安全可靠的家庭储能解决方案，让您的家庭拥有稳定的电力保障</p>
-                  <div className="flex items-center text-green-600 font-semibold">
-                    了解更多 <i className="ri-arrow-right-line ml-2 w-4 h-4 flex items-center justify-center"></i>
-                  </div>
-                </div>
-              </Link>
+              {isLoadingCategories && (
+                <div className="col-span-full text-center text-gray-500">正在加载产品分类...</div>
+              )}
+              {categoriesError && !isLoadingCategories && (
+                <div className="col-span-full text-center text-red-500">{categoriesError}</div>
+              )}
+              {!isLoadingCategories && !categoriesError && categories.length === 0 && (
+                <div className="col-span-full text-center text-gray-500">暂无产品分类</div>
+              )}
+              {categories.map((category, index) => {
+                const href = category.link
+                  ? category.link
+                  : category.slug
+                  ? `/products?category=${encodeURIComponent(category.slug)}`
+                  : `/products?category=${encodeURIComponent(category.name)}`;
+                const gradientClass = CATEGORY_GRADIENTS[index % CATEGORY_GRADIENTS.length];
 
-              <Link href="/products?category=commercial" className="group">
-                <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer">
-                  <div className="h-48 bg-gradient-to-br from-green-100 to-green-200 rounded-lg mb-6 overflow-hidden">
-                    <img 
-                      src="https://readdy.ai/api/search-image?query=Large%20scale%20commercial%20energy%20storage%20container%20system%2C%20industrial%20ESS%20facility%20with%20multiple%20battery%20cabinets%2C%20professional%20installation%20for%20business%20and%20industrial%20applications&width=400&height=300&seq=commercial-storage-category&orientation=landscape" 
-                      alt="商用储能系统" 
-                      className="w-full h-full object-cover object-top"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">商用储能</h3>
-                  <p className="text-gray-600 mb-4">大容量工商业储能方案，帮助企业降低用电成本，提高能源效率</p>
-                  <div className="flex items-center text-green-600 font-semibold">
-                    了解更多 <i className="ri-arrow-right-line ml-2 w-4 h-4 flex items-center justify-center"></i>
-                  </div>
-                </div>
-              </Link>
-
-              <Link href="/products?category=rv" className="group">
-                <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer">
-                  <div className="h-48 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg mb-6 overflow-hidden">
-                    <img 
-                      src="https://readdy.ai/api/search-image?query=Compact%20RV%20recreational%20vehicle%20battery%20system%20with%20integrated%20display%20and%20control%20panel%2C%20portable%20mobile%20energy%20storage%20solution%20for%20travel%20and%20camping%20applications&width=400&height=300&seq=rv-storage-category&orientation=landscape" 
-                      alt="房车储能系统" 
-                      className="w-full h-full object-cover object-top"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">房车储能</h3>
-                  <p className="text-gray-600 mb-4">便携式房车储能系统，让您的旅途更加自由自在，随时享受电力保障</p>
-                  <div className="flex items-center text-green-600 font-semibold">
-                    了解更多 <i className="ri-arrow-right-line ml-2 w-4 h-4 flex items-center justify-center"></i>
-                  </div>
-                </div>
-              </Link>
-
-              <Link href="/products?category=power" className="group">
-                <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer">
-                  <div className="h-48 bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg mb-6 overflow-hidden">
-                    <img 
-                      src="https://readdy.ai/api/search-image?query=High%20performance%20lithium%20battery%20pack%20with%20Bluetooth%20monitoring%20system%2C%20advanced%20power%20battery%20solution%20with%20long%20cycle%20life%20for%20electric%20vehicles%20and%20industrial%20equipment&width=400&height=300&seq=power-battery-category&orientation=landscape" 
-                      alt="动力电池" 
-                      className="w-full h-full object-cover object-top"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">动力电池</h3>
-                  <p className="text-gray-600 mb-4">高性能动力电池解决方案，为各种应用提供强劲动力支持</p>
-                  <div className="flex items-center text-green-600 font-semibold">
-                    了解更多 <i className="ri-arrow-right-line ml-2 w-4 h-4 flex items-center justify-center"></i>
-                  </div>
-                </div>
-              </Link>
+                return (
+                  <Link key={category.id} href={href} className="group">
+                    <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer">
+                      <div className={`h-48 bg-gradient-to-br ${gradientClass} rounded-lg mb-6 overflow-hidden`}>
+                        <img
+                          src={category.image}
+                          alt={category.name}
+                          className="w-full h-full object-cover object-top"
+                        />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">{category.name}</h3>
+                      <p className="text-gray-600 mb-4">{category.description}</p>
+                      <div className="flex items-center text-green-600 font-semibold">
+                        了解更多 <i className="ri-arrow-right-line ml-2 w-4 h-4 flex items-center justify-center"></i>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
