@@ -22,9 +22,9 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
 ];
 
 const desktopLinkClass =
-    'text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer';
+    'text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer rounded-md';
 const desktopCTALinkClass =
-    'bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 transition-colors duration-300 cursor-pointer whitespace-nowrap';
+    'bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 transition-colors duration-300 cursor-pointer whitespace-nowrap rounded-xl';
 const mobileLinkClass =
     'block px-4 py-3 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors cursor-pointer';
 
