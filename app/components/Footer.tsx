@@ -4,31 +4,31 @@ import Link from 'next/link';
 import {useEffect, useMemo, useState} from 'react';
 
 type FooterSocialLink = {
-    name?: string;
-    label?: string;
-    url?: string;
-    icon?: string;
+    name: string;
+    label: string;
+    url: string;
+    icon: string;
 };
 
 type FooterContactSection = {
-    addressLabel?: string;
-    address?: string;
-    addressIcon?: string;
-    hotlineLabel?: string;
-    hotline?: string;
-    hotlineIcon?: string;
-    businessLabel?: string;
-    businessEmail?: string;
-    businessIcon?: string;
+    addressLabel: string;
+    address: string;
+    addressIcon: string;
+    hotlineLabel: string;
+    hotline: string;
+    hotlineIcon: string;
+    businessLabel: string;
+    businessEmail: string;
+    businessIcon: string;
 };
 
 type FooterApiResponse = {
-    logoUrl?: string;
-    description?: string;
-    contact?: FooterContactSection;
-    socialLinks?: FooterSocialLink[];
-    social?: FooterSocialLink[];
-    copyright?: string;
+    logoUrl: string;
+    description: string;
+    contact: FooterContactSection;
+    socialLinks: FooterSocialLink[];
+    social: FooterSocialLink[];
+    copyright: string;
 };
 
 const DEFAULT_DATA: Required<Omit<FooterApiResponse, 'contact'>> & { contact: Required<FooterContactSection> } = {
@@ -52,21 +52,25 @@ const DEFAULT_DATA: Required<Omit<FooterApiResponse, 'contact'>> & { contact: Re
             name: 'LinkedIn',
             url: 'https://www.linkedin.com/company/72668160/admin/dashboard/',
             icon: 'ri-linkedin-fill',
+            label: ""
         },
         {
             name: 'Facebook',
             url: 'https://www.facebook.com/lithiumvalley/',
             icon: 'ri-facebook-fill',
+            label: ""
         },
         {
             name: 'YouTube',
             url: 'https://www.youtube.com/@LithiumValley',
             icon: 'ri-youtube-fill',
+            label: ""
         },
         {
             name: 'Instagram',
             url: 'https://www.instagram.com/lithiumvalley',
             icon: 'ri-instagram-fill',
+            label: ""
         },
     ],
     social: [],
