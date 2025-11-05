@@ -46,6 +46,7 @@ type FeatureItem = {
 type HomeContent = {
     heroTitle: string;
     heroHighlight: string;
+    backgroundImage: string;
     heroDescription: string;
     heroButtons: {
         primary: ButtonLink;
@@ -69,6 +70,7 @@ type HomeContent = {
 const DEFAULT_HOME_CONTENT: HomeContent = {
     heroTitle: '不仅是电池',
     heroHighlight: '而是智慧能源',
+    backgroundImage: 'https://lithiumvalley.com/images/20251105_021624_98c8a942164a.jpg',
     heroDescription:
         '锂智慧提供高安全、模块化的锂电池储能系统，涵盖住宅与商业应用，助力绿色能源与可持续发展',
     heroButtons: {
@@ -239,7 +241,7 @@ export default function Home() {
                 {/* Hero Section */}
                 <section className="relative min-h-screen flex items-center justify-center overflow-hidden"
                          style={{
-                             backgroundImage: `url('https://readdy.ai/api/search-image?query=Modern%20clean%20energy%20storage%20facility%20with%20solar%20panels%20and%20battery%20systems%2C%20sustainable%20green%20technology%20landscape%20with%20blue%20sky%2C%20professional%20industrial%20photography%20showing%20renewable%20energy%20infrastructure%20and%20smart%20grid%20systems&width=1920&height=1080&seq=hero-energy-bg&orientation=landscape')`,
+                             backgroundImage: `url(${homeContent.backgroundImage})`,
                              backgroundSize: 'cover',
                              backgroundPosition: 'center',
                              backgroundAttachment: 'fixed'
