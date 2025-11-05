@@ -17,9 +17,7 @@ type Category = {
   id: number;
   name: string;
   description: string;
-  image: string;
-  slug?: string;
-  link?: string;
+  image: string
 };
 
 interface ProjectItem {
