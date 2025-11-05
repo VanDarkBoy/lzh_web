@@ -33,7 +33,6 @@ interface ProjectItem {
 
 type ButtonLink = {
     text: string;
-    href: string;
 };
 
 type FeatureItem = {
@@ -73,8 +72,8 @@ const DEFAULT_HOME_CONTENT: HomeContent = {
     heroDescription:
         '锂智慧提供高安全、模块化的锂电池储能系统，涵盖住宅与商业应用，助力绿色能源与可持续发展',
     heroButtons: {
-        primary: {text: '探索产品', href: '/products'},
-        secondary: {text: '立即联系', href: '/get-started'},
+        primary: {text: '探索产品'},
+        secondary: {text: '立即联系'},
     },
     features: [
         {
@@ -115,8 +114,8 @@ const DEFAULT_HOME_CONTENT: HomeContent = {
     ctaTitle: '准备开始您的储能之旅？',
     ctaDescription: '我们的专业团队将为您提供一对一咨询服务，制定最适合您需求的储能解决方案',
     ctaButtons: {
-        primary: {text: '立即联系', href: '/get-started'},
-        secondary: {text: '下载资料', href: '/download'},
+        primary: {text: '立即联系'},
+        secondary: {text: '下载资料'},
     },
 };
 
@@ -285,13 +284,13 @@ export default function Home() {
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <Link href={homeContent.heroButtons.primary.href}>
+                                <Link href="/products">
                                     <button
                                         className="px-8 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-lg font-semibold cursor-pointer whitespace-nowrap">
                                         {homeContent.heroButtons.primary.text}
                                     </button>
                                 </Link>
-                                <Link href={homeContent.heroButtons.secondary.href}>
+                                <Link href="/get-started">
                                     <button
                                         className="px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-gray-900 transition-colors text-lg font-semibold cursor-pointer whitespace-nowrap">
                                         {homeContent.heroButtons.secondary.text}
@@ -434,13 +433,13 @@ export default function Home() {
                             {homeContent.ctaDescription}
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link href={homeContent.ctaButtons.primary.href}>
+                            <Link href="/get-started">
                                 <button
                                     className="px-8 py-4 bg-white text-green-600 rounded-lg hover:bg-gray-100 transition-colors text-lg font-semibold cursor-pointer whitespace-nowrap">
                                     {homeContent.ctaButtons.primary.text}
                                 </button>
                             </Link>
-                            <Link href={homeContent.ctaButtons.secondary.href}>
+                            <Link href="/download">
                                 <button
                                     className="px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-green-600 transition-colors text-lg font-semibold cursor-pointer whitespace-nowrap">
                                     {homeContent.ctaButtons.secondary.text}
