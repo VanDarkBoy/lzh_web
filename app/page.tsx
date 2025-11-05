@@ -92,7 +92,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden" 
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden"
           style={{
             backgroundImage: `url('https://readdy.ai/api/search-image?query=Modern%20clean%20energy%20storage%20facility%20with%20solar%20panels%20and%20battery%20systems%2C%20sustainable%20green%20technology%20landscape%20with%20blue%20sky%2C%20professional%20industrial%20photography%20showing%20renewable%20energy%20infrastructure%20and%20smart%20grid%20systems&width=1920&height=1080&seq=hero-energy-bg&orientation=landscape')`,
             backgroundSize: 'cover',
@@ -100,7 +100,7 @@ export default function Home() {
             backgroundAttachment: 'fixed'
           }}>
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
-          
+
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
             <div className="max-w-4xl mx-auto">
               <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
@@ -110,7 +110,7 @@ export default function Home() {
               <p className="text-xl md:text-2xl mb-12 text-gray-200 leading-relaxed max-w-3xl mx-auto">
                 锂智慧提供高安全、模块化的锂电池储能系统，涵盖住宅与商业应用，助力绿色能源与可持续发展
               </p>
-              
+
               {/* 核心亮点 */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                 <div className="text-center">
@@ -171,13 +171,13 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" data-product-shop>
               {isLoadingCategories && (
-                <div className="col-span-full text-center text-gray-500">正在加载产品分类...</div>
+                <div className="col-span-full text-center text-gray-500">Loading Product Categories...</div>
               )}
               {categoriesError && !isLoadingCategories && (
                 <div className="col-span-full text-center text-red-500">{categoriesError}</div>
               )}
               {!isLoadingCategories && !categoriesError && categories.length === 0 && (
-                <div className="col-span-full text-center text-gray-500">暂无产品分类</div>
+                <div className="col-span-full text-center text-gray-500">There is no product classification</div>
               )}
               {categories.map((category, index) => {
                 const gradientClass = CATEGORY_GRADIENTS[index % CATEGORY_GRADIENTS.length];
@@ -217,13 +217,13 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {isLoadingProjects && (
-                <div className="col-span-full text-center text-gray-500">正在加载成功案例...</div>
+                <div className="col-span-full text-center text-gray-500">Loading success stories...</div>
               )}
               {projectsError && !isLoadingProjects && (
                 <div className="col-span-full text-center text-red-500">{projectsError}</div>
               )}
               {!isLoadingProjects && !projectsError && projects.length === 0 && (
-                <div className="col-span-full text-center text-gray-500">暂无成功案例</div>
+                <div className="col-span-full text-center text-gray-500">There are no cases</div>
               )}
               {projects.map((project) => (
                 <div key={project.id} className="group cursor-pointer">
