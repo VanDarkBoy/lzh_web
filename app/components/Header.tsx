@@ -25,7 +25,7 @@ const DEFAULT_LOGO_URL =
     'https://static.readdy.ai/image/78fade42075db25ed5a2e70ff249826e/da2954c8563ca8087714e60cd0512fc7.jfif';
 
 type HeaderContentResponse = {
-    logoUrl?: string;
+    logoUrl: string;
 };
 
 const desktopLinkClass =
@@ -113,9 +113,7 @@ export default function Header() {
 
                 const data: HeaderContentResponse = await response.json();
 
-                if (typeof data?.logoUrl === 'string' && data.logoUrl.trim()) {
-                    setLogoUrl(data.logoUrl);
-                }
+                setLogoUrl(data.logoUrl);
             } catch (error) {
                 if ((error as Error).name !== 'AbortError') {
                     console.error('Error fetching header logo:', error);
