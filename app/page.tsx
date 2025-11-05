@@ -32,6 +32,132 @@ interface ProjectItem {
   size: string;
 }
 
+type ButtonLink = {
+  text: string;
+  href: string;
+};
+
+type FeatureItem = {
+  title: string;
+  description: string;
+  icon?: string;
+  containerClass?: string;
+  iconClass?: string;
+};
+
+type HomeContent = {
+  heroTitle: string;
+  heroHighlight: string;
+  heroDescription: string;
+  heroButtons: {
+    primary: ButtonLink;
+    secondary: ButtonLink;
+  };
+  features: FeatureItem[];
+  categoriesTitle: string;
+  categoriesDescription: string;
+  categoryCtaText: string;
+  projectsTitle: string;
+  projectsDescription: string;
+  projectsButtonText: string;
+  projectsButtonHref: string;
+  ctaTitle: string;
+  ctaDescription: string;
+  ctaButtons: {
+    primary: ButtonLink;
+    secondary: ButtonLink;
+  };
+};
+
+const DEFAULT_HOME_CONTENT: HomeContent = {
+  heroTitle: '不仅是电池',
+  heroHighlight: '而是智慧能源',
+  heroDescription:
+    '锂智慧提供高安全、模块化的锂电池储能系统，涵盖住宅与商业应用，助力绿色能源与可持续发展',
+  heroButtons: {
+    primary: { text: '探索产品', href: '/products' },
+    secondary: { text: '立即联系', href: '/get-started' },
+  },
+  features: [
+    {
+      title: '可靠',
+      description: '99.9%系统可靠性',
+      icon: 'ri-shield-check-line',
+      containerClass: 'bg-green-500/20',
+      iconClass: 'text-green-400',
+    },
+    {
+      title: '安全',
+      description: '多重安全防护',
+      icon: 'ri-lock-line',
+      containerClass: 'bg-blue-500/20',
+      iconClass: 'text-blue-400',
+    },
+    {
+      title: '模块化',
+      description: '灵活扩展配置',
+      icon: 'ri-stack-line',
+      containerClass: 'bg-purple-500/20',
+      iconClass: 'text-purple-400',
+    },
+    {
+      title: '绿色',
+      description: '环保可持续',
+      icon: 'ri-leaf-line',
+      containerClass: 'bg-green-500/20',
+      iconClass: 'text-green-400',
+    },
+  ],
+  categoriesTitle: '产品分类',
+  categoriesDescription: '为不同应用场景提供专业的储能解决方案，满足从家庭到工业的全方位需求',
+  categoryCtaText: '了解更多',
+  projectsTitle: '成功案例',
+  projectsDescription: '全球范围内的成功项目，见证我们的专业实力与卓越品质',
+  projectsButtonText: '查看更多案例',
+  projectsButtonHref: '/projects',
+  ctaTitle: '准备开始您的储能之旅？',
+  ctaDescription: '我们的专业团队将为您提供一对一咨询服务，制定最适合您需求的储能解决方案',
+  ctaButtons: {
+    primary: { text: '立即联系', href: '/get-started' },
+    secondary: { text: '下载资料', href: '/download' },
+  },
+};
+
+const mergeHomeContent = (base: HomeContent, update: Partial<HomeContent>): HomeContent => {
+  const mergeButton = (baseButton: ButtonLink, updateButton?: Partial<ButtonLink>): ButtonLink => ({
+    ...baseButton,
+    ...(updateButton ?? {}),
+  });
+
+  const mergedHeroButtons = {
+    primary: mergeButton(base.heroButtons.primary, update.heroButtons?.primary),
+    secondary: mergeButton(base.heroButtons.secondary, update.heroButtons?.secondary),
+  };
+
+  const mergedFeatures = update.features
+    ? update.features.map((feature, index) => ({
+        title: feature.title ?? base.features[index]?.title ?? '',
+        description: feature.description ?? base.features[index]?.description ?? '',
+        icon: feature.icon ?? base.features[index]?.icon,
+        containerClass: feature.containerClass ?? base.features[index]?.containerClass,
+        iconClass: feature.iconClass ?? base.features[index]?.iconClass,
+      }))
+    : base.features;
+
+  const mergedCtaButtons = {
+    primary: mergeButton(base.ctaButtons.primary, update.ctaButtons?.primary),
+    secondary: mergeButton(base.ctaButtons.secondary, update.ctaButtons?.secondary),
+  };
+
+  return {
+    ...base,
+    ...update,
+    heroButtons: mergedHeroButtons,
+    features: mergedFeatures,
+    ctaButtons: mergedCtaButtons,
+  };
+};
+
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -40,6 +166,9 @@ export default function Home() {
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [isLoadingProjects, setIsLoadingProjects] = useState(true);
   const [projectsError, setProjectsError] = useState<string | null>(null);
+  const [homeContent, setHomeContent] = useState<HomeContent>(DEFAULT_HOME_CONTENT);
+  const [isLoadingHomeContent, setIsLoadingHomeContent] = useState(true);
+  const [homeContentError, setHomeContentError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -65,6 +194,26 @@ export default function Home() {
     };
 
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchHomeContent = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/homeContent`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch home content');
+        }
+        const data: Partial<HomeContent> = await response.json();
+        setHomeContent((prev) => mergeHomeContent(prev, data));
+      } catch (error) {
+        console.error('Failed to fetch home content:', error);
+        setHomeContentError('首页内容暂时无法加载，请稍后再试');
+      } finally {
+        setIsLoadingHomeContent(false);
+      }
+    };
+
+    fetchHomeContent();
   }, []);
 
   useEffect(() => {
@@ -102,56 +251,49 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+            {!isLoadingHomeContent && homeContentError && (
+              <div className="mb-6 inline-block rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-2 text-sm text-red-100">
+                {homeContentError}
+              </div>
+            )}
             <div className="max-w-4xl mx-auto">
               <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
-                不仅是电池<br />
-                <span className="text-green-400">而是智慧能源</span>
+                {homeContent.heroTitle}
+                <br />
+                <span className="text-green-400">{homeContent.heroHighlight}</span>
               </h1>
               <p className="text-xl md:text-2xl mb-12 text-gray-200 leading-relaxed max-w-3xl mx-auto">
-                锂智慧提供高安全、模块化的锂电池储能系统，涵盖住宅与商业应用，助力绿色能源与可持续发展
+                {homeContent.heroDescription}
               </p>
-              
+
               {/* 核心亮点 */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="ri-shield-check-line text-green-400 text-2xl"></i>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">可靠</h3>
-                  <p className="text-sm text-gray-300">99.9%系统可靠性</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="ri-lock-line text-blue-400 text-2xl"></i>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">安全</h3>
-                  <p className="text-sm text-gray-300">多重安全防护</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="ri-stack-line text-purple-400 text-2xl"></i>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">模块化</h3>
-                  <p className="text-sm text-gray-300">灵活扩展配置</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="ri-leaf-line text-green-400 text-2xl"></i>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">绿色</h3>
-                  <p className="text-sm text-gray-300">环保可持续</p>
-                </div>
+                {homeContent.features.map((feature, index) => {
+                  const defaultFeature = DEFAULT_HOME_CONTENT.features[index % DEFAULT_HOME_CONTENT.features.length];
+                  const containerClass = feature.containerClass ?? defaultFeature?.containerClass ?? 'bg-green-500/20';
+                  const iconClass = feature.iconClass ?? defaultFeature?.iconClass ?? 'text-green-400';
+
+                  return (
+                    <div key={`${feature.title}-${index}`} className="text-center">
+                      <div className={`w-16 h-16 ${containerClass} rounded-full flex items-center justify-center mx-auto mb-4`}>
+                        <i className={`${feature.icon ?? defaultFeature?.icon ?? 'ri-shield-check-line'} ${iconClass} text-2xl`}></i>
+                      </div>
+                      <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+                      <p className="text-sm text-gray-300">{feature.description}</p>
+                    </div>
+                  );
+                })}
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/products">
+                <Link href={homeContent.heroButtons.primary.href}>
                   <button className="px-8 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-lg font-semibold cursor-pointer whitespace-nowrap">
-                    探索产品
+                    {homeContent.heroButtons.primary.text}
                   </button>
                 </Link>
-                <Link href="/get-started">
+                <Link href={homeContent.heroButtons.secondary.href}>
                   <button className="px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-gray-900 transition-colors text-lg font-semibold cursor-pointer whitespace-nowrap">
-                    立即联系
+                    {homeContent.heroButtons.secondary.text}
                   </button>
                 </Link>
               </div>
@@ -163,9 +305,9 @@ export default function Home() {
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">产品分类</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">{homeContent.categoriesTitle}</h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                为不同应用场景提供专业的储能解决方案，满足从家庭到工业的全方位需求
+                {homeContent.categoriesDescription}
               </p>
             </div>
 
@@ -195,7 +337,7 @@ export default function Home() {
                       <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">{category.name}</h3>
                       <p className="text-gray-600 mb-4">{category.description}</p>
                       <div className="flex items-center text-green-600 font-semibold">
-                        了解更多 <i className="ri-arrow-right-line ml-2 w-4 h-4 flex items-center justify-center"></i>
+                        {homeContent.categoryCtaText} <i className="ri-arrow-right-line ml-2 w-4 h-4 flex items-center justify-center"></i>
                       </div>
                     </div>
                   </Link>
@@ -209,9 +351,9 @@ export default function Home() {
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">成功案例</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">{homeContent.projectsTitle}</h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                全球范围内的成功项目，见证我们的专业实力与卓越品质
+                {homeContent.projectsDescription}
               </p>
             </div>
 
@@ -264,9 +406,9 @@ export default function Home() {
             </div>
 
             <div className="text-center mt-12">
-              <Link href="/projects">
+              <Link href={homeContent.projectsButtonHref}>
                 <button className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer whitespace-nowrap">
-                  查看更多案例
+                  {homeContent.projectsButtonText}
                 </button>
               </Link>
             </div>
@@ -276,19 +418,19 @@ export default function Home() {
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-green-600 to-blue-600">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-4xl font-bold text-white mb-6">准备开始您的储能之旅？</h2>
+            <h2 className="text-4xl font-bold text-white mb-6">{homeContent.ctaTitle}</h2>
             <p className="text-xl text-white/90 mb-10 max-w-3xl mx-auto">
-              我们的专业团队将为您提供一对一咨询服务，制定最适合您需求的储能解决方案
+              {homeContent.ctaDescription}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/get-started">
+              <Link href={homeContent.ctaButtons.primary.href}>
                 <button className="px-8 py-4 bg-white text-green-600 rounded-lg hover:bg-gray-100 transition-colors text-lg font-semibold cursor-pointer whitespace-nowrap">
-                  立即联系
+                  {homeContent.ctaButtons.primary.text}
                 </button>
               </Link>
-              <Link href="/download">
+              <Link href={homeContent.ctaButtons.secondary.href}>
                 <button className="px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-green-600 transition-colors text-lg font-semibold cursor-pointer whitespace-nowrap">
-                  下载资料
+                  {homeContent.ctaButtons.secondary.text}
                 </button>
               </Link>
             </div>
