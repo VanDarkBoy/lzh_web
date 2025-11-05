@@ -52,13 +52,13 @@ export default function Home() {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/getCategoriesHome`);
         if (!response.ok) {
-          throw new Error('获取产品分类失败');
+          throw new Error('Failed to get product classification');
         }
         const data: Category[] = await response.json();
         setCategories(data);
       } catch (error) {
         console.error('Failed to fetch home categories:', error);
-        setCategoriesError('暂时无法加载产品分类，请稍后重试');
+        setCategoriesError('The product category cannot be loaded for now, please try again later');
       } finally {
         setIsLoadingCategories(false);
       }
@@ -72,13 +72,13 @@ export default function Home() {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/getAllProductCaseHome`);
         if (!response.ok) {
-          throw new Error('获取成功案例失败');
+          throw new Error('Get success stories failed');
         }
         const data: ProjectItem[] = await response.json();
         setProjects(data);
       } catch (error) {
         console.error('Failed to fetch home projects:', error);
-        setProjectsError('暂时无法加载成功案例，请稍后重试');
+        setProjectsError('The success story cannot be loaded for now, please try again later');
       } finally {
         setIsLoadingProjects(false);
       }
