@@ -21,6 +21,13 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     {href: '/get-started', label: '获取报价',isCta:true}
 ];
 
+const DEFAULT_LOGO_URL =
+    'https://static.readdy.ai/image/78fade42075db25ed5a2e70ff249826e/da2954c8563ca8087714e60cd0512fc7.jfif';
+
+type HeaderContentResponse = {
+    logoUrl?: string;
+};
+
 const desktopLinkClass =
     'text-gray-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer rounded-md';
 const desktopCTALinkClass =
@@ -32,6 +39,7 @@ export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const [navItems, setNavItems] = useState<NavItem[]>(DEFAULT_NAV_ITEMS);
+    const [logoUrl, setLogoUrl] = useState<string>(DEFAULT_LOGO_URL);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -90,6 +98,39 @@ export default function Header() {
     }, []);
 
     useEffect(() => {
+        const controller = new AbortController();
+
+        const loadHeaderLogo = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_BASE}/api/headerContent`,
+                    {signal: controller.signal}
+                );
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load header logo: ${response.status}`);
+                }
+
+                const data: HeaderContentResponse = await response.json();
+
+                if (typeof data?.logoUrl === 'string' && data.logoUrl.trim()) {
+                    setLogoUrl(data.logoUrl);
+                }
+            } catch (error) {
+                if ((error as Error).name !== 'AbortError') {
+                    console.error('Error fetching header logo:', error);
+                }
+            }
+        };
+
+        loadHeaderLogo();
+
+        return () => {
+            controller.abort();
+        };
+    }, []);
+
+    useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as HTMLElement;
             if (!target.closest('.dropdown-container') && !target.closest('.dropdown-menu')) {
@@ -138,7 +179,7 @@ export default function Header() {
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center">
                                 <img
-                                    src="https://static.readdy.ai/image/78fade42075db25ed5a2e70ff249826e/da2954c8563ca8087714e60cd0512fc7.jfif"
+                                    src={logoUrl || DEFAULT_LOGO_URL}
                                     alt="Lithium Valley Logo"
                                     className="h-32 sm:h-20 w-32 bg-transparent mix-blend-multiply"
                                 />
