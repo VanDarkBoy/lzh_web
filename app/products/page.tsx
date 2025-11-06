@@ -7,13 +7,20 @@ import ProductsHero from './ProductsHero';
 import ProductCategories from './ProductCategories';
 import ProductFeatures from './ProductFeatures';
 import ProductPurchaseSupport from './ProductPurchaseSupport';
-import type { Category, ProductCategoriesContent } from './types';
+import type {
+  Category,
+  ProductCategoriesContent,
+  ProductFeaturesContent,
+} from './types';
 
 export default function ProductsPage() {
   const [scrollY, setScrollY] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [content, setContent] = useState<ProductCategoriesContent | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
+  const [featuresContent, setFeaturesContent] = useState<ProductFeaturesContent | null>(null);
+  const [featuresContentError, setFeaturesContentError] = useState<string | null>(null);
+  const [isFeaturesContentLoading, setIsFeaturesContentLoading] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -52,6 +59,43 @@ export default function ProductsPage() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchFeaturesContent = async () => {
+      try {
+        setIsFeaturesContentLoading(true);
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductFeaturesContent`, {
+          signal: controller.signal,
+          cache: 'no-store',
+        });
+
+        if (!response.ok) {
+          throw new Error('获取产品功能展示内容失败');
+        }
+
+        const data: ProductFeaturesContent = await response.json();
+        setFeaturesContent(data);
+        setFeaturesContentError(null);
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return;
+        }
+
+        console.error('Error fetching product features content:', err);
+        setFeaturesContent(null);
+        setFeaturesContentError('加载产品功能展示内容失败，请稍后重试。');
+      } finally {
+        setIsFeaturesContentLoading(false);
+      }
+    };
+
+    fetchFeaturesContent();
+
+    return () => controller.abort();
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -62,7 +106,13 @@ export default function ProductsPage() {
         content={content}
         contentError={contentError}
       />
-      <ProductFeatures scrollY={scrollY} selectedCategory={selectedCategory} />
+      <ProductFeatures
+        scrollY={scrollY}
+        selectedCategory={selectedCategory}
+        content={featuresContent}
+        contentError={featuresContentError}
+        isContentLoading={isFeaturesContentLoading}
+      />
       <ProductPurchaseSupport scrollY={scrollY} />
       <Footer />
     </div>

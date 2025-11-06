@@ -2,47 +2,28 @@
 
 import {useEffect, useState} from 'react';
 import {useInView} from 'react-intersection-observer';
-import type {Category, PerformanceMetric, ProductFeatureItem} from './types';
+import type {
+    Category,
+    PerformanceMetric,
+    ProductFeatureItem,
+    ProductFeaturesContent,
+} from './types';
 
 interface ProductFeaturesProps {
     scrollY: number;
     selectedCategory: Category | null;
+    content: ProductFeaturesContent | null;
+    contentError: string | null;
+    isContentLoading: boolean;
 }
 
-type SectionTitle = {
-    main: string;
-    highlight: string;
-};
-
-type ProductFeaturesContent = {
-    sectionHeader: {
-        title: SectionTitle;
-        description: string;
-        generalPrompt: string;
-    };
-    featureSection: {
-        loading: string;
-        empty: string;
-        selectCategory: string;
-    };
-    performanceSection: {
-        title: string;
-        description: string;
-        loading: string;
-        empty: string;
-        selectCategory: string;
-    };
-    summarySection: {
-        title: string;
-        stats: Array<{
-            value: string;
-            label: string;
-        }>;
-        descriptionLines: string[];
-    };
-};
-
-export default function ProductFeatures({scrollY, selectedCategory}: ProductFeaturesProps) {
+export default function ProductFeatures({
+    scrollY,
+    selectedCategory,
+    content,
+    contentError,
+    isContentLoading,
+}: ProductFeaturesProps) {
     const [ref, inView] = useInView({
         threshold: 0.1,
         triggerOnce: true,
@@ -51,45 +32,6 @@ export default function ProductFeatures({scrollY, selectedCategory}: ProductFeat
     const [performanceData, setPerformanceData] = useState<PerformanceMetric[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [content, setContent] = useState<ProductFeaturesContent | null>(null);
-    const [contentError, setContentError] = useState<string | null>(null);
-    const [isContentLoading, setIsContentLoading] = useState(true);
-
-    useEffect(() => {
-        const controller = new AbortController();
-
-        const fetchContent = async () => {
-            try {
-                setIsContentLoading(true);
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductFeaturesContent`, {
-                    signal: controller.signal,
-                    cache: 'no-store',
-                });
-
-                if (!response.ok) {
-                    throw new Error('获取产品功能展示内容失败');
-                }
-
-                const data: ProductFeaturesContent = await response.json();
-                setContent(data);
-                setContentError(null);
-            } catch (err) {
-                if (err instanceof DOMException && err.name === 'AbortError') {
-                    return;
-                }
-
-                console.error('Error fetching product features content:', err);
-                setContent(null);
-                setContentError('加载产品功能展示内容失败，请稍后重试。');
-            } finally {
-                setIsContentLoading(false);
-            }
-        };
-
-        fetchContent();
-
-        return () => controller.abort();
-    }, []);
 
     useEffect(() => {
         const controller = new AbortController();

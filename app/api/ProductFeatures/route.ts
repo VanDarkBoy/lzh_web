@@ -1,35 +1,5 @@
 import { NextResponse } from 'next/server';
-
-export type ProductFeaturesContent = {
-  sectionHeader: {
-    title: {
-      main: string;
-      highlight: string;
-    };
-    description: string;
-    generalPrompt: string;
-  };
-  featureSection: {
-    loading: string;
-    empty: string;
-    selectCategory: string;
-  };
-  performanceSection: {
-    title: string;
-    description: string;
-    loading: string;
-    empty: string;
-    selectCategory: string;
-  };
-  summarySection: {
-    title: string;
-    stats: Array<{
-      value: string;
-      label: string;
-    }>;
-    descriptionLines: string[];
-  };
-};
+import type { ProductFeaturesContent } from '@/app/products/types';
 
 const content: ProductFeaturesContent = {
   sectionHeader: {
