@@ -49,3 +49,34 @@ export interface PerformanceMetric {
     description: string;
     icon: string;
 }
+
+export interface ProductFeaturesContent {
+    sectionHeader: {
+        title: {
+            main: string;
+            highlight: string;
+        };
+        description: string;
+        generalPrompt: string;
+    };
+    featureSection: {
+        loading: string;
+        empty: string;
+        selectCategory: string;
+    };
+    performanceSection: {
+        title: string;
+        description: string;
+        loading: string;
+        empty: string;
+        selectCategory: string;
+    };
+    summarySection: {
+        title: string;
+        stats: Array<{
+            value: string;
+            label: string;
+        }>;
+        descriptionLines: string[];
+    };
+}
