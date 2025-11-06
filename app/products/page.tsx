@@ -11,6 +11,7 @@ import type {
   Category,
   ProductCategoriesContent,
   ProductFeaturesContent,
+  ProductPurchaseSupportContent,
 } from './types';
 
 export default function ProductsPage() {
@@ -20,6 +21,9 @@ export default function ProductsPage() {
   const [contentError, setContentError] = useState<string | null>(null);
   const [featuresContent, setFeaturesContent] = useState<ProductFeaturesContent | null>(null);
   const [featuresContentError, setFeaturesContentError] = useState<string | null>(null);
+  const [purchaseSupportContent, setPurchaseSupportContent] = useState<ProductPurchaseSupportContent | null>(null);
+  const [purchaseSupportError, setPurchaseSupportError] = useState<string | null>(null);
+  const [isPurchaseSupportLoading, setIsPurchaseSupportLoading] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -93,6 +97,42 @@ export default function ProductsPage() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchPurchaseSupportContent = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE}/api/ProductPurchaseSupportContent`,
+          {
+            signal: controller.signal,
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`请求失败，状态码：${response.status}`);
+        }
+
+        const data: ProductPurchaseSupportContent = await response.json();
+        setPurchaseSupportContent(data);
+        setPurchaseSupportError(null);
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return;
+        }
+        console.error('Failed to load product purchase support content', err);
+        setPurchaseSupportContent(null);
+        setPurchaseSupportError('数据加载失败，请稍后重试。');
+      } finally {
+        setIsPurchaseSupportLoading(false);
+      }
+    };
+
+    fetchPurchaseSupportContent();
+
+    return () => controller.abort();
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -109,7 +149,12 @@ export default function ProductsPage() {
         content={featuresContent}
         contentError={featuresContentError}
       />
-      <ProductPurchaseSupport scrollY={scrollY} />
+      <ProductPurchaseSupport
+        scrollY={scrollY}
+        content={purchaseSupportContent}
+        isLoading={isPurchaseSupportLoading}
+        error={purchaseSupportError}
+      />
       <Footer />
     </div>
   );
