@@ -152,8 +152,6 @@ export default function ProductsPage() {
       <ProductPurchaseSupport
         scrollY={scrollY}
         content={purchaseSupportContent}
-        isLoading={isPurchaseSupportLoading}
-        error={purchaseSupportError}
       />
       <Footer />
     </div>

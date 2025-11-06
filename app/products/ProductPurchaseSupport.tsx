@@ -9,15 +9,11 @@ import type { ProductPurchaseSupportContent } from './types';
 interface PurchaseSupportProps {
   scrollY: number;
   content: ProductPurchaseSupportContent | null;
-  isLoading: boolean;
-  error: string | null;
 }
 
 export default function ProductPurchaseSupport({
   scrollY,
   content,
-  isLoading,
-  error,
 }: PurchaseSupportProps) {
   const [ref, inView] = useInView({
     threshold: 0.1,
@@ -37,7 +33,7 @@ export default function ProductPurchaseSupport({
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center text-gray-500 py-20">
-            {isLoading ? '正在加载支持信息...' : error ?? '暂无支持信息。'}
+            正在加载支持信息...
           </div>
         </div>
       </section>
