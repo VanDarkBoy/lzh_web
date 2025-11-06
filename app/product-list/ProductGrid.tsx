@@ -47,7 +47,7 @@ const defaultContent: ProductGridContent = {
   }
 };
 
-export default function ProductGrid() {
+export default function ProductGrid( ) {
   const [activeCategory, setActiveCategory] = useState<bigint>();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);

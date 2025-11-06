@@ -19,7 +19,7 @@ export default function ProductListPage() {
     <div className="min-h-screen bg-white">
       <Header />
       <ProductListHero scrollY={scrollY} />
-      <ProductGrid scrollY={scrollY} />
+      <ProductGrid />
       <Footer />
     </div>
   );
