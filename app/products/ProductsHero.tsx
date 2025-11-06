@@ -32,7 +32,6 @@ interface ProductsHeroContent {
   scrollIndicatorIcon: string;
 }
 
-const API_PATH = '/api/ProductsHero';
 
 export default function ProductsHero({ scrollY }: ProductsHeroProps) {
   const [ref, inView] = useInView({
@@ -46,9 +45,7 @@ export default function ProductsHero({ scrollY }: ProductsHeroProps) {
 
     const fetchContent = async () => {
       try {
-        const baseUrl = (process.env.NEXT_PUBLIC_API_BASE ?? '').replace(/\/$/, '');
-        const endpoint = `${baseUrl}${API_PATH}`;
-        const response = await fetch(endpoint, { cache: 'no-store' });
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductsHeroContent`, { cache: 'no-store' });
 
         if (!response.ok) {
           throw new Error(`Failed to load ProductsHero content: ${response.statusText}`);

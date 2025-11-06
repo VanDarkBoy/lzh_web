@@ -61,7 +61,7 @@ export default function ProductFeatures({scrollY, selectedCategory}: ProductFeat
         const fetchContent = async () => {
             try {
                 setIsContentLoading(true);
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductFeatures`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductFeaturesContent`, {
                     signal: controller.signal,
                     cache: 'no-store',
                 });

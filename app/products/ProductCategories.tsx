@@ -84,7 +84,7 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
 
     const fetchContent = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductCategories`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductCategoriesContent`, {
           signal: controller.signal,
         });
 

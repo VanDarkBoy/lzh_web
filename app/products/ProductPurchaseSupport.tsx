@@ -77,7 +77,7 @@ export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductPurchaseSupport`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductPurchaseSupportContent`);
 
         if (!response.ok) {
           throw new Error(`请求失败，状态码：${response.status}`);
