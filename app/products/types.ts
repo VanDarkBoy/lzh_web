@@ -1,3 +1,28 @@
+export interface TitleBlock {
+    main: string;
+    highlight: string;
+}
+
+export interface Stat {
+    value: string;
+    label: string;
+}
+
+export interface Feature {
+    icon: string;
+    label: string;
+}
+
+export interface ProductsHeroContent {
+    backgroundImage: string;
+    title: TitleBlock;
+    tagline: TitleBlock;
+    subtitle: TitleBlock;
+    stats: Stat[];
+    features: Feature[];
+    scrollIndicatorIcon: string;
+}
+
 export interface Category {
     id: bigint;
     name: string;

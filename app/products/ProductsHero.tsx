@@ -1,71 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import type { ProductsHeroContent } from './types';
 
 interface ProductsHeroProps {
   scrollY: number;
-}
-
-interface TitleBlock {
-  main: string;
-  highlight: string;
-}
-
-interface Stat {
-  value: string;
-  label: string;
-}
-
-interface Feature {
-  icon: string;
-  label: string;
-}
-
-interface ProductsHeroContent {
-  backgroundImage: string;
-  title: TitleBlock;
-  tagline: TitleBlock;
-  subtitle: TitleBlock;
-  stats: Stat[];
-  features: Feature[];
-  scrollIndicatorIcon: string;
+  content: ProductsHeroContent | null;
 }
 
 
-export default function ProductsHero({ scrollY }: ProductsHeroProps) {
+export default function ProductsHero({ scrollY, content }: ProductsHeroProps) {
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
-  const [content, setContent] = useState<ProductsHeroContent | null>(null);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductsHeroContent`, { cache: 'no-store' });
-
-        if (!response.ok) {
-          throw new Error(`Failed to load ProductsHero content: ${response.statusText}`);
-        }
-
-        const data: ProductsHeroContent = await response.json();
-        if (isMounted) {
-          setContent(data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchContent();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   if (!content) {
     return null;

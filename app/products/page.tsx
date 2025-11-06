@@ -12,11 +12,13 @@ import type {
   ProductCategoriesContent,
   ProductFeaturesContent,
   ProductPurchaseSupportContent,
+  ProductsHeroContent,
 } from './types';
 
 export default function ProductsPage() {
   const [scrollY, setScrollY] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [heroContent, setHeroContent] = useState<ProductsHeroContent | null>(null);
   const [content, setContent] = useState<ProductCategoriesContent | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
   const [featuresContent, setFeaturesContent] = useState<ProductFeaturesContent | null>(null);
@@ -29,6 +31,35 @@ export default function ProductsPage() {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchHeroContent = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductsHeroContent`, {
+          signal: controller.signal,
+          cache: 'no-store',
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to load ProductsHero content: ${response.statusText}`);
+        }
+
+        const data: ProductsHeroContent = await response.json();
+        setHeroContent(data);
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          return;
+        }
+        console.error(error);
+      }
+    };
+
+    fetchHeroContent();
+
+    return () => controller.abort();
   }, []);
 
   useEffect(() => {
@@ -136,7 +167,7 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <ProductsHero scrollY={scrollY} />
+      <ProductsHero scrollY={scrollY} content={heroContent} />
       <ProductCategories
         scrollY={scrollY}
         onCategorySelect={setSelectedCategory}
