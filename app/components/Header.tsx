@@ -22,7 +22,7 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
 ];
 
 const DEFAULT_LOGO_URL =
-    'https://static.readdy.ai/image/78fade42075db25ed5a2e70ff249826e/da2954c8563ca8087714e60cd0512fc7.jfif';
+    'https://lithiumvalley.com/images/20251105_060653_a821c0daf6bf.jpg';
 
 type HeaderContentResponse = {
     logoUrl: string;
@@ -177,7 +177,7 @@ export default function Header() {
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center">
                                 <img
-                                    src={logoUrl || DEFAULT_LOGO_URL}
+                                    src={logoUrl}
                                     alt="Lithium Valley Logo"
                                     className="h-32 sm:h-20 w-32 bg-transparent mix-blend-multiply"
                                 />
