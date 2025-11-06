@@ -1,100 +1,30 @@
 'use client';
 
 import { useInView } from 'react-intersection-observer';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
+
+import type { ProductPurchaseSupportContent } from './types';
 
 interface PurchaseSupportProps {
   scrollY: number;
+  content: ProductPurchaseSupportContent | null;
+  isLoading: boolean;
+  error: string | null;
 }
 
-interface PurchaseChannel {
-  title: string;
-  description: string;
-  icon: string;
-  action: string;
-  features: string[];
-}
-
-interface SupportService {
-  title: string;
-  description: string;
-  icon: string;
-  availability: string;
-}
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-interface ContactItem {
-  icon: string;
-  label: string;
-  value: string;
-}
-
-interface PurchaseSupportContentText {
-  heading: {
-    titlePrefix: string;
-    titleHighlight: string;
-    description: string;
-  };
-  tabs: {
-    purchase: string;
-    support: string;
-    faq: string;
-  };
-  contact: {
-    title: string;
-    items: ContactItem[];
-    button: string;
-  };
-  faqFooter: {
-    prompt: string;
-    button: string;
-  };
-}
-
-interface ProductPurchaseSupportContent {
-  purchaseChannels: PurchaseChannel[];
-  supportServices: SupportService[];
-  faqData: FAQItem[];
-  contentTxt: PurchaseSupportContentText;
-}
-
-export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps) {
+export default function ProductPurchaseSupport({
+  scrollY,
+  content,
+  isLoading,
+  error,
+}: PurchaseSupportProps) {
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
   const [activeTab, setActiveTab] = useState<'purchase' | 'support' | 'faq'>('purchase');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-  const [content, setContent] = useState<ProductPurchaseSupportContent | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductPurchaseSupportContent`);
-
-        if (!response.ok) {
-          throw new Error(`请求失败，状态码：${response.status}`);
-        }
-
-        const data: ProductPurchaseSupportContent = await response.json();
-        setContent(data);
-      } catch (err) {
-        console.error('Failed to load product purchase support content', err);
-        setError('数据加载失败，请稍后重试。');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchContent();
-  }, []);
 
   if (!content) {
     return (

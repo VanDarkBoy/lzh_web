@@ -80,3 +80,58 @@ export interface ProductFeaturesContent {
         descriptionLines: string[];
     };
 }
+
+export interface PurchaseChannel {
+    title: string;
+    description: string;
+    icon: string;
+    action: string;
+    features: string[];
+}
+
+export interface SupportService {
+    title: string;
+    description: string;
+    icon: string;
+    availability: string;
+}
+
+export interface FAQItem {
+    question: string;
+    answer: string;
+}
+
+export interface ContactItem {
+    icon: string;
+    label: string;
+    value: string;
+}
+
+export interface PurchaseSupportContentText {
+    heading: {
+        titlePrefix: string;
+        titleHighlight: string;
+        description: string;
+    };
+    tabs: {
+        purchase: string;
+        support: string;
+        faq: string;
+    };
+    contact: {
+        title: string;
+        items: ContactItem[];
+        button: string;
+    };
+    faqFooter: {
+        prompt: string;
+        button: string;
+    };
+}
+
+export interface ProductPurchaseSupportContent {
+    purchaseChannels: PurchaseChannel[];
+    supportServices: SupportService[];
+    faqData: FAQItem[];
+    contentTxt: PurchaseSupportContentText;
+}
