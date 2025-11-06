@@ -20,7 +20,6 @@ export default function ProductsPage() {
   const [contentError, setContentError] = useState<string | null>(null);
   const [featuresContent, setFeaturesContent] = useState<ProductFeaturesContent | null>(null);
   const [featuresContentError, setFeaturesContentError] = useState<string | null>(null);
-  const [isFeaturesContentLoading, setIsFeaturesContentLoading] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -64,8 +63,6 @@ export default function ProductsPage() {
 
     const fetchFeaturesContent = async () => {
       try {
-        setIsFeaturesContentLoading(true);
-
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductFeaturesContent`, {
           signal: controller.signal,
           cache: 'no-store',
@@ -87,7 +84,7 @@ export default function ProductsPage() {
         setFeaturesContent(null);
         setFeaturesContentError('加载产品功能展示内容失败，请稍后重试。');
       } finally {
-        setIsFeaturesContentLoading(false);
+
       }
     };
 
@@ -111,7 +108,6 @@ export default function ProductsPage() {
         selectedCategory={selectedCategory}
         content={featuresContent}
         contentError={featuresContentError}
-        isContentLoading={isFeaturesContentLoading}
       />
       <ProductPurchaseSupport scrollY={scrollY} />
       <Footer />

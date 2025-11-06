@@ -14,7 +14,6 @@ interface ProductFeaturesProps {
     selectedCategory: Category | null;
     content: ProductFeaturesContent | null;
     contentError: string | null;
-    isContentLoading: boolean;
 }
 
 export default function ProductFeatures({
@@ -22,7 +21,6 @@ export default function ProductFeatures({
     selectedCategory,
     content,
     contentError,
-    isContentLoading,
 }: ProductFeaturesProps) {
     const [ref, inView] = useInView({
         threshold: 0.1,
@@ -131,9 +129,7 @@ export default function ProductFeatures({
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center text-gray-500 py-20">
-                        {isContentLoading
-                            ? '正在加载产品功能展示内容...'
-                            : contentError ?? '暂无产品功能展示内容。'}
+                        正在加载产品功能展示内容
                     </div>
                 </div>
             </section>
