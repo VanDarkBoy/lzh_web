@@ -8,9 +8,16 @@ import type { Category, ProductCategoriesContent } from './types';
 interface ProductCategoriesProps {
   scrollY: number;
   onCategorySelect?: (category: Category | null) => void;
+  content: ProductCategoriesContent | null;
+  contentError?: string | null;
 }
 
-export default function ProductCategories({ scrollY, onCategorySelect }: ProductCategoriesProps) {
+export default function ProductCategories({
+  scrollY,
+  onCategorySelect,
+  content,
+  contentError,
+}: ProductCategoriesProps) {
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
@@ -19,9 +26,6 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [content, setContent] = useState<ProductCategoriesContent | null>(null);
-  const [contentError, setContentError] = useState<string | null>(null);
-
   useEffect(() => {
     const controller = new AbortController();
 
@@ -75,37 +79,6 @@ export default function ProductCategories({ scrollY, onCategorySelect }: Product
     };
 
     fetchCategories();
-
-    return () => controller.abort();
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductCategoriesContent`, {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error('加载产品分类文案失败');
-        }
-
-        const data: ProductCategoriesContent = await response.json();
-        setContent(data);
-        setContentError(null);
-      } catch (err) {
-        if (err instanceof DOMException && err.name === 'AbortError') {
-          return;
-        }
-        setContentError(
-          err instanceof Error ? err.message : '加载产品分类文案失败，请稍后重试'
-        );
-      }
-    };
-
-    fetchContent();
 
     return () => controller.abort();
   }, []);
