@@ -34,7 +34,7 @@ interface ContactItem {
   value: string;
 }
 
-interface ContentText {
+interface PurchaseSupportContentText {
   heading: {
     titlePrefix: string;
     titleHighlight: string;
@@ -60,7 +60,7 @@ interface ProductPurchaseSupportContent {
   purchaseChannels: PurchaseChannel[];
   supportServices: SupportService[];
   faqData: FAQItem[];
-  contentTxt: ContentText;
+  contentTxt: PurchaseSupportContentText;
 }
 
 export default function ProductPurchaseSupport({ scrollY }: PurchaseSupportProps) {
