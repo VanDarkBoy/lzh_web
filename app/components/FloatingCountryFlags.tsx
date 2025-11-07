@@ -2,10 +2,13 @@ import Image from 'next/image';
 import type {ReactElement} from 'react';
 
 const COUNTRIES: {code: string; name: string}[] = [
-    {code: 'de', name: 'Germany 德国'},
-    {code: 'us', name: 'United States 美国'},
-    {code: 'ng', name: 'Nigeria 尼日利亚'},
     {code: 'za', name: 'South Africa 南非'},
+    {code: 'ng', name: 'Nigeria 尼日利亚'},
+    {code: 'ke', name: 'Kenya 肯尼亚'},
+    {code: 'es', name: 'Spain 西班牙'},
+    {code: 'de', name: 'Germany 德国'},
+    {code: 'it', name: 'Italy 意大利'},
+    {code: 'ir', name: 'Iran 伊朗'},
 ];
 
 export default function FloatingCountryFlags(): ReactElement {
