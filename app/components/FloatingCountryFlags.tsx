@@ -62,6 +62,8 @@ export default function FloatingCountryFlags(): ReactElement {
                             href={country.href}
                             className="group relative flex items-center focus:outline-none"
                             aria-label={country.name}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
                             <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg ring-1 ring-black/10 transition-transform duration-200 group-hover:-translate-x-1">
                                 <Image
