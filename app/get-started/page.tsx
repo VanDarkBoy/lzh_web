@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import ContactForm from './ContactForm';
 import Footer from "@/app/components/Footer";
 import WhatAPP from '../components/WhatAPP';
+import FloatingCountryFlags from '../components/FloatingCountryFlags';
 
 export default function GetStartedPage() {
     return (
@@ -14,6 +15,7 @@ export default function GetStartedPage() {
             </main>
             <Footer/>
             <WhatAPP/>
+            <FloatingCountryFlags />
         </div>
     );
 }

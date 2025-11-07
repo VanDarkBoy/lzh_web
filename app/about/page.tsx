@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatAPP from '../components/WhatAPP';
-import FloatingCountryFlags from  '../components/FloatingCountryFlags';
+import FloatingCountryFlags from '../components/FloatingCountryFlags';
 import AboutHero, { HeroContent } from './AboutHero';
 import CompanyVision, { VisionContent } from './CompanyVision';
 import GlobalPresence, { GlobalPresenceContent } from './GlobalPresence';
@@ -262,7 +262,7 @@ export default function AboutPage() {
       </main>
       <Footer />
       <WhatAPP />
-      <FloatingCountryFlags/>
+      <FloatingCountryFlags />
     </div>
   );
 }

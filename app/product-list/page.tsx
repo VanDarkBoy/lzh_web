@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatAPP from '../components/WhatAPP';
+import FloatingCountryFlags from '../components/FloatingCountryFlags';
 import ProductListHero from './ProductListHero';
 import ProductGrid from './ProductGrid';
 
@@ -23,6 +24,7 @@ export default function ProductListPage() {
       <ProductGrid />
       <Footer />
       <WhatAPP />
+      <FloatingCountryFlags />
     </div>
   );
 }
