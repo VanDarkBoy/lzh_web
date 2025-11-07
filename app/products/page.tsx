@@ -24,8 +24,6 @@ export default function ProductsPage() {
   const [featuresContent, setFeaturesContent] = useState<ProductFeaturesContent | null>(null);
   const [featuresContentError, setFeaturesContentError] = useState<string | null>(null);
   const [purchaseSupportContent, setPurchaseSupportContent] = useState<ProductPurchaseSupportContent | null>(null);
-  const [purchaseSupportError, setPurchaseSupportError] = useState<string | null>(null);
-  const [isPurchaseSupportLoading, setIsPurchaseSupportLoading] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -146,16 +144,13 @@ export default function ProductsPage() {
 
         const data: ProductPurchaseSupportContent = await response.json();
         setPurchaseSupportContent(data);
-        setPurchaseSupportError(null);
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') {
           return;
         }
         console.error('Failed to load product purchase support content', err);
         setPurchaseSupportContent(null);
-        setPurchaseSupportError('数据加载失败，请稍后重试。');
       } finally {
-        setIsPurchaseSupportLoading(false);
       }
     };
 
