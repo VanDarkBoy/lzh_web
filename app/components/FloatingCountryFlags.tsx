@@ -1,3 +1,6 @@
+'use client';
+
+import {useEffect, useState} from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type {ReactElement} from 'react';
@@ -8,31 +11,44 @@ type Country = {
     href: string;
 };
 
-async function getCountries(): Promise<Country[]> {
-    try {
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE}/api/otherArea`,
-            {
-                next: {revalidate: 3600},
-            },
-        );
+export default function FloatingCountryFlags(): ReactElement {
+    const [countries, setCountries] = useState<Country[]>([]);
 
-        if (!response.ok) {
-            console.error('Failed to fetch countries', response.statusText);
-            return [];
-        }
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
 
-        const data = (await response.json()) as Country[];
+        const loadCountries = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_BASE}/api/otherArea`,
+                    {signal: controller.signal},
+                );
 
-        return Array.isArray(data) ? data : [];
-    } catch (error) {
-        console.error('Failed to fetch countries', error);
-        return [];
-    }
-}
+                if (!response.ok) {
+                    console.error('Failed to fetch countries', response.statusText);
+                    return;
+                }
 
-export default async function FloatingCountryFlags(): Promise<ReactElement> {
-    const countries = await getCountries();
+                const data = (await response.json()) as Country[];
+
+                if (isMounted && Array.isArray(data)) {
+                    setCountries(data);
+                }
+            } catch (error) {
+                if (!(error instanceof DOMException && error.name === 'AbortError')) {
+                    console.error('Failed to fetch countries', error);
+                }
+            }
+        };
+
+        void loadCountries();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        };
+    }, []);
 
     return (
         <nav
