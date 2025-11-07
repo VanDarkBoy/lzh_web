@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import WhatAPP from '../components/WhatAPP';
 import ProjectHero from './ProjectHero';
 import ProjectGrid from './ProjectGrid';
 import ProjectCategories from './ProjectCategories';
@@ -80,6 +81,7 @@ export default function ProjectsPage() {
         />
       </main>
       <Footer />
+      <WhatAPP />
     </div>
   );
 }

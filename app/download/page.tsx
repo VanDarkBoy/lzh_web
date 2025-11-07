@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import WhatAPP from '../components/WhatAPP';
 import DownloadHero from './DownloadHero';
 import DownloadCenter from './DownloadCenter';
 import {
@@ -60,6 +61,7 @@ export default function DownloadPage() {
       <DownloadHero scrollY={scrollY} content={content.hero} />
       <DownloadCenter messages={content.messages} />
       <Footer />
+      <WhatAPP />
     </div>
   );
 }
