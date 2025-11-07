@@ -2,6 +2,7 @@
 
 import Header from '../components/Header';
 import ContactForm from './ContactForm';
+import WhatAPP from '../components/WhatAPP';
 
 export default function GetStartedPage() {
   return (
@@ -10,6 +11,7 @@ export default function GetStartedPage() {
       <main>
         <ContactForm />
       </main>
+      <WhatAPP />
     </div>
   );
 }

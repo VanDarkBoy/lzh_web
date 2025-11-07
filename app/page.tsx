@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react';
 import Link from 'next/link';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import WhatAPP from './components/WhatAPP';
 
 const CATEGORY_GRADIENTS = [
     'from-blue-100 to-blue-200',
@@ -452,6 +453,7 @@ export default function Home() {
                 </section>
             </main>
             <Footer/>
+            <WhatAPP />
         </div>
     );
 }

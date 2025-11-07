@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import WhatAPP from '../components/WhatAPP';
 import ProductListHero from './ProductListHero';
 import ProductGrid from './ProductGrid';
 
@@ -21,6 +22,7 @@ export default function ProductListPage() {
       <ProductListHero scrollY={scrollY} />
       <ProductGrid />
       <Footer />
+      <WhatAPP />
     </div>
   );
 }
