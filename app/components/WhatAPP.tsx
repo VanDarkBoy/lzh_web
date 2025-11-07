@@ -3,9 +3,9 @@
 import { useCallback, useEffect, useState } from 'react';
 
 interface WhatAPPConfig {
-    phone?: string;
-    message?: string;
-    bubbleText?: string;
+    phone: string;
+    message: string;
+    bubbleText: string;
 }
 
 const DEFAULT_PHONE = '15871484968';
