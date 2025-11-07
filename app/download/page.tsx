@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatAPP from '../components/WhatAPP';
+import FloatingCountryFlags from '../components/FloatingCountryFlags';
 import DownloadHero from './DownloadHero';
 import DownloadCenter from './DownloadCenter';
 import {
@@ -62,6 +63,7 @@ export default function DownloadPage() {
       <DownloadCenter messages={content.messages} />
       <Footer />
       <WhatAPP />
+      <FloatingCountryFlags />
     </div>
   );
 }

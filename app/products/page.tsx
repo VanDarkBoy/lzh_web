@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatAPP from '../components/WhatAPP';
+import FloatingCountryFlags from '../components/FloatingCountryFlags';
 import ProductsHero from './ProductsHero';
 import ProductCategories from './ProductCategories';
 import ProductFeatures from './ProductFeatures';
@@ -182,6 +183,7 @@ export default function ProductsPage() {
       />
       <Footer />
       <WhatAPP />
+      <FloatingCountryFlags />
     </div>
   );
 }
