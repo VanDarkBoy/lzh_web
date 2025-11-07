@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-interface WhatAPPProps {
+interface WhatAPPConfig {
     phone?: string;
     message?: string;
     bubbleText?: string;
@@ -14,13 +14,14 @@ const DEFAULT_BUBBLE_TEXT = '即刻咨询';
 
 const MOBILE_USER_AGENT = /Android|iPhone|iPad|iPod|Windows Phone/i;
 
-const WhatAPP = ({
-    phone = DEFAULT_PHONE,
-    message = DEFAULT_MESSAGE,
-    bubbleText = DEFAULT_BUBBLE_TEXT,
-}: WhatAPPProps) => {
+const WhatAPP = () => {
     const [isMobile, setIsMobile] = useState(false);
     const [isBubbleVisible, setIsBubbleVisible] = useState(false);
+    const [config, setConfig] = useState<WhatAPPConfig>({
+        phone: DEFAULT_PHONE,
+        message: DEFAULT_MESSAGE,
+        bubbleText: DEFAULT_BUBBLE_TEXT,
+    });
 
     useEffect(() => {
         const mobile = typeof navigator !== 'undefined' && MOBILE_USER_AGENT.test(navigator.userAgent);
@@ -28,8 +29,48 @@ const WhatAPP = ({
         setIsBubbleVisible(!mobile);
     }, []);
 
+    useEffect(() => {
+        const controller = new AbortController();
+
+        const fetchConfig = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/whatAppConfig`, {
+                    signal: controller.signal,
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch WhatsApp configuration: ${response.statusText}`);
+                }
+
+                const data: WhatAPPConfig = await response.json();
+
+                setConfig((prev) => ({
+                    phone: data.phone || prev.phone,
+                    message: data.message || prev.message,
+                    bubbleText: data.bubbleText || prev.bubbleText,
+                }));
+            } catch (error) {
+                if (
+                    (error instanceof DOMException && error.name === 'AbortError') ||
+                    (error instanceof Error && error.name === 'AbortError')
+                ) {
+                    return;
+                }
+                console.error('Failed to load WhatsApp configuration', error);
+            }
+        };
+
+        fetchConfig();
+
+        return () => {
+            controller.abort();
+        };
+    }, []);
+
+    const { phone, message, bubbleText } = config;
+
     const buildWhatsAppURL = useCallback(() => {
-        const sanitizedPhone = phone.replace(/\s+/g, '');
+        const sanitizedPhone = (phone || DEFAULT_PHONE).replace(/\s+/g, '');
 
         if (typeof window === 'undefined') {
             return '';
@@ -77,7 +118,7 @@ const WhatAPP = ({
                     }
                 }}
             >
-                <div className="wa-bubble">{bubbleText}</div>
+                <div className="wa-bubble">{bubbleText || DEFAULT_BUBBLE_TEXT}</div>
                 <button className="wa-btn" type="button" aria-label="Chat on WhatsApp" onClick={handleClick}>
                     <svg viewBox="0 0 32 32" aria-hidden="true">
                         <path d="M19.1 17.3c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1c-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1s-1.1-.4-2.1-1.3c-.8-.7-1.3-1.6-1.5-1.8-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-.9-2.3c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.7 1.2 2.9c.1.2 2 3.1 4.8 4.3.7.3 1.2.6 1.6.7.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4 0-.1-.3-.2-.6-.3zM16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.1 1.7 5.8L4 29l8.4-1.6c1.7.9 3.6 1.4 5.6 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.6c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-5 .9.9-4.9-.3-.5C5.3 16.9 4.8 15.4 4.8 14 4.8 8.9 9 4.8 14 4.8S23.2 8.9 23.2 14 21.1 24.6 16 24.6z" />
