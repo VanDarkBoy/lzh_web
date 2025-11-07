@@ -1,10 +1,11 @@
+import Image from 'next/image';
 import type {ReactElement} from 'react';
 
-const COUNTRIES: {code: string; name: string; flag: string}[] = [
-    {code: 'de', name: 'Germany 德国', flag: '🇩🇪'},
-    {code: 'us', name: 'United States 美国', flag: '🇺🇸'},
-    {code: 'ng', name: 'Nigeria 尼日利亚', flag: '🇳🇬'},
-    {code: 'za', name: 'South Africa 南非', flag: '🇿🇦'},
+const COUNTRIES: {code: string; name: string}[] = [
+    {code: 'de', name: 'Germany 德国'},
+    {code: 'us', name: 'United States 美国'},
+    {code: 'ng', name: 'Nigeria 尼日利亚'},
+    {code: 'za', name: 'South Africa 南非'},
 ];
 
 export default function FloatingCountryFlags(): ReactElement {
@@ -17,8 +18,15 @@ export default function FloatingCountryFlags(): ReactElement {
                 {COUNTRIES.map((country) => (
                     <li key={country.code} className="group relative">
                         <span className="sr-only">{country.name}</span>
-                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-3xl shadow-lg ring-1 ring-black/10 transition-transform duration-200 group-hover:-translate-x-1">
-                            {country.flag}
+                        <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg ring-1 ring-black/10 transition-transform duration-200 group-hover:-translate-x-1">
+                            <Image
+                                src={`/flags/${country.code}.svg`}
+                                alt={country.name}
+                                width={48}
+                                height={48}
+                                className="h-full w-full object-cover"
+                                priority
+                            />
                         </span>
                         <span className="pointer-events-none absolute right-full mr-3 origin-right scale-95 whitespace-nowrap rounded-full bg-black/80 px-3 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
                             {country.name}
