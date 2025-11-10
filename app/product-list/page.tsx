@@ -5,14 +5,14 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatAPP from '../components/WhatAPP';
 import FloatingCountryFlags from '../components/FloatingCountryFlags';
-import ProductListHero, { HeroContent, defaultHeroContent } from './ProductListHero';
-import ProductGrid, { ProductGridContent, defaultProductGridContent } from './ProductGrid';
+import ProductListHero from './ProductListHero';
+import ProductGrid from './ProductGrid';
+import { ProductListContent, defaultProductListContent } from './content';
 
 export default function ProductListPage() {
   const [scrollY, setScrollY] = useState(0);
-  const [heroContent, setHeroContent] = useState<HeroContent>(defaultHeroContent);
-  const [productGridContent, setProductGridContent] = useState<ProductGridContent>(createDefaultGridContent);
-  const [productGridContentError, setProductGridContentError] = useState<string | null>(null);
+  const [content, setContent] = useState<ProductListContent>(defaultProductListContent);
+  const [contentError, setContentError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -24,33 +24,38 @@ export default function ProductListPage() {
     let isMounted = true;
     const controller = new AbortController();
 
-    const fetchHeroContent = async () => {
+    const fetchContent = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductListHero`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductListContent`, {
           signal: controller.signal
         });
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch hero content: ${response.status}`);
+          throw new Error(`Failed to fetch product list content: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data: Partial<ProductListContent> = await response.json();
+
         if (isMounted) {
-          setHeroContent({
-            title: data?.title ?? defaultHeroContent.title,
-            description: data?.description ?? defaultHeroContent.description,
-            backgroundImage: data?.backgroundImage ?? defaultHeroContent.backgroundImage
-          });
+          setContent(mergeWithDefaultContent(data));
+          setContentError(null);
         }
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {
           return;
         }
+
         console.error(error);
+        if (isMounted) {
+          setContent(defaultProductListContent);
+          setContentError(
+            error instanceof Error ? error.message : '加载产品列表文案失败，请稍后重试'
+          );
+        }
       }
     };
 
-    fetchHeroContent();
+    fetchContent();
 
     return () => {
       isMounted = false;
@@ -58,43 +63,11 @@ export default function ProductListPage() {
     };
   }, []);
 
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductGrid`, {
-          signal: controller.signal
-        });
-
-        if (!response.ok) {
-          throw new Error('加载产品列表文案失败');
-        }
-
-        const data: ProductGridContent = await response.json();
-        setProductGridContent(data);
-        setProductGridContentError(null);
-      } catch (err) {
-        if (err instanceof DOMException && err.name === 'AbortError') {
-          return;
-        }
-        setProductGridContent(createDefaultGridContent());
-        setProductGridContentError(
-          err instanceof Error ? err.message : '加载产品列表文案失败，请稍后重试'
-        );
-      }
-    };
-
-    fetchContent();
-
-    return () => controller.abort();
-  }, []);
-
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <ProductListHero scrollY={scrollY} heroContent={heroContent} />
-      <ProductGrid content={productGridContent} contentError={productGridContentError} />
+      <ProductListHero scrollY={scrollY} content={content} />
+      <ProductGrid content={content} contentError={contentError} />
       <Footer />
       <WhatAPP />
       <FloatingCountryFlags />
@@ -102,9 +75,22 @@ export default function ProductListPage() {
   );
 }
 
-function createDefaultGridContent(): ProductGridContent {
+function mergeWithDefaultContent(data: Partial<ProductListContent>): ProductListContent {
   return {
-    errors: { ...defaultProductGridContent.errors },
-    states: { ...defaultProductGridContent.states }
+    title: data?.title ?? defaultProductListContent.title,
+    description: data?.description ?? defaultProductListContent.description,
+    backgroundImage: data?.backgroundImage ?? defaultProductListContent.backgroundImage,
+    errors: {
+      fetchProducts: data?.errors?.fetchProducts ?? defaultProductListContent.errors.fetchProducts,
+      fetchCategories: data?.errors?.fetchCategories ?? defaultProductListContent.errors.fetchCategories,
+      loadFailed: data?.errors?.loadFailed ?? defaultProductListContent.errors.loadFailed
+    },
+    states: {
+      loading: data?.states?.loading ?? defaultProductListContent.states.loading,
+      viewDetails: data?.states?.viewDetails ?? defaultProductListContent.states.viewDetails,
+      productsCategories:
+        data?.states?.productsCategories ?? defaultProductListContent.states.productsCategories,
+      empty: data?.states?.empty ?? defaultProductListContent.states.empty
+    }
   };
 }
