@@ -12,6 +12,7 @@ import ProductPurchaseSupport from './ProductPurchaseSupport';
 import type {
   Category,
   ProductCategoriesContent,
+  ProductCenterContent,
   ProductFeaturesContent,
   ProductPurchaseSupportContent,
   ProductsHeroContent,
@@ -36,127 +37,42 @@ export default function ProductsPage() {
   useEffect(() => {
     const controller = new AbortController();
 
-    const fetchHeroContent = async () => {
+    const fetchProductCenterContent = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductsHeroContent`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductCenterContent`, {
           signal: controller.signal,
           cache: 'no-store',
         });
 
         if (!response.ok) {
-          throw new Error(`Failed to load ProductsHero content: ${response.statusText}`);
+          throw new Error('加载产品中心内容失败');
         }
 
-        const data: ProductsHeroContent = await response.json();
-        setHeroContent(data);
-      } catch (error) {
-        if (error instanceof DOMException && error.name === 'AbortError') {
-          return;
-        }
-        console.error(error);
-      }
-    };
-
-    fetchHeroContent();
-
-    return () => controller.abort();
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductCategoriesContent`, {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error('加载产品分类文案失败');
-        }
-
-        const data: ProductCategoriesContent = await response.json();
-        setContent(data);
+        const data: ProductCenterContent = await response.json();
+        setHeroContent(data.productsHeroContent);
+        setContent(data.productCategoriesContent);
+        setFeaturesContent(data.productFeaturesContent);
+        setPurchaseSupportContent(data.productPurchaseSupportContent);
         setContentError(null);
-      } catch (err) {
-        if (err instanceof DOMException && err.name === 'AbortError') {
-          return;
-        }
-        setContentError(
-          err instanceof Error ? err.message : '加载产品分类文案失败，请稍后重试'
-        );
-      }
-    };
-
-    fetchContent();
-
-    return () => controller.abort();
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchFeaturesContent = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductFeaturesContent`, {
-          signal: controller.signal,
-          cache: 'no-store',
-        });
-
-        if (!response.ok) {
-          throw new Error('获取产品功能展示内容失败');
-        }
-
-        const data: ProductFeaturesContent = await response.json();
-        setFeaturesContent(data);
         setFeaturesContentError(null);
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') {
           return;
         }
 
-        console.error('Error fetching product features content:', err);
+        console.error('Failed to load product center content', err);
+        setHeroContent(null);
+        setContent(null);
         setFeaturesContent(null);
-        setFeaturesContentError('加载产品功能展示内容失败，请稍后重试。');
-      } finally {
-
-      }
-    };
-
-    fetchFeaturesContent();
-
-    return () => controller.abort();
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchPurchaseSupportContent = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE}/api/ProductPurchaseSupportContent`,
-          {
-            signal: controller.signal,
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`请求失败，状态码：${response.status}`);
-        }
-
-        const data: ProductPurchaseSupportContent = await response.json();
-        setPurchaseSupportContent(data);
-      } catch (err) {
-        if (err instanceof DOMException && err.name === 'AbortError') {
-          return;
-        }
-        console.error('Failed to load product purchase support content', err);
         setPurchaseSupportContent(null);
-      } finally {
+        setContentError(
+          err instanceof Error ? err.message : '加载产品分类文案失败，请稍后重试'
+        );
+        setFeaturesContentError('加载产品功能展示内容失败，请稍后重试。');
       }
     };
 
-    fetchPurchaseSupportContent();
+    fetchProductCenterContent();
 
     return () => controller.abort();
   }, []);
