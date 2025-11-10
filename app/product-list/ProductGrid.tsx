@@ -19,7 +19,7 @@ interface Category {
   count: number;
 }
 
-interface ProductGridContent {
+export interface ProductGridContent {
   errors: {
     fetchProducts: string;
     fetchCategories: string;
@@ -33,7 +33,7 @@ interface ProductGridContent {
   };
 }
 
-const defaultContent: ProductGridContent = {
+export const defaultProductGridContent: ProductGridContent = {
   errors: {
     fetchProducts: '获取产品列表失败',
     fetchCategories: '获取产品分类失败',
@@ -47,52 +47,23 @@ const defaultContent: ProductGridContent = {
   }
 };
 
-export default function ProductGrid( ) {
+interface ProductGridProps {
+  content: ProductGridContent;
+  contentError?: string | null;
+}
+
+export default function ProductGrid({ content, contentError }: ProductGridProps) {
   const [activeCategory, setActiveCategory] = useState<bigint>();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [content, setContent] = useState<ProductGridContent>(defaultContent);
-  const [contentError, setContentError] = useState<string | null>(null);
-  const contentRef = useRef<ProductGridContent>(defaultContent);
+  const displayContent = content ?? defaultProductGridContent;
+  const contentRef = useRef<ProductGridContent>(displayContent);
 
   useEffect(() => {
-    contentRef.current = content;
-  }, [content]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchContent = async () => {
-
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductGrid`, {
-          signal: controller.signal
-        });
-
-        if (!response.ok) {
-          throw new Error('加载产品列表文案失败');
-        }
-
-        const data: ProductGridContent = await response.json();
-        setContent(data);
-        contentRef.current = data;
-        setContentError(null);
-      } catch (err) {
-        if (err instanceof DOMException && err.name === 'AbortError') {
-          return;
-        }
-        setContentError(
-          err instanceof Error ? err.message : '加载产品列表文案失败，请稍后重试'
-        );
-      }
-    };
-
-    fetchContent();
-
-    return () => controller.abort();
-  }, []);
+    contentRef.current = displayContent;
+  }, [displayContent]);
 
   useEffect(() => {
     const productsController = new AbortController();
@@ -154,7 +125,7 @@ export default function ProductGrid( ) {
           {/* 分类筛选 */}
           <aside className="lg:w-64">
             <div className="mx-auto max-w-xl rounded-2xl bg-white p-6 shadow-lg lg:sticky lg:top-24">
-              <h2 className="mb-6 text-center text-lg font-semibold text-gray-800 lg:text-left">{content.states.productsCategories}</h2>
+              <h2 className="mb-6 text-center text-lg font-semibold text-gray-800 lg:text-left">{displayContent.states.productsCategories}</h2>
               <div className="flex flex-wrap justify-center gap-3 lg:flex-col lg:items-stretch">
                 {categories.map((category) => (
                   <button
@@ -194,7 +165,7 @@ export default function ProductGrid( ) {
             <div data-product-shop>
               {loading ? (
                 <div className="flex min-h-[200px] items-center justify-center text-gray-500">
-                  {content.states.loading}
+                  {displayContent.states.loading}
                 </div>
               ) : filteredProducts.length > 0 ? (
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -238,7 +209,7 @@ export default function ProductGrid( ) {
                       href={`/product-detail?id=${product.id.toString()}`}
                       className="inline-flex items-center justify-center rounded-lg border border-blue-600 px-4 py-2 text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white"
                     >
-                      {content.states.viewDetails}
+                      {displayContent.states.viewDetails}
                       <svg
                         className="ml-2 h-4 w-4"
                         fill="none"
@@ -260,7 +231,7 @@ export default function ProductGrid( ) {
                 </div>
               ) : (
                 <div className="flex min-h-[200px] items-center justify-center rounded-xl bg-white text-gray-500 shadow">
-                  {content.states.empty}
+                  {displayContent.states.empty}
                 </div>
               )}
             </div>
