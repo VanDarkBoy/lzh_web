@@ -65,10 +65,6 @@ export default function ProductGrid( ) {
     const controller = new AbortController();
 
     const fetchContent = async () => {
-      if (!process.env.NEXT_PUBLIC_API_BASE) {
-        setContentError('未配置产品列表文案接口地址');
-        return;
-      }
 
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductGrid`, {
@@ -102,11 +98,6 @@ export default function ProductGrid( ) {
     const productsController = new AbortController();
     const categoriesController = new AbortController();
 
-    if (!process.env.NEXT_PUBLIC_API_BASE) {
-      setError('未配置产品列表接口地址');
-      setLoading(false);
-      return;
-    }
 
     const fetchProducts = async () => {
       try {
