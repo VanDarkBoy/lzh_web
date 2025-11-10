@@ -1,3 +1,19 @@
+export interface Category {
+  id: bigint;
+  name: string;
+  count: number;
+  image?: string | null;
+  description?: string | null;
+  icon?: string | null;
+  applications?: string | null;
+  features?: string | null;
+  details?: string | null;
+  language?: string | null;
+  home?: string | null;
+  createTime?: string | null;
+  dealFeatures?: string | null;
+}
+
 export interface Product {
   id: bigint;
   name: string;
@@ -24,6 +40,39 @@ export interface ProductListContent {
     empty: string;
   };
 }
+
+export const CategoryDefault: Category[] = [
+  {
+    id: BigInt(1),
+    name: '住宅储能系统',
+    count: 3,
+    icon: 'ri-home-line'
+  },
+  {
+    id: BigInt(2),
+    name: '商用储能系统',
+    count: 3,
+    icon: 'ri-building-line'
+  },
+  {
+    id: BigInt(3),
+    name: '房车系统',
+    count: 3,
+    icon: 'ri-truck-line'
+  },
+  {
+    id: BigInt(4),
+    name: '铅酸替代系统',
+    count: 3,
+    icon: 'ri-recycle-line'
+  },
+  {
+    id: BigInt(5),
+    name: '动力电池',
+    count: 2,
+    icon: 'ri-battery-charge-line'
+  }
+];
 
 export const ProductDefault: Product[] = [
   {

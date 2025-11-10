@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { Product, ProductListContent, ProductDefault, defaultProductListContent } from './content';
-
-interface Category {
-  id: bigint;
-  name: string;
-  count: number;
-}
+import {
+  Category,
+  CategoryDefault,
+  Product,
+  ProductListContent,
+  ProductDefault,
+  defaultProductListContent
+} from './content';
 
 interface ProductGridProps {
   content: ProductListContent;
@@ -65,7 +66,7 @@ export default function ProductGrid({ content, contentError }: ProductGridProps)
           return;
         }
         setProducts(ProductDefault);
-        setCategories([]);
+        setCategories(CategoryDefault);
         setActiveCategory(undefined);
         setError(contentRef.current.errors.loadFailed);
       } finally {
