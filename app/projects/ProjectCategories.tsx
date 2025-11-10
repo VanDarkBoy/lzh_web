@@ -54,11 +54,6 @@ export default function ProjectCategories({ scrollY, selectedCategory, onCategor
     const fetchCategories = async () => {
       const apiBase = process.env.NEXT_PUBLIC_API_BASE;
 
-      if (!apiBase) {
-        console.error(content.loadError);
-        return;
-      }
-
       try {
         const response = await fetch(`${apiBase}/api/product_list_categories`, {
           signal: controller.signal
