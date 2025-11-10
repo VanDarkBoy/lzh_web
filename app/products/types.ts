@@ -160,3 +160,10 @@ export interface ProductPurchaseSupportContent {
     faqData: FAQItem[];
     contentTxt: PurchaseSupportContentText;
 }
+
+export interface ProductCenterContent {
+    productsHeroContent: ProductsHeroContent;
+    productCategoriesContent: ProductCategoriesContent;
+    productFeaturesContent: ProductFeaturesContent;
+    productPurchaseSupportContent: ProductPurchaseSupportContent;
+}
