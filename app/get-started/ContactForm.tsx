@@ -145,7 +145,7 @@ export default function ContactForm() {
 
       const data = await response.json();
 
-      if (data?.code === 200) {
+      if (data.code === 200) {
         setSuccessMessage(content.successMessage);
         setFormData(initialFormState);
       } else {
