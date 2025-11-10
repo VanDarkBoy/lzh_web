@@ -1,3 +1,13 @@
+export interface Product {
+  id: bigint;
+  name: string;
+  category: bigint;
+  image: string;
+  description: string;
+  specs: string;
+  dealFeatures: string[];
+}
+
 export interface ProductListContent {
   title: string;
   description: string;
