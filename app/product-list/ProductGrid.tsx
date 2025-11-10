@@ -2,17 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { ProductListContent, defaultProductListContent } from './content';
-
-interface Product {
-  id: bigint;
-  name: string;
-  category: bigint;
-  image: string;
-  description: string;
-  specs: string;
-  dealFeatures: string[];
-}
+import { Product, ProductListContent, defaultProductListContent } from './content';
 
 interface Category {
   id: bigint;
