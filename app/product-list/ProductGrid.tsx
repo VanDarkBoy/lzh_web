@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { Product, ProductListContent, defaultProductListContent } from './content';
+import { Product, ProductListContent, ProductDefault, defaultProductListContent } from './content';
 
 interface Category {
   id: bigint;
@@ -64,6 +64,9 @@ export default function ProductGrid({ content, contentError }: ProductGridProps)
         if (err instanceof DOMException && err.name === 'AbortError') {
           return;
         }
+        setProducts(ProductDefault);
+        setCategories([]);
+        setActiveCategory(undefined);
         setError(contentRef.current.errors.loadFailed);
       } finally {
         setLoading(false);
@@ -78,7 +81,9 @@ export default function ProductGrid({ content, contentError }: ProductGridProps)
     };
   }, []);
 
-  const filteredProducts = products.filter((product) => product.category === activeCategory);
+  const filteredProducts = activeCategory
+    ? products.filter((product) => product.category === activeCategory)
+    : products;
 
   return (
     <section className="py-20 bg-gray-50">
