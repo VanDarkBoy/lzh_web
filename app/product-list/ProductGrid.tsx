@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { ProductListContent, defaultProductListContent } from './content';
 
 interface Product {
   id: bigint;
@@ -19,36 +20,8 @@ interface Category {
   count: number;
 }
 
-export interface ProductGridContent {
-  errors: {
-    fetchProducts: string;
-    fetchCategories: string;
-    loadFailed: string;
-  };
-  states: {
-    loading: string;
-    viewDetails: string;
-    productsCategories: string;
-    empty: string;
-  };
-}
-
-export const defaultProductGridContent: ProductGridContent = {
-  errors: {
-    fetchProducts: '获取产品列表失败',
-    fetchCategories: '获取产品分类失败',
-    loadFailed: '加载产品数据失败，请稍后重试'
-  },
-  states: {
-    loading: '正在加载产品信息...',
-    viewDetails: '查看详情',
-    productsCategories: '产品分类',
-    empty: '暂无符合条件的产品。'
-  }
-};
-
 interface ProductGridProps {
-  content: ProductGridContent;
+  content: ProductListContent;
   contentError?: string | null;
 }
 
@@ -58,8 +31,8 @@ export default function ProductGrid({ content, contentError }: ProductGridProps)
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const displayContent = content ?? defaultProductGridContent;
-  const contentRef = useRef<ProductGridContent>(displayContent);
+  const displayContent = content ?? defaultProductListContent;
+  const contentRef = useRef<ProductListContent>(displayContent);
 
   useEffect(() => {
     contentRef.current = displayContent;
@@ -68,7 +41,6 @@ export default function ProductGrid({ content, contentError }: ProductGridProps)
   useEffect(() => {
     const productsController = new AbortController();
     const categoriesController = new AbortController();
-
 
     const fetchProducts = async () => {
       try {
@@ -116,7 +88,7 @@ export default function ProductGrid({ content, contentError }: ProductGridProps)
     };
   }, []);
 
-  const filteredProducts = products.filter(product => product.category === activeCategory);
+  const filteredProducts = products.filter((product) => product.category === activeCategory);
 
   return (
     <section className="py-20 bg-gray-50">
@@ -125,7 +97,9 @@ export default function ProductGrid({ content, contentError }: ProductGridProps)
           {/* 分类筛选 */}
           <aside className="lg:w-64">
             <div className="mx-auto max-w-xl rounded-2xl bg-white p-6 shadow-lg lg:sticky lg:top-24">
-              <h2 className="mb-6 text-center text-lg font-semibold text-gray-800 lg:text-left">{displayContent.states.productsCategories}</h2>
+              <h2 className="mb-6 text-center text-lg font-semibold text-gray-800 lg:text-left">
+                {displayContent.states.productsCategories}
+              </h2>
               <div className="flex flex-wrap justify-center gap-3 lg:flex-col lg:items-stretch">
                 {categories.map((category) => (
                   <button
@@ -177,56 +151,49 @@ export default function ProductGrid({ content, contentError }: ProductGridProps)
                         animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
                       }}
                     >
-                  {/* 产品图片 */}
-                  <div className="relative h-64 overflow-hidden bg-gray-100">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-
-                  {/* 产品信息 */}
-                  <div className="p-6">
-
-
-                    <h3 className="mb-3 text-xl font-bold text-gray-900">{product.name}</h3>
-                    <p className="mb-4 text-gray-600">{product.description}</p>
-
-                    <div className="mb-4 rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700">
-                      {product.specs}
-                    </div>
-
-                    <ul className="mb-6 space-y-2 text-sm text-gray-600">
-                      {product.dealFeatures.map((feature, featureIndex) => (
-                        <li key={`${product.id}-feature-${featureIndex}`} className="flex items-center">
-                          <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Link
-                      href={`/product-detail?id=${product.id.toString()}`}
-                      className="inline-flex items-center justify-center rounded-lg border border-blue-600 px-4 py-2 text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white"
-                    >
-                      {displayContent.states.viewDetails}
-                      <svg
-                        className="ml-2 h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      {/* 产品图片 */}
+                      <div className="relative h-64 overflow-hidden bg-gray-100">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
                         />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
+                      </div>
+
+                      {/* 产品信息 */}
+                      <div className="p-6">
+                        <h3 className="mb-3 text-xl font-bold text-gray-900">{product.name}</h3>
+                        <p className="mb-4 text-gray-600">{product.description}</p>
+
+                        <div className="mb-4 rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700">
+                          {product.specs}
+                        </div>
+
+                        <ul className="mb-6 space-y-2 text-sm text-gray-600">
+                          {product.dealFeatures.map((feature, featureIndex) => (
+                            <li key={`${product.id}-feature-${featureIndex}`} className="flex items-center">
+                              <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <Link
+                          href={`/product-detail?id=${product.id.toString()}`}
+                          className="inline-flex items-center justify-center rounded-lg border border-blue-600 px-4 py-2 text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white"
+                        >
+                          {displayContent.states.viewDetails}
+                          <svg
+                            className="ml-2 h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
+                        </Link>
+                      </div>
+                    </div>
                   ))}
                 </div>
               ) : (
