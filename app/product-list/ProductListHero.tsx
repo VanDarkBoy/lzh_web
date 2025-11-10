@@ -31,18 +31,13 @@ export default function ProductListHero({ scrollY }: ProductListHeroProps) {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    const apiBase = process.env.NEXT_PUBLIC_API_BASE;
-
-    if (!apiBase) {
-      console.warn('NEXT_PUBLIC_API_BASE is not defined');
-      return;
-    }
 
     let isMounted = true;
 
     const fetchHeroContent = async () => {
       try {
-        const response = await fetch(`${apiBase}/api/ProductListHero`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductListHero`);
+
         if (!response.ok) {
           throw new Error(`Failed to fetch hero content: ${response.status}`);
         }
@@ -61,7 +56,7 @@ export default function ProductListHero({ scrollY }: ProductListHeroProps) {
 
     const fetchCategories = async () => {
       try {
-        const response = await fetch(`${apiBase}/api/product_list_categories`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/product_list_categories`);
         if (!response.ok) {
           throw new Error(`Failed to fetch categories: ${response.status}`);
         }
