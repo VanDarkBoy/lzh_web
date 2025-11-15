@@ -242,10 +242,13 @@ export default function ProductDetail() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap cursor-pointer">
-                    <i className="ri-phone-line mr-2 w-4 h-4 items-center justify-center inline-flex"></i>
+                  <Link
+                    href="/get-started"
+                    className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
+                  >
+                    <i className="ri-phone-line mr-2 w-4 h-4 items-center justify-center inline-flex" aria-hidden="true"></i>
                     {pageContent.contactSalesLabel}
-                  </button>
+                  </Link>
                   <button
                     type="button"
                     onClick={handleDownloadSpecs}
@@ -419,9 +422,12 @@ export default function ProductDetail() {
                     {pageContent.ctaDescription}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors whitespace-nowrap cursor-pointer">
+                    <Link
+                      href="/get-started"
+                      className="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
+                    >
                       {pageContent.scheduleConsultationLabel}
-                    </button>
+                    </Link>
                     <button
                       type="button"
                       onClick={handleDownloadSpecs}
