@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -57,6 +57,21 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [errorKey, setErrorKey] = useState<ErrorMessageKey | null>(null);
   const [pageContent, setPageContent] = useState<PageContent>(defaultPageContent);
+
+  const handleDownloadSpecs = useCallback(() => {
+    if (!product?.fileUrl) {
+      return;
+    }
+
+    const anchor = document.createElement('a');
+    anchor.href = product.fileUrl;
+    anchor.target = '_blank';
+    anchor.rel = 'noopener noreferrer';
+    anchor.download = '';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+  }, [product?.fileUrl]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -231,7 +246,14 @@ export default function ProductDetail() {
                     <i className="ri-phone-line mr-2 w-4 h-4 items-center justify-center inline-flex"></i>
                     {pageContent.contactSalesLabel}
                   </button>
-                  <button className="border border-gray-300 text-gray-700 px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap cursor-pointer">
+                  <button
+                    type="button"
+                    onClick={handleDownloadSpecs}
+                    disabled={!product.fileUrl}
+                    className={`border border-gray-300 text-gray-700 px-8 py-3 rounded-full font-semibold transition-colors whitespace-nowrap ${
+                      product.fileUrl ? 'hover:bg-gray-50 cursor-pointer' : 'opacity-50 cursor-not-allowed'
+                    }`}
+                  >
                     <i className="ri-download-line mr-2 w-4 h-4 items-center justify-center inline-flex"></i>
                     {pageContent.downloadSpecsLabel}
                   </button>
