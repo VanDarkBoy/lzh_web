@@ -18,6 +18,8 @@ export interface ProductDetailData {
   operating: string;
   protection: string;
 
+  fileUrl: string;
+
   // -------
   dealFeatures: string[];
   dealApplications: string[];
