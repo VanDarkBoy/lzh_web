@@ -422,7 +422,14 @@ export default function ProductDetail() {
                     <button className="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors whitespace-nowrap cursor-pointer">
                       {pageContent.scheduleConsultationLabel}
                     </button>
-                    <button className="border border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-colors whitespace-nowrap cursor-pointer">
+                    <button
+                      type="button"
+                      onClick={handleDownloadSpecs}
+                      disabled={!product.fileUrl}
+                      className={`border border-white text-white px-8 py-3 rounded-full font-semibold transition-colors whitespace-nowrap ${
+                        product.fileUrl ? 'hover:bg-white/10 cursor-pointer' : 'opacity-70 cursor-not-allowed'
+                      }`}
+                    >
                       {pageContent.downloadFullManualLabel}
                     </button>
                   </div>
