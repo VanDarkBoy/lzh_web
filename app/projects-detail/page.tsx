@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import WhatAPP from '../../components/WhatAPP';
-import FloatingCountryFlags from '../../components/FloatingCountryFlags';
+import { usePathname, useSearchParams } from 'next/navigation';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import WhatAPP from '../components/WhatAPP';
+import FloatingCountryFlags from '../components/FloatingCountryFlags';
 
 type Slide = {
   image: string;
@@ -26,6 +26,15 @@ type ProductCase = {
   detailDescription: string;
   dealSlide: Slide[];
   dealTags: Tags[];
+};
+
+const sanitizeProductId = (value: string | null): string => {
+  if (!value) {
+    return '';
+  }
+
+  const trimmed = value.trim();
+  return /^[a-zA-Z0-9_-]+$/.test(trimmed) ? trimmed : '';
 };
 
 const buildFallbackSlide = (): Slide => ({
@@ -155,16 +164,30 @@ const normalizeProductCase = (raw: unknown, fallbackId: string): ProductCase => 
 };
 
 export default function ProjectsDetailPage() {
-  const params = useParams<{ id?: string | string[] }>();
-  const caseId = useMemo(() => {
-    const value = params?.id;
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
-    if (Array.isArray(value)) {
-      return value[0] ?? '';
+  const productId = useMemo(() => {
+    const queryId = sanitizeProductId(searchParams?.get('id'));
+
+    if (queryId) {
+      return queryId;
     }
 
-    return typeof value === 'string' ? value : '';
-  }, [params]);
+    if (pathname) {
+      const segments = pathname.split('/').filter(Boolean);
+
+      for (let index = segments.length - 1; index >= 0; index -= 1) {
+        const segment = sanitizeProductId(segments[index]);
+
+        if (segment && segment !== 'projects-detail') {
+          return segment;
+        }
+      }
+    }
+
+    return '';
+  }, [pathname, searchParams]);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [productCase, setProductCase] = useState<ProductCase | null>(null);
@@ -182,7 +205,7 @@ export default function ProjectsDetailPage() {
   }, [slideCount]);
 
   useEffect(() => {
-    if (!caseId) {
+    if (!productId) {
       setError('未找到有效的案例 ID');
       setLoading(false);
       return;
@@ -201,7 +224,7 @@ export default function ProjectsDetailPage() {
           throw new Error('未配置案例详情接口地址');
         }
 
-        const response = await fetch(`${apiBase}/api/getProductCaseDetail/${caseId}`, {
+        const response = await fetch(`${apiBase}/api/getProductCaseDetail/${productId}`, {
           signal: controller.signal,
           cache: 'no-store',
         });
@@ -211,7 +234,7 @@ export default function ProjectsDetailPage() {
         }
 
         const payload = await response.json();
-        const normalized = normalizeProductCase(payload, caseId);
+        const normalized = normalizeProductCase(payload, productId);
 
         setProductCase(normalized);
       } catch (err) {
@@ -229,7 +252,7 @@ export default function ProjectsDetailPage() {
     fetchDetail();
 
     return () => controller.abort();
-  }, [caseId]);
+  }, [productId]);
 
   useEffect(() => {
     if (slideCount < 2) {
