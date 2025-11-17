@@ -12,28 +12,56 @@ type Slide = {
   description: string;
 };
 
-const slides: Slide[] = [
-  {
-    image:
-      'https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=1600&q=80',
-    title: '智慧园区储能项目',
-    description:
-      '2.5MWh 一体化户外柜，支持柔性接入，保障园区峰谷调节与关键信号站点 24 小时不断电。',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1600&q=80',
-    title: '光储充一体化电站',
-    description:
-      '结合屋顶光伏与直流快充桩，实现“自发自用+多场景调度”，全年平均综合效率提升 18%。',
-  },
+type Tags = {
+  label: string;
+  value: string;
+};
 
-];
+type ProductCase = {
+  id: number;
+  title: string;
+  location: string;
+  caseTime: string;
+  detailDescription: string;
+  slide: Slide[];
+  tags: Tags[];
+};
+
+const productCase: ProductCase = {
+  id: 1,
+  title: '工商业储能标杆案例',
+  location: '华东制造园区',
+  caseTime: '2024 年 Q1 投运',
+  detailDescription:
+    '面对能源成本上涨与用电可靠性要求，客户选择部署 30MWh 工商业储能系统。我们提供的液冷集装箱方案具备高度集成、占地紧凑以及可扩展的功率接口，帮助客户实现“削峰填谷 + 应急备电 + 需求响应”三位一体的收益闭环。项目上线后，峰谷套利与调峰辅助服务收益并行，全年综合能耗下降 12%，碳排放减少 8,300+ 吨。系统支持毫秒级切换，保障生产线和关键 IT 设备在电网波动时持续运行。',
+  slide: [
+    {
+      image:
+        'https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=1600&q=80',
+      title: '智慧园区储能项目',
+      description:
+        '2.5MWh 一体化户外柜，支持柔性接入，保障园区峰谷调节与关键信号站点 24 小时不断电。',
+    },
+    {
+      image:
+        'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1600&q=80',
+      title: '光储充一体化电站',
+      description:
+        '结合屋顶光伏与直流快充桩，实现“自发自用+多场景调度”，全年平均综合效率提升 18%。',
+    },
+  ],
+  tags: [
+    { label: '收益模式', value: '削峰填谷 / 辅助调峰 / 备用容量' },
+    { label: '系统形态', value: '2 小时液冷集装箱 + PCS 柔性扩展' },
+    { label: '部署规模', value: '30MWh 工商业储能系统' },
+    { label: '运行表现', value: '综合能耗下降 12%，碳排放减少 8,300+ 吨' },
+  ],
+};
 
 export default function ProjectsDetailPage() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const slideCount = slides.length;
-  const currentSlide = useMemo(() => slides[activeIndex], [activeIndex]);
+  const slideCount = productCase.slide.length;
+  const currentSlide = useMemo(() => productCase.slide[activeIndex], [activeIndex]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -59,31 +87,22 @@ export default function ProjectsDetailPage() {
           <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-5">
             <div className="lg:col-span-2 space-y-4">
               <p className="text-sky-300 text-sm font-medium">项目背景</p>
-              <h2 className="text-3xl font-semibold text-white">工商业储能标杆案例</h2>
-              <p className="text-slate-200 leading-relaxed">
-                面对能源成本上涨与用电可靠性要求，客户选择部署 30MWh 工商业储能系统。我们提供的
-                液冷集装箱方案具备高度集成、占地紧凑以及可扩展的功率接口，帮助客户实现“削峰填谷 +
-                应急备电 + 需求响应”三位一体的收益闭环。
-                项目上线后，峰谷套利与调峰辅助服务收益并行，全年综合能耗下降 12%，碳排放减少
-                8,300+ 吨。系统支持毫秒级切换，保障生产线和关键 IT 设备在电网波动时持续运行。
-              </p>
+              <h2 className="text-3xl font-semibold text-white">{productCase.title}</h2>
+              <div className="text-sm text-slate-300 flex flex-wrap gap-x-4">
+                <span>项目地点：{productCase.location}</span>
+                <span>投运时间：{productCase.caseTime}</span>
+              </div>
+              <p className="text-slate-200 leading-relaxed">{productCase.detailDescription}</p>
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-xl bg-slate-800/70 border border-white/10 px-4 py-3">
-                  <p className="text-sm text-slate-300">收益模式</p>
-                  <p className="text-white font-semibold mt-1">削峰填谷 / 辅助调峰 / 备用容量</p>
-                </div>
-                <div className="rounded-xl bg-slate-800/70 border border-white/10 px-4 py-3">
-                  <p className="text-sm text-slate-300">系统形态</p>
-                  <p className="text-white font-semibold mt-1">2 小时液冷集装箱 + PCS 柔性扩展</p>
-                </div>
-                <div className="rounded-xl bg-slate-800/70 border border-white/10 px-4 py-3">
-                  <p className="text-sm text-slate-300">系统形态</p>
-                  <p className="text-white font-semibold mt-1">2 小时液冷集装箱 + PCS 柔性扩展</p>
-                </div>
-                <div className="rounded-xl bg-slate-800/70 border border-white/10 px-4 py-3">
-                  <p className="text-sm text-slate-300">系统形态</p>
-                  <p className="text-white font-semibold mt-1">2 小时液冷集装箱 + PCS 柔性扩展</p>
-                </div>
+                {productCase.tags.map((tag) => (
+                  <div
+                    key={tag.label}
+                    className="rounded-xl bg-slate-800/70 border border-white/10 px-4 py-3"
+                  >
+                    <p className="text-sm text-slate-300">{tag.label}</p>
+                    <p className="text-white font-semibold mt-1">{tag.value}</p>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -121,7 +140,7 @@ export default function ProjectsDetailPage() {
                 </div>
                 <div className="flex items-center justify-between px-6 py-4 border-t border-white/10 bg-slate-900/80 backdrop-blur">
                   <div className="flex items-center gap-2">
-                    {slides.map((slide, index) => (
+                    {productCase.slide.map((slide, index) => (
                       <button
                         key={slide.title}
                         type="button"
