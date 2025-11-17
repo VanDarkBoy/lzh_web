@@ -150,7 +150,7 @@ export default function ProjectGrid({selectedCategory, content }: ProjectGridPro
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <Link
-                href={`/projects-detail/${project.id}`}
+                href={`/projects-detail?id=${project.id}`}
                 className="bg-white rounded-lg shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer h-full flex flex-col"
               >
                 <div className="relative h-48 sm:h-56 lg:h-64 overflow-hidden">
