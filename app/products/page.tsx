@@ -45,7 +45,7 @@ export default function ProductsPage() {
         });
 
         if (!response.ok) {
-          throw new Error('加载产品中心内容失败');
+          throw new Error('Failed to load product center content');
         }
 
         const data: ProductCenterContent = await response.json();
@@ -66,9 +66,9 @@ export default function ProductsPage() {
         setFeaturesContent(null);
         setPurchaseSupportContent(null);
         setContentError(
-          err instanceof Error ? err.message : '加载产品分类文案失败，请稍后重试'
+          err instanceof Error ? err.message : 'Failed to load product category copy, please try again later.'
         );
-        setFeaturesContentError('加载产品功能展示内容失败，请稍后重试。');
+        setFeaturesContentError('Failed to load product feature display content, please try again later.');
       }
     };
 

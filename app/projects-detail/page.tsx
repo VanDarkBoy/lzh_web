@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect, useMemo, useState} from 'react';
-import {usePathname, useSearchParams} from 'next/navigation';
+import {useSearchParams} from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatAPP from '../components/WhatAPP';

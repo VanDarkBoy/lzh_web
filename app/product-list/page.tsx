@@ -88,8 +88,7 @@ function mergeWithDefaultContent(data: Partial<ProductListContent>): ProductList
     states: {
       loading: data?.states?.loading ?? defaultProductListContent.states.loading,
       viewDetails: data?.states?.viewDetails ?? defaultProductListContent.states.viewDetails,
-      productsCategories:
-        data?.states?.productsCategories ?? defaultProductListContent.states.productsCategories,
+      productsCategories: data?.states?.productsCategories ?? defaultProductListContent.states.productsCategories,
       empty: data?.states?.empty ?? defaultProductListContent.states.empty
     }
   };

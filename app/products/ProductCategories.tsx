@@ -210,7 +210,7 @@ export default function ProductCategories({
           >
             {loading ? (
                 <div className="flex min-h-[200px] items-center justify-center text-gray-500">
-                  正在加载产品信息...
+                  Loading product information...
                 </div>
             ) : activeCategory ? (
                 <div className="grid lg:grid-cols-2 gap-0">

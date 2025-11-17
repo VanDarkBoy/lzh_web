@@ -30,7 +30,6 @@ export default function ProjectsPage() {
     const controller = new AbortController();
     const apiBase = process.env.NEXT_PUBLIC_API_BASE;
 
-
     const fetchContent = async () => {
       try {
         const response = await fetch(`${apiBase}/api/projectContent`, {
@@ -51,7 +50,7 @@ export default function ProjectsPage() {
         if (error instanceof DOMException && error.name === 'AbortError') {
           return;
         }
-        console.error('加载项目内容失败:', error);
+        console.error('Failed to load project content:', error);
       }
     };
 
