@@ -55,7 +55,7 @@ export default function ProjectsDetailPage() {
     <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col">
       <Header />
       <main className="flex-1">
-        <section className="px-4 sm:px-6 lg:px-8 pb-16">
+        <section className="px-4 sm:px-6 lg:px-8 pb-16 pt-14 sm:pt-40">
           <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-5">
             <div className="lg:col-span-2 space-y-4">
               <p className="text-sky-300 text-sm font-medium">项目背景</p>
