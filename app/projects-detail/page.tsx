@@ -143,21 +143,13 @@ const normalizeProductCase = (raw: unknown, fallbackId: string): ProductCase => 
   return {
     id:
       toText(record.id) ??
-      toText(record.caseId) ??
-      toText(record.projectId) ??
       fallbackId,
-    title: toText(record.title) ?? toText(record.caseTitle) ?? '未命名案例',
+    title: toText(record.title)?? '未命名案例',
     location:
-      toText(record.location) ??
-      toText(record.city) ??
-      toText(record.region) ??
-      '未知地点',
-    caseTime: toText(record.caseTime) ?? toText(record.year) ?? toText(record.date) ?? '未知时间',
+      toText(record.location) ?? '未知地点',
+    caseTime: toText(record.caseTime) ?? '未知时间',
     detailDescription:
-      toText(record.detailDescription) ??
-      toText(record.description) ??
-      toText(record.summary) ??
-      '敬请期待更多案例详情。',
+      toText(record.detailDescription) ?? '敬请期待更多案例详情。',
     dealSlide: slides.length > 0 ? slides : [buildFallbackSlide()],
     dealTags,
   } satisfies ProductCase;
@@ -220,10 +212,6 @@ export default function ProjectsDetailPage() {
 
         const apiBase = process.env.NEXT_PUBLIC_API_BASE;
 
-        if (!apiBase) {
-          throw new Error('未配置案例详情接口地址');
-        }
-
         const response = await fetch(`${apiBase}/api/getProductCaseDetail/${productId}`, {
           signal: controller.signal,
           cache: 'no-store',
@@ -285,7 +273,7 @@ export default function ProjectsDetailPage() {
       <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col">
         <Header />
         <main className="flex-1 flex items-center justify-center">
-          <p className="text-slate-200 text-lg">正在加载案例详情...</p>
+          <p className="text-slate-200 text-lg">Loading case details...</p>
         </main>
         <Footer />
       </div>
@@ -298,8 +286,8 @@ export default function ProjectsDetailPage() {
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center space-y-4">
-            <p className="text-xl font-semibold text-white">{error || '暂未找到对应的案例详情'}</p>
-            <p className="text-slate-300">请返回项目列表重试。</p>
+            <p className="text-xl font-semibold text-white">{error || 'No corresponding case details found yet'}</p>
+            <p className="text-slate-300">Please return to the project list and try again</p>
           </div>
         </main>
         <Footer />
