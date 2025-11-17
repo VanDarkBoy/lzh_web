@@ -30,29 +30,6 @@ const slides: Slide[] = [
 
 ];
 
-const highlights = [
-  {
-    label: '投运容量',
-    value: '150+ MWh',
-    detail: '多场景商业化项目稳定运行',
-  },
-  {
-    label: '平均能效',
-    value: '≥ 92%',
-    detail: '高效双向变流与智能策略协同',
-  },
-  {
-    label: '安全记录',
-    value: '0 事故',
-    detail: '全栈 BMS 监控与多级消防冗余',
-  },
-  {
-    label: '覆盖区域',
-    value: '11 个国家',
-    detail: '工商业、数据中心、微电网等典型场景',
-  },
-];
-
 export default function ProjectsDetailPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const slideCount = slides.length;
@@ -78,22 +55,6 @@ export default function ProjectsDetailPage() {
     <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col">
       <Header />
       <main className="flex-1">
-
-        <section className="relative -mt-16 pb-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto grid gap-6 md:grid-cols-4">
-            {highlights.map((item) => (
-              <div
-                key={item.label}
-                className="rounded-2xl bg-slate-800/80 border border-white/10 px-5 py-6 shadow-lg backdrop-blur"
-              >
-                <p className="text-sm uppercase tracking-wide text-slate-300">{item.label}</p>
-                <p className="text-2xl font-semibold text-white mt-2">{item.value}</p>
-                <p className="text-sm text-slate-300 mt-1 leading-relaxed">{item.detail}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <section className="px-4 sm:px-6 lg:px-8 pb-16">
           <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-5">
             <div className="lg:col-span-2 space-y-4">
