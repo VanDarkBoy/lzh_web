@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
 import { useInView } from 'react-intersection-observer';
 
 import type { ProjectContent } from './projectContent';
@@ -160,7 +161,10 @@ export default function ProjectGrid({ scrollY, selectedCategory, content }: Proj
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="bg-white rounded-lg shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer h-full flex flex-col">
+              <Link
+                href={`/projects-detail/${project.id}`}
+                className="bg-white rounded-lg shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer h-full flex flex-col"
+              >
                 <div className="relative h-48 sm:h-56 lg:h-64 overflow-hidden">
                   <img
                     src={project.image || 'https://placehold.co/600x800?text=Project'}
@@ -168,13 +172,13 @@ export default function ProjectGrid({ scrollY, selectedCategory, content }: Proj
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
+
                   <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
                     <span className="bg-emerald-600 text-white px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full font-medium">
                       {project.categoryName}
                     </span>
                   </div>
-                  
+
                   <div className="absolute top-3 sm:top-4 right-3 sm:right-4">
                     <span className="bg-white/90 text-gray-800 px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full font-medium">
                       {project.caseTime}
@@ -200,14 +204,14 @@ export default function ProjectGrid({ scrollY, selectedCategory, content }: Proj
                   <p className="text-gray-600 text-sm leading-relaxed mb-3 sm:mb-4 flex-1">
                     {project.description}
                   </p>
-                  
+
                   <div className="flex items-center justify-center mt-auto">
                     <span className="bg-emerald-50 text-emerald-700 px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full font-medium">
                       {project.stats}
                     </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
           ))}
         </div>
