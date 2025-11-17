@@ -1,11 +1,11 @@
 
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import Link from 'next/link';
-import { useInView } from 'react-intersection-observer';
+import {useInView} from 'react-intersection-observer';
 
-import type { ProjectContent } from './projectContent';
+import type {ProjectContent} from './projectContent';
 
 interface ProjectGridProps {
   scrollY: number;
@@ -26,7 +26,7 @@ interface ProjectItem {
   size: string;
 }
 
-export default function ProjectGrid({ scrollY, selectedCategory, content }: ProjectGridProps) {
+export default function ProjectGrid({selectedCategory, content }: ProjectGridProps) {
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,33 +62,21 @@ export default function ProjectGrid({ scrollY, selectedCategory, content }: Proj
           throw new Error(`Failed to fetch project cases: ${response.status}`);
         }
 
-        const payload = await response.json();
-        const rawProjects: any[] = Array.isArray(payload)
-          ? payload
-          : Array.isArray(payload?.data)
-            ? payload.data
-            : [];
+        const rawProjects: any[] = await response.json();
 
-        const normalizedProjects: ProjectItem[] = rawProjects.map((project, index) => {
-          const resolvedId =
-            project.id ?? project.caseId ?? project.projectId ?? `project-${index}`;
-          const resolvedCategoryId = project.categoryId ?? project.caseCategoryId ?? project.typeId;
-
-          const categoryIdNumber = typeof resolvedCategoryId === 'number'
-            ? resolvedCategoryId
-            : Number(resolvedCategoryId) || -1;
+        const normalizedProjects: ProjectItem[] = rawProjects.map((project) => {
 
           return {
-            id: resolvedId,
-            title: project.title ?? project.caseTitle ?? project.name ?? '未命名案例',
-            description: project.description ?? project.summary ?? '敬请期待更多案例详情。',
-            categoryId: categoryIdNumber,
-            categoryName: String(project.categoryName ?? project.caseCategoryName ?? project.typeName ?? '未知'),
-            location: project.location ?? project.city ?? project.region ?? '未知地点',
-            caseTime: project.caseTime ?? project.year ?? project.date ?? '未知时间',
-            image: project.image ?? project.cover ?? project.thumbnail ?? '',
-            stats: project.stats ?? project.highlight ?? project.result ?? '查看更多',
-            size: project.size ?? project.capacity ?? project.scale ?? '--',
+            id: project.id,
+            title: project.title,
+            description: project.description,
+            categoryId: project.categoryId,
+            categoryName: project.categoryName,
+            location: project.location,
+            caseTime: project.caseTime,
+            image: project.image,
+            stats: project.stats ,
+            size: project.size,
           };
         });
 

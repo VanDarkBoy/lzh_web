@@ -30,10 +30,6 @@ export default function ProjectsPage() {
     const controller = new AbortController();
     const apiBase = process.env.NEXT_PUBLIC_API_BASE;
 
-    if (!apiBase) {
-      console.warn('未配置项目内容接口地址');
-      return () => controller.abort();
-    }
 
     const fetchContent = async () => {
       try {
