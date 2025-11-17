@@ -46,7 +46,7 @@ export default function ProductCategories({
         );
 
         if (!response.ok) {
-          throw new Error('获取产品分类失败');
+          throw new Error('Failed to obtain product category');
         }
 
         const data: Category[] = await response.json();
@@ -71,7 +71,7 @@ export default function ProductCategories({
           return;
         }
         setError(
-            err instanceof Error ? err.message : '加载产品分类失败，请稍后重试'
+            err instanceof Error ? err.message : 'Failed to load product categories, please try again later.'
         );
       } finally {
         setLoading(false);
@@ -138,7 +138,7 @@ export default function ProductCategories({
           <div className="grid lg:grid-cols-5 gap-8 mb-12">
             {loading ? (
                 <div className="lg:col-span-5 flex min-h-[120px] items-center justify-center text-gray-500">
-                  正在加载产品分类...
+                  Loading product categories...
                 </div>
             ) : categories.length > 0 ? (
                 categories.map((category, index) => {
@@ -216,9 +216,6 @@ export default function ProductCategories({
                 <div className="grid lg:grid-cols-2 gap-0">
                   <div className="p-8 lg:p-12" data-product-shop>
                     <div className="mb-6">
-                      {/*<span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full mb-4">*/}
-                      {/*  {activeCategory.capacity}*/}
-                      {/*</span>*/}
                       <h3 className="text-3xl font-bold text-gray-900 mb-4">
                         {activeCategory.name}
                       </h3>
