@@ -23,8 +23,8 @@ type ProductCase = {
   location: string;
   caseTime: string;
   detailDescription: string;
-  slide: Slide[];
-  tags: Tags[];
+  dealSlide: Slide[];
+  dealTags: Tags[];
 };
 
 const productCase: ProductCase = {
@@ -34,7 +34,7 @@ const productCase: ProductCase = {
   caseTime: '2024 年 Q1 投运',
   detailDescription:
     '面对能源成本上涨与用电可靠性要求，客户选择部署 30MWh 工商业储能系统。我们提供的液冷集装箱方案具备高度集成、占地紧凑以及可扩展的功率接口，帮助客户实现“削峰填谷 + 应急备电 + 需求响应”三位一体的收益闭环。项目上线后，峰谷套利与调峰辅助服务收益并行，全年综合能耗下降 12%，碳排放减少 8,300+ 吨。系统支持毫秒级切换，保障生产线和关键 IT 设备在电网波动时持续运行。',
-  slide: [
+  dealSlide: [
     {
       image:
         'https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=1600&q=80',
@@ -50,7 +50,7 @@ const productCase: ProductCase = {
         '结合屋顶光伏与直流快充桩，实现“自发自用+多场景调度”，全年平均综合效率提升 18%。',
     },
   ],
-  tags: [
+  dealTags: [
     { label: '收益模式', value: '削峰填谷 / 辅助调峰 / 备用容量' },
     { label: '系统形态', value: '2 小时液冷集装箱 + PCS 柔性扩展' },
     { label: '部署规模', value: '30MWh 工商业储能系统' },
@@ -60,8 +60,8 @@ const productCase: ProductCase = {
 
 export default function ProjectsDetailPage() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const slideCount = productCase.slide.length;
-  const currentSlide = useMemo(() => productCase.slide[activeIndex], [activeIndex]);
+  const slideCount = productCase.dealSlide.length;
+  const currentSlide = useMemo(() => productCase.dealSlide[activeIndex], [activeIndex]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -94,7 +94,7 @@ export default function ProjectsDetailPage() {
               </div>
               <p className="text-slate-200 leading-relaxed">{productCase.detailDescription}</p>
               <div className="grid gap-4 sm:grid-cols-2">
-                {productCase.tags.map((tag) => (
+                {productCase.dealTags.map((tag) => (
                   <div
                     key={tag.label}
                     className="rounded-xl bg-slate-800/70 border border-white/10 px-4 py-3"
@@ -140,7 +140,7 @@ export default function ProjectsDetailPage() {
                 </div>
                 <div className="flex items-center justify-between px-6 py-4 border-t border-white/10 bg-slate-900/80 backdrop-blur">
                   <div className="flex items-center gap-2">
-                    {productCase.slide.map((slide, index) => (
+                    {productCase.dealSlide.map((slide, index) => (
                       <button
                         key={slide.title}
                         type="button"
