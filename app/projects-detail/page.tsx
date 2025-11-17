@@ -27,13 +27,7 @@ const slides: Slide[] = [
     description:
       '结合屋顶光伏与直流快充桩，实现“自发自用+多场景调度”，全年平均综合效率提升 18%。',
   },
-  {
-    image:
-      'https://images.unsplash.com/photo-1502307947040-17b3c3b359b6?auto=format&fit=crop&w=1600&q=80',
-    title: '数据中心备用储能',
-    description:
-      '模块化液冷集装箱方案，为高算力数据中心提供 10 分钟内全功率响应能力与远程可视化运维。',
-  },
+
 ];
 
 const highlights = [
@@ -56,53 +50,6 @@ const highlights = [
     label: '覆盖区域',
     value: '11 个国家',
     detail: '工商业、数据中心、微电网等典型场景',
-  },
-];
-
-const valueItems = [
-  {
-    title: '商业价值',
-    points: [
-      '峰谷套利 + 需求侧响应，单站年化收益提升可达 12%-18%。',
-      '灵活的功率调度，支持 VPP（虚拟电厂）聚合接入。',
-    ],
-  },
-  {
-    title: '安全可靠',
-    points: [
-      'PACK-Cluster-Station 全链路安全防护，实时温控与烟雾预警。',
-      '集成级联熔断与气溶胶主动灭火，满足 UL9540A、GB/T 34131 要求。',
-    ],
-  },
-  {
-    title: '运维智能',
-    points: [
-      '云边协同的数字孪生，定位异常时间缩短 60%。',
-      'SaaS 平台支持 OTA 升级与多维报表，开放 API 便于对接第三方系统。',
-    ],
-  },
-];
-
-const milestones = [
-  {
-    year: '2021',
-    title: '首个工商业储能上线',
-    summary: '完成 5MWh 工厂削峰填谷试点，验证高倍率电芯稳定性。',
-  },
-  {
-    year: '2022',
-    title: '光储充示范站投运',
-    summary: '与头部车企合作搭建充电示范站，实现“源网荷储”协同调度。',
-  },
-  {
-    year: '2023',
-    title: '海外微电网落地',
-    summary: '东南亚岛屿微电网项目上线，全年替代柴油发电 1800+ 小时。',
-  },
-  {
-    year: '2024',
-    title: '数据中心备电升级',
-    summary: '推出液冷集装箱方案，满足 Tier III 数据中心高可用需求。',
   },
 ];
 
@@ -131,34 +78,6 @@ export default function ProjectsDetailPage() {
     <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col">
       <Header />
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900">
-          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_20%,rgba(56,189,248,0.4),transparent_30%)]" />
-          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_80%_10%,rgba(249,115,22,0.4),transparent_25%)]" />
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
-            <p className="text-sm sm:text-base uppercase tracking-[0.3em] text-sky-300 mb-4">
-              经典案例详情
-            </p>
-            <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-6 text-white">
-              储能成功案例 · 赋能零碳业务连续性
-            </h1>
-            <p className="text-lg sm:text-xl text-slate-200 max-w-3xl leading-relaxed">
-              我们通过高安全、高能效的储能系统，为工商业园区、交通枢纽、数据中心及海外微电网
-              提供稳定电力支撑，实现削峰填谷、需求响应和应急备电的全场景覆盖。
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              {['源网荷储协同', '即插即用集装箱', '全栈 BMS 安全防护', '云端可视化运维'].map(
-                (tag) => (
-                  <span
-                    key={tag}
-                    className="px-4 py-2 rounded-full bg-white/10 border border-white/15 text-sm text-white"
-                  >
-                    {tag}
-                  </span>
-                )
-              )}
-            </div>
-          </div>
-        </section>
 
         <section className="relative -mt-16 pb-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto grid gap-6 md:grid-cols-4">
@@ -198,6 +117,14 @@ export default function ProjectsDetailPage() {
                   <p className="text-sm text-slate-300">系统形态</p>
                   <p className="text-white font-semibold mt-1">2 小时液冷集装箱 + PCS 柔性扩展</p>
                 </div>
+                <div className="rounded-xl bg-slate-800/70 border border-white/10 px-4 py-3">
+                  <p className="text-sm text-slate-300">系统形态</p>
+                  <p className="text-white font-semibold mt-1">2 小时液冷集装箱 + PCS 柔性扩展</p>
+                </div>
+                <div className="rounded-xl bg-slate-800/70 border border-white/10 px-4 py-3">
+                  <p className="text-sm text-slate-300">系统形态</p>
+                  <p className="text-white font-semibold mt-1">2 小时液冷集装箱 + PCS 柔性扩展</p>
+                </div>
               </div>
             </div>
 
@@ -212,7 +139,6 @@ export default function ProjectsDetailPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <p className="text-sky-200 text-sm font-medium">实景照片</p>
-                    <h3 className="text-2xl font-semibold text-white mt-1">{currentSlide.title}</h3>
                     <p className="text-slate-200 mt-2 max-w-2xl">{currentSlide.description}</p>
                   </div>
                   <div className="absolute top-4 right-4 flex items-center gap-2">
@@ -253,69 +179,6 @@ export default function ProjectsDetailPage() {
                   </span>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="px-4 sm:px-6 lg:px-8 pb-16">
-          <div className="max-w-6xl mx-auto grid gap-8 lg:grid-cols-3">
-            <div className="lg:col-span-1">
-              <p className="text-sky-300 text-sm font-medium">价值亮点</p>
-              <h2 className="text-3xl font-semibold text-white mt-2">全生命周期价值闭环</h2>
-              <p className="text-slate-200 mt-3 leading-relaxed">
-                从方案设计、产品交付到运维升级，我们提供端到端的工程交付能力，确保系统稳定运行
-                与投资回报可测可控。
-              </p>
-            </div>
-            <div className="lg:col-span-2 grid gap-4 sm:grid-cols-2">
-              {valueItems.map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-2xl bg-slate-800/80 border border-white/10 p-5 shadow-lg"
-                >
-                  <h3 className="text-xl font-semibold text-white mb-3">{item.title}</h3>
-                  <ul className="space-y-2 text-slate-200 text-sm leading-relaxed list-disc list-inside">
-                    {item.points.map((point) => (
-                      <li key={point}>{point}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="px-4 sm:px-6 lg:px-8 pb-20">
-          <div className="max-w-6xl mx-auto rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 to-slate-800 p-8 shadow-xl">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-              <div>
-                <p className="text-sky-300 text-sm font-medium">交付里程碑</p>
-                <h2 className="text-3xl font-semibold text-white mt-2">持续迭代的工程能力</h2>
-                <p className="text-slate-200 mt-2 max-w-3xl">
-                  每一个里程碑都对应着系统工程、软件算法和安全策略的升级，确保在不同市场的合规与性能
-                  要求下持续创造价值。
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2 text-sm">
-                <span className="px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white">
-                  UL9540A / IEC 62619 / GB 标准验证
-                </span>
-                <span className="px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white">
-                  EMS & BMS 深度自研
-                </span>
-              </div>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {milestones.map((item) => (
-                <div
-                  key={item.year}
-                  className="rounded-2xl bg-slate-900/60 border border-white/10 p-5 h-full"
-                >
-                  <p className="text-sky-300 text-sm font-semibold">{item.year}</p>
-                  <h3 className="text-xl font-semibold text-white mt-2">{item.title}</h3>
-                  <p className="text-slate-200 mt-2 text-sm leading-relaxed">{item.summary}</p>
-                </div>
-              ))}
             </div>
           </div>
         </section>
