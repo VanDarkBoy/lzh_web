@@ -57,10 +57,8 @@ export function normalizeDownloadPageContent(input: unknown): DownloadPageConten
     normalized.hero = {
       backgroundImage: backgroundImage.trim() ? backgroundImage : fallbackDownloadPageContent.hero.backgroundImage,
       title: title.trim() ? title : fallbackDownloadPageContent.hero.title,
-      subtitle:
-        subtitle.trim() ? subtitle : fallbackDownloadPageContent.hero.subtitle,
-      highlights:
-        Array.isArray(highlights) && highlights.length > 0
+      subtitle: subtitle.trim() ? subtitle : fallbackDownloadPageContent.hero.subtitle,
+      highlights: Array.isArray(highlights) && highlights.length > 0
           ? highlights.filter((item): item is string => item.trim().length > 0)
           : fallbackDownloadPageContent.hero.highlights
     };

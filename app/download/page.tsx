@@ -12,7 +12,7 @@ import {
   DownloadPageContent,
   fallbackDownloadPageContent,
   normalizeDownloadPageContent
-} from './content';
+} from './downloadContent';
 
 export default function DownloadPage() {
   const [scrollY, setScrollY] = useState(0);

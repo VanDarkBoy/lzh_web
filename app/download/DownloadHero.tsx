@@ -1,14 +1,14 @@
 
 'use client';
 
-import { DownloadPageContent } from './content';
+import { DownloadPageContent } from './downloadContent';
 
 interface DownloadHeroProps {
   scrollY: number;
   content: DownloadPageContent['hero'];
 }
 
-export default function DownloadHero({ scrollY, content }: DownloadHeroProps) {
+export default function DownloadHero({content }: DownloadHeroProps) {
   const highlightColorClasses = ['bg-green-400', 'bg-blue-400', 'bg-purple-400', 'bg-orange-400', 'bg-emerald-400'];
 
   return (

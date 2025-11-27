@@ -16,7 +16,7 @@ interface ProductListHeroProps {
   content?: ProductListContent;
 }
 
-export default function ProductListHero({ scrollY, content = defaultProductListContent }: ProductListHeroProps) {
+export default function ProductListHero({content = defaultProductListContent }: ProductListHeroProps) {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
