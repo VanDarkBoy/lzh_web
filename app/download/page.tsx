@@ -8,11 +8,7 @@ import WhatAPP from '../components/WhatAPP';
 import FloatingCountryFlags from '../components/FloatingCountryFlags';
 import DownloadHero from './DownloadHero';
 import DownloadCenter from './DownloadCenter';
-import {
-  DownloadPageContent,
-  fallbackDownloadPageContent,
-  normalizeDownloadPageContent
-} from './downloadContent';
+import { DownloadPageContent, fallbackDownloadPageContent } from './downloadContent';
 
 export default function DownloadPage() {
   const [scrollY, setScrollY] = useState(0);
@@ -41,13 +37,14 @@ export default function DownloadPage() {
           throw new Error(`Failed to load download page content: ${response.status}`);
         }
 
-        const data = await response.json();
-        setContent(normalizeDownloadPageContent(data));
+        const data: DownloadPageContent = await response.json();
+        setContent(data);
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {
           return;
         }
         console.error('Failed to fetch download page content', error);
+        setContent(fallbackDownloadPageContent);
       }
     };
 
