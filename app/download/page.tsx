@@ -11,14 +11,8 @@ import DownloadCenter from './DownloadCenter';
 import { DownloadPageContent, fallbackDownloadPageContent } from './downloadContent';
 
 export default function DownloadPage() {
-  const [scrollY, setScrollY] = useState(0);
   const [content, setContent] = useState<DownloadPageContent>(fallbackDownloadPageContent);
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -56,7 +50,7 @@ export default function DownloadPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <DownloadHero scrollY={scrollY} content={content.hero} />
+      <DownloadHero content={content.hero} />
       <DownloadCenter messages={content.messages} />
       <Footer />
       <WhatAPP />

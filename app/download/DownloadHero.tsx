@@ -4,7 +4,6 @@
 import { DownloadPageContent } from './downloadContent';
 
 interface DownloadHeroProps {
-  scrollY: number;
   content: DownloadPageContent['hero'];
 }
 

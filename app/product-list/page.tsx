@@ -10,15 +10,9 @@ import ProductGrid from './ProductGrid';
 import { ProductListContent, defaultProductListContent } from './productListContent';
 
 export default function ProductListPage() {
-  const [scrollY, setScrollY] = useState(0);
   const [content, setContent] = useState<ProductListContent>(defaultProductListContent);
   const [contentError, setContentError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     let isMounted = true;
