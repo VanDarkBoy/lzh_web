@@ -66,7 +66,7 @@ export default function ProductListPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <ProductListHero scrollY={scrollY} content={content} />
+      <ProductListHero  content={content} />
       <ProductGrid content={content} contentError={contentError} />
       <Footer />
       <WhatAPP />

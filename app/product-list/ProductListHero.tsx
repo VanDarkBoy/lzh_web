@@ -12,7 +12,6 @@ interface Category {
 const badgeColors = ['bg-green-400', 'bg-blue-400', 'bg-purple-400', 'bg-orange-400', 'bg-pink-400', 'bg-teal-400'];
 
 interface ProductListHeroProps {
-  scrollY: number;
   content?: ProductListContent;
 }
 
