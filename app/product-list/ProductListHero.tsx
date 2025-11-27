@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ProductListContent, defaultProductListContent } from './content';
+import { ProductListContent, defaultProductListContent } from './productListContent';
 
 interface Category {
   id: number | string;
@@ -52,8 +52,7 @@ export default function ProductListHero({ scrollY, content = defaultProductListC
       style={{
         backgroundImage: `url(${displayContent.backgroundImage})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        transform: `translateY(${scrollY * 0.5}px)`
+        backgroundPosition: 'center'
       }}
     >
       <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/60 to-transparent"></div>

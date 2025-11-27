@@ -16,8 +16,7 @@ export default function DownloadHero({ scrollY, content }: DownloadHeroProps) {
       style={{
         backgroundImage: `url(${content.backgroundImage})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        transform: `translateY(${scrollY * 0.5}px)`
+        backgroundPosition: 'center'
       }}>
       <div className="absolute inset-0 bg-gradient-to-r from-green-900/80 via-green-900/60 to-transparent"></div>
       

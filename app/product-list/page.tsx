@@ -7,7 +7,7 @@ import WhatAPP from '../components/WhatAPP';
 import FloatingCountryFlags from '../components/FloatingCountryFlags';
 import ProductListHero from './ProductListHero';
 import ProductGrid from './ProductGrid';
-import { ProductListContent, defaultProductListContent } from './content';
+import { ProductListContent, defaultProductListContent } from './productListContent';
 
 export default function ProductListPage() {
   const [scrollY, setScrollY] = useState(0);

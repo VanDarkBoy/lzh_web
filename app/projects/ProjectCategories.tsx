@@ -36,7 +36,7 @@ export default ({scrollY, selectedCategory, onCategoryChange, content}: ProjectC
           throw new Error(content.fetchError);
         }
 
-        const data: unknown = await response.json();
+        const data = await response.json();
 
         if (Array.isArray(data) && data.length > 0) {
           const normalizedCategories: Category[] = data.map((item) => {

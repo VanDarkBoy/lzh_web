@@ -9,7 +9,7 @@ import {
   ProductListContent,
   ProductDefault,
   defaultProductListContent
-} from './content';
+} from './productListContent';
 
 interface ProductGridProps {
   content: ProductListContent;
