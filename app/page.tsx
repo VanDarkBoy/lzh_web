@@ -159,7 +159,7 @@ const mergeHomeContent = (base: HomeContent, update: Partial<HomeContent>): Home
 };
 
 export default function Home() {
-    const [scrollY, setScrollY] = useState(0);
+    const [, setScrollY] = useState(0);
     const [categories, setCategories] = useState<Category[]>([]);
     const [isLoadingCategories, setIsLoadingCategories] = useState(true);
     const [categoriesError, setCategoriesError] = useState<string | null>(null);
@@ -258,12 +258,12 @@ export default function Home() {
                             </div>
                         )}
                         <div className="max-w-4xl mx-auto">
-                            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+                            <h1 className="text-2xl md:text-4xl font-bold mb-8 leading-tight">
                                 {homeContent.heroTitle}
                                 <br/>
                                 <span className="text-green-400">{homeContent.heroHighlight}</span>
                             </h1>
-                            <p className="text-xl md:text-2xl mb-12 text-gray-200 leading-relaxed max-w-3xl mx-auto">
+                            <p className="text-lg md:text-xl mb-12 text-gray-200 leading-relaxed max-w-3xl mx-auto">
                                 {homeContent.heroDescription}
                             </p>
 
