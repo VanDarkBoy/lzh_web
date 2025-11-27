@@ -41,7 +41,7 @@ const fallbackCategories: Category[] = [
   }
 ];
 
-export default function ProjectCategories({ scrollY, selectedCategory, onCategoryChange, content }: ProjectCategoriesProps) {
+export default ({scrollY, selectedCategory, onCategoryChange, content}: ProjectCategoriesProps) => {
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
@@ -67,17 +67,17 @@ export default function ProjectCategories({ scrollY, selectedCategory, onCategor
 
         if (Array.isArray(data) && data.length > 0) {
           const normalizedCategories: Category[] = data.map((item) => {
-            const category = (item ?? {}) as Record<string, unknown>;
+            const category = item;
             const rawId = category['id'];
             const rawName = category['name'];
             const rawCount = category['count'];
             const rawIcon = category['icon'];
 
             return {
-              id: typeof rawId === 'number' ? rawId : Number(rawId) || 0,
-              name: typeof rawName === 'string' ? rawName : '未知分类',
-              count: typeof rawCount === 'number' ? rawCount : Number(rawCount) || 0,
-              icon: typeof rawIcon === 'string' ? rawIcon : 'ri-folder-line',
+              id: rawId,
+              name: rawName,
+              count: rawCount,
+              icon: rawIcon,
             };
           });
 
@@ -142,7 +142,7 @@ export default function ProjectCategories({ scrollY, selectedCategory, onCategor
                     ? 'bg-emerald-600 shadow-lg'
                     : 'bg-transparent group-hover:bg-emerald-50'
                 }`}></div>
-                
+
                 <div className="relative flex items-center space-x-2 sm:space-x-3">
                   <i className={`${category.icon} text-lg sm:text-xl w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center`}></i>
                   <span>{category.name}</span>

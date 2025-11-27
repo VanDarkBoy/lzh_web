@@ -155,7 +155,7 @@ export default function ProjectGrid({selectedCategory, content }: ProjectGridPro
               >
                 <div className="relative h-48 sm:h-56 lg:h-64 overflow-hidden">
                   <img
-                    src={project.image || 'https://placehold.co/600x800?text=Project'}
+                    src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
                   />
