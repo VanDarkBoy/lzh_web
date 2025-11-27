@@ -3,6 +3,13 @@ export interface ProjectContentStat {
   label: string;
 }
 
+export interface Category {
+  id: number;
+  name: string;
+  count: number;
+  icon: string;
+}
+
 export interface ProjectContent {
   hero: {
     title: string;
@@ -52,6 +59,27 @@ export const defaultProjectContent: ProjectContent = {
     retrySuggestion: '请检查网络连接或稍后再试。',
   },
 };
+
+export const fallbackCategories: Category[] = [
+  {
+    id: 1,
+    name: '全部案例',
+    count: 14,
+    icon: 'ri-apps-line'
+  },
+  {
+    id: 2,
+    name: '家用储能',
+    count: 7,
+    icon: 'ri-home-line'
+  },
+  {
+    id: 3,
+    name: '工商业储能',
+    count: 7,
+    icon: 'ri-building-line'
+  }
+];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;

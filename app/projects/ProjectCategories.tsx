@@ -4,7 +4,8 @@
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import type { ProjectContent } from './projectContent';
+import type { Category, ProjectContent } from './projectContent';
+import { fallbackCategories } from './projectContent';
 
 interface ProjectCategoriesProps {
   scrollY: number;
@@ -12,34 +13,6 @@ interface ProjectCategoriesProps {
   onCategoryChange: (category: number | 'All') => void;
   content: ProjectContent['categories'];
 }
-
-interface Category {
-  id: number;
-  name: string;
-  count: number;
-  icon: string;
-}
-
-const fallbackCategories: Category[] = [
-  {
-    id: 1,
-    name: '全部案例',
-    count: 14,
-    icon: 'ri-apps-line'
-  },
-  {
-    id: 2,
-    name: '家用储能',
-    count: 7,
-    icon: 'ri-home-line'
-  },
-  {
-    id: 3,
-    name: '工商业储能',
-    count: 7,
-    icon: 'ri-building-line'
-  }
-];
 
 export default ({scrollY, selectedCategory, onCategoryChange, content}: ProjectCategoriesProps) => {
   const [ref, inView] = useInView({
