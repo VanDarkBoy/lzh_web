@@ -10,15 +10,15 @@ import ProjectHero from './ProjectHero';
 import ProjectGrid from './ProjectGrid';
 import ProjectCategories from './ProjectCategories';
 import {
-  ProjectContent,
+  Types,
   defaultProjectContent,
   normalizeProjectContent,
-} from './projectContent';
+} from './types';
 
 export default function ProjectsPage() {
   const [scrollY, setScrollY] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<number | 'All'>('All');
-  const [content, setContent] = useState<ProjectContent>(defaultProjectContent);
+  const [content, setContent] = useState<Types>(defaultProjectContent);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);

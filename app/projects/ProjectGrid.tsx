@@ -5,12 +5,12 @@ import {useEffect, useMemo, useRef, useState} from 'react';
 import Link from 'next/link';
 import {useInView} from 'react-intersection-observer';
 
-import type {ProjectContent} from './projectContent';
+import type {Types} from './types';
 
 interface ProjectGridProps {
   scrollY: number;
   selectedCategory: number | 'All';
-  content: ProjectContent['grid'];
+  content: Types['grid'];
 }
 
 interface ProjectItem {

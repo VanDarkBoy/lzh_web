@@ -7,7 +7,7 @@ export type FormData = {
   inquiry: string;
 };
 
-export type ContactFormContent = {
+export type Types = {
   successMessage: string;
   failureMessage: string;
   networkErrorMessage: string;
@@ -45,7 +45,7 @@ export const initialFormState: FormData = {
   inquiry: ''
 };
 
-export const defaultContent: ContactFormContent = {
+export const defaultContent: Types = {
   successMessage: '提交成功！我们的团队将在 24 小时内与您取得联系。',
   failureMessage: '提交失败，请稍后重试。',
   networkErrorMessage: '网络请求出现问题，请稍后重试。',

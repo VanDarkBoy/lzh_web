@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import ContactForm from './ContactForm';
-import { ContactFormContent, defaultContent } from './contactFormContent';
+import { Types, defaultContent } from './types';
 import Footer from "@/app/components/Footer";
 import WhatAPP from '../components/WhatAPP';
 import FloatingCountryFlags from '../components/FloatingCountryFlags';
 
 export default function GetStartedPage() {
-    const [content, setContent] = useState<ContactFormContent>(defaultContent);
+    const [content, setContent] = useState<Types>(defaultContent);
 
     useEffect(() => {
         const fetchContent = async () => {
@@ -18,7 +18,7 @@ export default function GetStartedPage() {
                 if (!response.ok) {
                     throw new Error('Failed to fetch contact form content');
                 }
-                const data: ContactFormContent = await response.json();
+                const data: Types = await response.json();
                 setContent(data);
             } catch (error) {
                 console.error('Failed to load contact form content', error);

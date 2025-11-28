@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { DownloadPageContent } from './downloadContent';
+import { DownloadPageContent } from './types';
 
 interface DownloadItem {
   id: string;

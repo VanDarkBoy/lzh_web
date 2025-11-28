@@ -8,7 +8,7 @@ import WhatAPP from '../components/WhatAPP';
 import FloatingCountryFlags from '../components/FloatingCountryFlags';
 import DownloadHero from './DownloadHero';
 import DownloadCenter from './DownloadCenter';
-import { DownloadPageContent, fallbackDownloadPageContent } from './downloadContent';
+import { DownloadPageContent, fallbackDownloadPageContent } from './types';
 
 export default function DownloadPage() {
   const [content, setContent] = useState<DownloadPageContent>(fallbackDownloadPageContent);

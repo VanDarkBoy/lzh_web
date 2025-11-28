@@ -10,7 +10,7 @@ export interface Category {
   icon: string;
 }
 
-export interface ProjectContent {
+export interface Types {
   hero: {
     title: string;
     highlight: string;
@@ -33,7 +33,7 @@ export interface ProjectContent {
   };
 }
 
-export const defaultProjectContent: ProjectContent = {
+export const defaultProjectContent: Types = {
   hero: {
     title: '落地',
     highlight: '案例',
@@ -114,7 +114,7 @@ function getStats(value: unknown, fallback: ProjectContentStat[]): ProjectConten
   return stats.length > 0 ? stats : fallback;
 }
 
-export function normalizeProjectContent(payload: unknown): ProjectContent {
+export function normalizeProjectContent(payload: unknown): Types {
   if (!isRecord(payload)) {
     return defaultProjectContent;
   }

@@ -3,23 +3,23 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 import {
-  ContactFormContent,
+  Types,
   FormData,
   initialFormState
-} from './contactFormContent';
+} from './types';
 
 export type {
-  ContactFormContent,
+  Types,
   FormData,
-} from './contactFormContent';
+} from './types';
 
 export {
   defaultContent,
   initialFormState
-} from './contactFormContent';
+} from './types';
 
 type ContactFormProps = {
-  content: ContactFormContent;
+  content: Types;
 };
 
 export default function ContactForm({ content }: ContactFormProps) {

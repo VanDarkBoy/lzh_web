@@ -1,7 +1,7 @@
 
 'use client';
 
-import { DownloadPageContent } from './downloadContent';
+import { DownloadPageContent } from './types';
 
 interface DownloadHeroProps {
   content: DownloadPageContent['hero'];

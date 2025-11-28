@@ -24,7 +24,7 @@ export interface Product {
   dealFeatures: string[];
 }
 
-export interface ProductListContent {
+export interface Types {
   title: string;
   description: string;
   backgroundImage: string;
@@ -217,7 +217,7 @@ export const ProductDefault: Product[] = [
   }
 ];
 
-export const defaultProductListContent: ProductListContent = {
+export const defaultProductListContent: Types = {
   title: '产品列表',
   description: '探索 Lithium Valley 完整的储能产品系列，从家用到工业级解决方案',
   backgroundImage:
