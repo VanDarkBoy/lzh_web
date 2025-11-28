@@ -15,6 +15,7 @@ import type {
   ProductCategoriesContent,
   ProductFeaturesContent,
   ProductPurchaseSupportContent,
+  ProductCenterContent,
   ProductsHeroContent,
 } from './types';
 
