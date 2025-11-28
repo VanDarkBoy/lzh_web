@@ -1,50 +1,29 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 import {
+  ContactFormContent,
+  FormData,
+  initialFormState
+} from './ContactForm';
+
+export {
   ContactFormContent,
   FormData,
   defaultContent,
   initialFormState
 } from './ContactForm';
 
-export default function ContactForm() {
+type ContactFormProps = {
+  content: ContactFormContent;
+};
+
+export default function ContactForm({ content }: ContactFormProps) {
   const [formData, setFormData] = useState<FormData>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [content, setContent] = useState<ContactFormContent>(defaultContent);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE}/api/ContactForm`
-        );
-        if (!response.ok) {
-          throw new Error('Failed to fetch contact form content');
-        }
-
-        const result = await response.json();
-        const payload: Partial<ContactFormContent> = result?.data ?? result;
-
-        if (isMounted && payload && typeof payload === 'object') {
-          setContent((prev) => ({ ...prev, ...payload }));
-        }
-      } catch (error) {
-        console.error('Failed to load contact form content', error);
-      }
-    };
-
-    fetchContent();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
