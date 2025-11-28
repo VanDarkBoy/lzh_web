@@ -9,30 +9,32 @@ import ProductsHero from './ProductsHero';
 import ProductCategories from './ProductCategories';
 import ProductFeatures from './ProductFeatures';
 import ProductPurchaseSupport from './ProductPurchaseSupport';
+import { productCenterContent } from './types';
 import type {
   Category,
   ProductCategoriesContent,
-  ProductCenterContent,
   ProductFeaturesContent,
   ProductPurchaseSupportContent,
+  ProductCenterContent,
   ProductsHeroContent,
 } from './types';
 
 export default function ProductsPage() {
   const [scrollY, setScrollY] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-  const [heroContent, setHeroContent] = useState<ProductsHeroContent | null>(null);
-  const [content, setContent] = useState<ProductCategoriesContent | null>(null);
+  const [heroContent, setHeroContent] = useState<ProductsHeroContent | null>(
+    productCenterContent.productsHeroContent
+  );
+  const [content, setContent] = useState<ProductCategoriesContent | null>(
+    productCenterContent.productCategoriesContent
+  );
   const [contentError, setContentError] = useState<string | null>(null);
-  const [featuresContent, setFeaturesContent] = useState<ProductFeaturesContent | null>(null);
+  const [featuresContent, setFeaturesContent] = useState<ProductFeaturesContent | null>(
+    productCenterContent.productFeaturesContent
+  );
   const [featuresContentError, setFeaturesContentError] = useState<string | null>(null);
-  const [purchaseSupportContent, setPurchaseSupportContent] = useState<ProductPurchaseSupportContent | null>(null);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [purchaseSupportContent, setPurchaseSupportContent] =
+    useState<ProductPurchaseSupportContent | null>(productCenterContent.productPurchaseSupportContent);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -61,10 +63,10 @@ export default function ProductsPage() {
         }
 
         console.error('Failed to load product center content', err);
-        setHeroContent(null);
-        setContent(null);
-        setFeaturesContent(null);
-        setPurchaseSupportContent(null);
+        setHeroContent(productCenterContent.productsHeroContent);
+        setContent(productCenterContent.productCategoriesContent);
+        setFeaturesContent(productCenterContent.productFeaturesContent);
+        setPurchaseSupportContent(productCenterContent.productPurchaseSupportContent);
         setContentError(
           err instanceof Error ? err.message : 'Failed to load product category copy, please try again later.'
         );
@@ -75,6 +77,12 @@ export default function ProductsPage() {
     fetchProductCenterContent();
 
     return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
