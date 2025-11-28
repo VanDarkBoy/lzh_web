@@ -55,8 +55,6 @@ export default function ProductsPage() {
         setContent(data.productCategoriesContent);
         setFeaturesContent(data.productFeaturesContent);
         setPurchaseSupportContent(data.productPurchaseSupportContent);
-        setContentError(null);
-        setFeaturesContentError(null);
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') {
           return;
