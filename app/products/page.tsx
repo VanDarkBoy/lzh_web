@@ -9,10 +9,10 @@ import ProductsHero from './ProductsHero';
 import ProductCategories from './ProductCategories';
 import ProductFeatures from './ProductFeatures';
 import ProductPurchaseSupport from './ProductPurchaseSupport';
+import { productCenterContent } from './types';
 import type {
   Category,
   ProductCategoriesContent,
-  ProductCenterContent,
   ProductFeaturesContent,
   ProductPurchaseSupportContent,
   ProductsHeroContent,
@@ -21,60 +21,23 @@ import type {
 export default function ProductsPage() {
   const [scrollY, setScrollY] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-  const [heroContent, setHeroContent] = useState<ProductsHeroContent | null>(null);
-  const [content, setContent] = useState<ProductCategoriesContent | null>(null);
-  const [contentError, setContentError] = useState<string | null>(null);
-  const [featuresContent, setFeaturesContent] = useState<ProductFeaturesContent | null>(null);
-  const [featuresContentError, setFeaturesContentError] = useState<string | null>(null);
-  const [purchaseSupportContent, setPurchaseSupportContent] = useState<ProductPurchaseSupportContent | null>(null);
+  const [heroContent] = useState<ProductsHeroContent | null>(productCenterContent.productsHeroContent);
+  const [content] = useState<ProductCategoriesContent | null>(
+    productCenterContent.productCategoriesContent
+  );
+  const [contentError] = useState<string | null>(null);
+  const [featuresContent] = useState<ProductFeaturesContent | null>(
+    productCenterContent.productFeaturesContent
+  );
+  const [featuresContentError] = useState<string | null>(null);
+  const [purchaseSupportContent] = useState<ProductPurchaseSupportContent | null>(
+    productCenterContent.productPurchaseSupportContent
+  );
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchProductCenterContent = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/ProductCenterContent`, {
-          signal: controller.signal,
-          cache: 'no-store',
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to load product center content');
-        }
-
-        const data: ProductCenterContent = await response.json();
-        setHeroContent(data.productsHeroContent);
-        setContent(data.productCategoriesContent);
-        setFeaturesContent(data.productFeaturesContent);
-        setPurchaseSupportContent(data.productPurchaseSupportContent);
-        setContentError(null);
-        setFeaturesContentError(null);
-      } catch (err) {
-        if (err instanceof DOMException && err.name === 'AbortError') {
-          return;
-        }
-
-        console.error('Failed to load product center content', err);
-        setHeroContent(null);
-        setContent(null);
-        setFeaturesContent(null);
-        setPurchaseSupportContent(null);
-        setContentError(
-          err instanceof Error ? err.message : 'Failed to load product category copy, please try again later.'
-        );
-        setFeaturesContentError('Failed to load product feature display content, please try again later.');
-      }
-    };
-
-    fetchProductCenterContent();
-
-    return () => controller.abort();
   }, []);
 
   return (
