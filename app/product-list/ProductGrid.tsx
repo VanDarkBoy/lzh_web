@@ -6,13 +6,13 @@ import {
   Category,
   CategoryDefault,
   Product,
-  Types,
+  ProductListContent,
   ProductDefault,
   defaultProductListContent
 } from './types';
 
 interface ProductGridProps {
-  content: Types;
+  content: ProductListContent;
   contentError?: string | null;
 }
 
@@ -23,7 +23,7 @@ export default function ProductGrid({ content, contentError }: ProductGridProps)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const displayContent = content ?? defaultProductListContent;
-  const contentRef = useRef<Types>(displayContent);
+  const contentRef = useRef<ProductListContent>(displayContent);
 
   useEffect(() => {
     contentRef.current = displayContent;

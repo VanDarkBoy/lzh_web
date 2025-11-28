@@ -12,7 +12,6 @@ import ProjectCategories from './ProjectCategories';
 import {
   Types,
   defaultProjectContent,
-  normalizeProjectContent,
 } from './types';
 
 export default function ProjectsPage() {
@@ -43,13 +42,13 @@ export default function ProjectsPage() {
         if (!response.ok) {
           throw new Error(`Failed to fetch project content: ${response.status}`);
         }
-
-        const payload = await response.json();
-        setContent(normalizeProjectContent(payload));
+        const data: Types = await response.json();
+        setContent(data);
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {
           return;
         }
+        setContent(defaultProjectContent);
         console.error('Failed to load project content:', error);
       }
     };

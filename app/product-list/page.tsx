@@ -7,10 +7,10 @@ import WhatAPP from '../components/WhatAPP';
 import FloatingCountryFlags from '../components/FloatingCountryFlags';
 import ProductListHero from './ProductListHero';
 import ProductGrid from './ProductGrid';
-import {Types, defaultProductListContent} from './types';
+import {ProductListContent, defaultProductListContent} from './types';
 
 export default function ProductListPage() {
-    const [content, setContent] = useState<Types>(defaultProductListContent);
+    const [content, setContent] = useState<ProductListContent>(defaultProductListContent);
     const [contentError, setContentError] = useState<string | null>(null);
 
 
@@ -27,7 +27,7 @@ export default function ProductListPage() {
                     throw new Error(`Failed to fetch product list content: ${response.status}`);
                 }
 
-                const data: Types = await response.json();
+                const data: ProductListContent = await response.json();
                 setContent(data);
             } catch (error) {
                 if (error instanceof DOMException && error.name === 'AbortError') {

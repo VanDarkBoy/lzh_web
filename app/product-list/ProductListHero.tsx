@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Types, defaultProductListContent } from './types';
+import { ProductListContent, defaultProductListContent } from './types';
 
 interface Category {
   id: number | string;
@@ -12,7 +12,7 @@ interface Category {
 const badgeColors = ['bg-green-400', 'bg-blue-400', 'bg-purple-400', 'bg-orange-400', 'bg-pink-400', 'bg-teal-400'];
 
 interface ProductListHeroProps {
-  content?: Types;
+  content?: ProductListContent;
 }
 
 export default function ProductListHero({content = defaultProductListContent }: ProductListHeroProps) {
