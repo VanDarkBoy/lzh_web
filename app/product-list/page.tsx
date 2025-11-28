@@ -28,9 +28,7 @@ export default function ProductListPage() {
                 }
 
                 const data: ProductListContent = await response.json();
-
                 setContent(data);
-                setContentError(null);
             } catch (error) {
                 if (error instanceof DOMException && error.name === 'AbortError') {
                     return;
