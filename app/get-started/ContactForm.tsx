@@ -6,14 +6,14 @@ import {
   ContactFormContent,
   FormData,
   initialFormState
-} from './ContactForm';
+} from './ContactForm.ts';
 
 export {
   ContactFormContent,
   FormData,
   defaultContent,
   initialFormState
-} from './ContactForm';
+} from './ContactForm.ts';
 
 type ContactFormProps = {
   content: ContactFormContent;
