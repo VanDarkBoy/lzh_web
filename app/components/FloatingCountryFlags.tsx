@@ -53,9 +53,9 @@ export default function FloatingCountryFlags(): ReactElement {
     return (
         <nav
             aria-label="Country flags"
-            className="fixed right-4 top-1/2 z-50 -translate-y-1/2"
+            className="group fixed right-4 top-1/2 z-50 -translate-y-1/2"
         >
-            <ul className="flex flex-col items-center gap-3">
+            <ul className="flex max-h-36 flex-col items-center gap-3 overflow-hidden transition-[max-height] duration-300 group-hover:max-h-[1000px]">
                 {countries.map((country) => (
                     <li key={country.code} className="relative">
                         <Link
@@ -65,7 +65,7 @@ export default function FloatingCountryFlags(): ReactElement {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg ring-1 ring-black/10 transition-transform duration-200 group-hover:-translate-x-1">
+                            <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg ring-1 ring-black/10 transition-transform duration-200 group-hover:-translate-x-1">
                                 <Image
                                     src={`/flags/${country.code}.svg`}
                                     alt={country.name}
