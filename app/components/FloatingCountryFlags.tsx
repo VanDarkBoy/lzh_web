@@ -55,29 +55,39 @@ export default function FloatingCountryFlags(): ReactElement {
             aria-label="Country flags"
             className="group fixed right-4 top-1/2 z-50 -translate-y-1/2"
         >
-            <ul className="flex max-h-36 flex-col items-center gap-3 overflow-x-visible overflow-y-hidden transition-[max-height] duration-300 group-hover:max-h-[1000px]">
-                {countries.map((country) => (
-                    <li key={country.code} className="relative">
+            {/* 不再用 max-height + overflow 裁切 */}
+            <ul className="flex flex-col items-center gap-3">
+                {countries.map((country, index) => (
+                    <li
+                        key={country.code}
+                        className={`relative transition-all duration-700 ease-out transform ${
+                            index > 2
+                                ? 'opacity-0 pointer-events-none translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto'
+                                : ''
+                        }`}
+                    >
                         <Link
                             href={country.href}
-                            className="group relative flex items-center focus:outline-none"
+                            className="group/link relative flex items-center focus:outline-none"
                             aria-label={country.name}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg ring-1 ring-black/10 transition-transform duration-200 group-hover:-translate-x-1">
-                                <Image
-                                    src={`/flags/${country.code}.svg`}
-                                    alt={country.name}
-                                    width={48}
-                                    height={48}
-                                    className="h-full w-full object-cover"
-                                    priority
-                                />
-                            </span>
-                            <span className="pointer-events-none absolute right-full mr-3 origin-right scale-95 whitespace-nowrap rounded-full bg-black/80 px-3 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
-                                {country.name}
-                            </span>
+              <span
+                  className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg ring-1 ring-black/10 transition-transform duration-200 group-hover/link:-translate-x-1">
+                <Image
+                    src={`/flags/${country.code}.svg`}
+                    alt={country.name}
+                    width={48}
+                    height={48}
+                    className="h-full w-full object-cover"
+                    priority
+                />
+              </span>
+                            <span
+                                className="pointer-events-none absolute right-full mr-3 origin-right scale-95 whitespace-nowrap rounded-full bg-black/80 px-3 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition-all duration-200 group-hover/link:scale-100 group-hover/link:opacity-100">
+                {country.name}
+              </span>
                         </Link>
                     </li>
                 ))}
