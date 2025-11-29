@@ -10,14 +10,14 @@ import ProjectHero from './ProjectHero';
 import ProjectGrid from './ProjectGrid';
 import ProjectCategories from './ProjectCategories';
 import {
-  Types,
+  ProjectContentTypes,
   defaultProjectContent,
 } from './types';
 
 export default function ProjectsPage() {
   const [scrollY, setScrollY] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<number | 'All'>('All');
-  const [content, setContent] = useState<Types>(defaultProjectContent);
+  const [content, setContent] = useState<ProjectContentTypes>(defaultProjectContent);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -42,7 +42,7 @@ export default function ProjectsPage() {
         if (!response.ok) {
           throw new Error(`Failed to fetch project content: ${response.status}`);
         }
-        const data: Types = await response.json();
+        const data: ProjectContentTypes = await response.json();
         setContent(data);
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {

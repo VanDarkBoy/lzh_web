@@ -10,7 +10,7 @@ export interface Category {
   icon: string;
 }
 
-export interface Types {
+export interface ProjectContentTypes {
   hero: {
     title: string;
     highlight: string;
@@ -33,7 +33,7 @@ export interface Types {
   };
 }
 
-export const defaultProjectContent: Types = {
+export const defaultProjectContent: ProjectContentTypes = {
   hero: {
     title: '落地',
     highlight: '案例',

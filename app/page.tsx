@@ -6,7 +6,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import WhatAPP from './components/WhatAPP';
 import FloatingCountryFlags from './components/FloatingCountryFlags';
-import {ButtonLink, Category, DEFAULT_HOME_CONTENT, HomeContent, ProjectItem} from './types';
+import { Category, DEFAULT_HOME_CONTENT, HomeContent, ProjectItem} from './types';
 
 const CATEGORY_GRADIENTS = [
     'from-blue-100 to-blue-200',
@@ -14,41 +14,6 @@ const CATEGORY_GRADIENTS = [
     'from-purple-100 to-purple-200',
     'from-orange-100 to-orange-200',
 ];
-
-const mergeHomeContent = (base: HomeContent, update: Partial<HomeContent>): HomeContent => {
-    const mergeButton = (baseButton: ButtonLink, updateButton?: Partial<ButtonLink>): ButtonLink => ({
-        ...baseButton,
-        ...(updateButton ?? {}),
-    });
-
-    const mergedHeroButtons = {
-        primary: mergeButton(base.heroButtons.primary, update.heroButtons?.primary),
-        secondary: mergeButton(base.heroButtons.secondary, update.heroButtons?.secondary),
-    };
-
-    const mergedFeatures = update.features
-        ? update.features.map((feature) => ({
-            title: feature.title,
-            description: feature.description,
-            icon: feature.icon,
-            containerClass: feature.containerClass,
-            iconClass: feature.iconClass,
-        }))
-        : base.features;
-
-    const mergedCtaButtons = {
-        primary: mergeButton(base.ctaButtons.primary, update.ctaButtons?.primary),
-        secondary: mergeButton(base.ctaButtons.secondary, update.ctaButtons?.secondary),
-    };
-
-    return {
-        ...base,
-        ...update,
-        heroButtons: mergedHeroButtons,
-        features: mergedFeatures,
-        ctaButtons: mergedCtaButtons,
-    };
-};
 
 export default function Home() {
     const [, setScrollY] = useState(0);
@@ -95,9 +60,10 @@ export default function Home() {
                 if (!response.ok) {
                     throw new Error('Failed to fetch home content');
                 }
-                const data: Partial<HomeContent> = await response.json();
-                setHomeContent((prev) => mergeHomeContent(prev, data));
+                const data: HomeContent = await response.json();
+                setHomeContent(data);
             } catch (error) {
+                setHomeContent(DEFAULT_HOME_CONTENT);
                 console.error('Failed to fetch home content:', error);
                 setHomeContentError('The homepage content is temporarily unable to load, so please try again later');
             } finally {

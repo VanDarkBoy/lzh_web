@@ -1,10 +1,10 @@
 'use client';
 
-import type { Types } from './types';
+import type { ProjectContentTypes } from './types';
 
 interface ProjectHeroProps {
     scrollY: number;
-    content: Types['hero'];
+    content: ProjectContentTypes['hero'];
 }
 
 export default function ProjectHero({scrollY, content}: ProjectHeroProps) {

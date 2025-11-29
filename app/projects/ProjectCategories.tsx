@@ -4,14 +4,14 @@
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import type { Category, Types } from './types';
+import type { Category, ProjectContentTypes } from './types';
 import { fallbackCategories } from './types';
 
 interface ProjectCategoriesProps {
   scrollY: number;
   selectedCategory: number | 'All';
   onCategoryChange: (category: number | 'All') => void;
-  content: Types['categories'];
+  content: ProjectContentTypes['categories'];
 }
 
 export default ({scrollY, selectedCategory, onCategoryChange, content}: ProjectCategoriesProps) => {
