@@ -1,0 +1,10 @@
+cd /usr/share/nginx/html
+rm -rf out
+wget  https://vandark.natapp4.cc/front_azhong/out.rar
+unrar-free x out.rar
+rm  out.rar
+ls
+nginx -s reload
+ls
+
+lithiumvalley.cn
