@@ -28,7 +28,7 @@ export default ({scrollY, selectedCategory, onCategoryChange, content}: ProjectC
       const apiBase = process.env.NEXT_PUBLIC_API_BASE;
 
       try {
-        const response = await fetch(`${apiBase}/api/product_list_categories`, {
+        const response = await fetch(`${apiBase}/api/case_list_categories`, {
           signal: controller.signal
         });
 
