@@ -1,0 +1,2 @@
+# Serve static Next.js export pages directly without SPA fallbacks
+RewriteEngine Off
