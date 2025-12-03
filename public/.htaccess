@@ -1,0 +1,11 @@
+RewriteEngine On
+RewriteBase /
+
+# 如果访问的是已存在的文件或目录，正常访问
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 将 /xxx 或 /xxx/ 自动映射到 /xxx.html
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
