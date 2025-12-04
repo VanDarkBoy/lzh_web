@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import WhatAPP from './components/WhatAPP';
 import FloatingCountryFlags from './components/FloatingCountryFlags';
+import HiddenSeoContent from './components/HiddenSeoContent';
 import { Category, DEFAULT_HOME_CONTENT, HomeContent, ProjectItem} from './types';
 
 const CATEGORY_GRADIENTS = [
@@ -314,6 +315,7 @@ export default function Home() {
             <Footer/>
             <WhatAPP />
             <FloatingCountryFlags />
+            <HiddenSeoContent />
         </div>
     );
 }
