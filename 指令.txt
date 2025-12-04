@@ -8,3 +8,51 @@ nginx -s reload
 ls
 
 lithiumvalley.cn
+
+
+
+cd /home/u428710240/domains/lithiumvalley.es/public_html
+rm -rf ./*
+wget  https://vandark.natapp4.cc/front_azhong/out.rar
+unrar x out.rar
+rm out.rar
+mv out/* ./
+rm -rf out
+clear
+
+cd /home/u428710240/domains/lithiumvalley.lt/public_html
+rm -rf ./*
+wget  https://vandark.natapp4.cc/front_azhong/out.rar
+unrar x out.rar
+rm out.rar
+mv out/* ./
+rm -rf out
+clear
+
+cd /home/u428710240/domains/lithiumvalley.ng/public_html
+rm -rf ./*
+wget  https://vandark.natapp4.cc/front_azhong/out.rar
+unrar x out.rar
+rm out.rar
+mv out/* ./
+rm -rf out
+clear
+
+cd /home/u428710240/domains/lithiumvalley-za.com/public_html
+rm -rf ./*
+wget  https://vandark.natapp4.cc/front_azhong/out.rar
+unrar x out.rar
+rm out.rar
+mv out/* ./
+rm -rf out
+clear
+
+cd /home/u428710240/domains/lithiumvalley-ke.com/public_html
+rm -rf ./*
+wget  https://vandark.natapp4.cc/front_azhong/out.rar
+unrar x out.rar
+rm out.rar
+mv out/* ./
+rm -rf out
+clear
+

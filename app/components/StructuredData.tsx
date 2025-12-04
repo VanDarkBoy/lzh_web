@@ -17,14 +17,12 @@ const productSchema = {
 };
 
 const StructuredData = () => {
-    const structuredData = productSchema;
-
     return (
         <Script
             id="home-structured-data"
             type="application/ld+json"
             strategy="afterInteractive"
-            dangerouslySetInnerHTML={{__html: JSON.stringify(structuredData, null, 2)}}
+            dangerouslySetInnerHTML={{__html: JSON.stringify(productSchema, null, 2)}}
         />
     );
 };
