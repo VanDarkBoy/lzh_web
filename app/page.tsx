@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import WhatAPP from './components/WhatAPP';
 import FloatingCountryFlags from './components/FloatingCountryFlags';
 import HiddenSeoContent from './components/HiddenSeoContent';
+import StructuredData from './components/StructuredData';
 import { Category, DEFAULT_HOME_CONTENT, HomeContent, ProjectItem} from './types';
 
 const CATEGORY_GRADIENTS = [
@@ -98,6 +99,7 @@ export default function Home() {
     return (
         <div className="min-h-screen bg-white flex flex-col">
             <Header/>
+            <StructuredData/>
             <main className="flex-1">
                 {/* Hero Section */}
                 <section className="relative min-h-screen flex items-center justify-center overflow-hidden"
