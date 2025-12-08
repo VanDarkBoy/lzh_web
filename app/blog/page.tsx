@@ -85,7 +85,7 @@ export default function BlogListPage() {
                         {blogList.map((blog) => (
                             <Link
                                 key={blog.id}
-                                href={`/blog/${blog.id}`}
+                                href={`/blog-detail?id=${blog.id}`}
                                 className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden"
                             >
                                 <div className="h-64 overflow-hidden">
