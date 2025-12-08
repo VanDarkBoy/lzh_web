@@ -2,8 +2,8 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import FloatingCountryFlags from '../../components/FloatingCountryFlags';
 import WhatAPP from '../../components/WhatAPP';
-import {findBlogById} from '../data';
 import {notFound} from 'next/navigation';
+import type {BlogDetail} from '../types';
 
 const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
     year: 'numeric',
@@ -17,12 +17,22 @@ type BlogDetailPageProps = {
     };
 };
 
-export default function BlogDetailPage({params}: BlogDetailPageProps) {
-    const blog = findBlogById(params.id);
+async function fetchBlogDetail(id: string): Promise<BlogDetail> {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/blog/${id}`, {cache: 'no-store'});
 
-    if (!blog) {
+    if (response.status === 404) {
         notFound();
     }
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch blog detail');
+    }
+
+    return response.json();
+}
+
+export default async function BlogDetailPage({params}: BlogDetailPageProps) {
+    const blog = await fetchBlogDetail(params.id);
 
     return (
         <div className="min-h-screen bg-gray-50">

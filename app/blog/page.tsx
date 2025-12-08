@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import FloatingCountryFlags from '../components/FloatingCountryFlags';
 import WhatAPP from '../components/WhatAPP';
-import {blogList} from './data';
+import type {BlogListItem} from './types';
 
 const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
     year: 'numeric',
@@ -11,7 +11,19 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
     day: 'numeric'
 });
 
-export default function BlogListPage() {
+async function fetchBlogList(): Promise<BlogListItem[]> {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/blogList`, {cache: 'no-store'});
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch blog list');
+    }
+
+    return response.json();
+}
+
+export default async function BlogListPage() {
+    const blogList = await fetchBlogList();
+
     return (
         <div className="min-h-screen bg-gray-50">
             <Header />
