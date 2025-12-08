@@ -18,6 +18,7 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     {href: '/product-list', label: '产品列表'},
     {href: '/download', label: '下载中心'},
     {href: '/projects', label: '应用案例'},
+    {href: '/blog', label: '博客'},
     {href: '/get-started', label: '获取报价',isCta:true}
 ];
 
