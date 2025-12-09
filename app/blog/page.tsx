@@ -60,9 +60,14 @@ export default function BlogListPage() {
         <div className="min-h-screen bg-gray-50">
             <Header />
             <main className="pt-28 pb-16">
+                <section className="relative">
+                    <img
+                        src="https://www.lithiumvalley.com/wp-content/uploads/2024/08/Blog.jpeg"
+                        alt="Blog banner"
+                        className="w-full h-72 md:h-96 object-cover"
+                    />
+                </section>
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-
                     {loading && (
                         <div className="text-center text-sm text-gray-500 mb-4">Listloading...</div>
                     )}
@@ -70,18 +75,18 @@ export default function BlogListPage() {
                         <div className="text-center text-sm text-red-500 mb-4">{error}</div>
                     )}
 
-                    <div className="grid gap-8 md:grid-cols-2">
+                    <div className="grid gap-12 md:grid-cols-2">
                         {blogList.map((blog) => (
                             <Link
                                 key={blog.id}
                                 href={`/blog-detail?id=${blog.id}`}
                                 className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden"
                             >
-                                <div className="h-64 overflow-hidden">
+                                <div className="bg-gray-100 aspect-[4/3] overflow-hidden flex items-center justify-center">
                                     <img
                                         src={blog.image}
                                         alt={blog.title}
-                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                                        className="max-h-full w-full object-contain transform group-hover:scale-105 transition-transform duration-500"
                                     />
                                 </div>
                                 <div className="p-6 space-y-3">
