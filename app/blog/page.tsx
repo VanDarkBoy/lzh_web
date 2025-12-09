@@ -57,17 +57,29 @@ export default function BlogListPage() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
-            <main className="pt-28 pb-16">
-                <section className="relative">
-                    <img
-                        src="https://www.lithiumvalley.com/wp-content/uploads/2024/08/Blog.jpeg"
-                        alt="Blog banner"
-                        className="w-full h-72 md:h-96 object-cover"
-                    />
+            <main className="flex-1 flex flex-col pt-24">
+                <section className="relative h-[80vh] min-h-[520px] w-full overflow-hidden flex items-center justify-center">
+                    <div className="absolute inset-0">
+                        <img
+                            src="https://www.lithiumvalley.com/wp-content/uploads/2024/08/Blog.jpeg"
+                            alt="Blog banner"
+                            className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/35 to-black/55" />
+                    </div>
+                    <div className="relative z-10 text-center text-white max-w-3xl px-6 space-y-6">
+                        <p className="text-sm md:text-base uppercase tracking-[0.3em] text-white/80">Blog</p>
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight">
+                            探索锂电行业前沿资讯
+                        </h1>
+                        <p className="text-base md:text-lg text-white/80 leading-relaxed">
+                            关注最新技术、市场趋势与成功案例，获取关于新能源储能解决方案的深度洞见。
+                        </p>
+                    </div>
                 </section>
-                <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 pb-16">
                     {loading && (
                         <div className="text-center text-sm text-gray-500 mb-4">Listloading...</div>
                     )}
