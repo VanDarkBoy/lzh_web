@@ -81,13 +81,7 @@ export default function BlogListPage() {
                     <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60 z-10"></div>
 
                     <div className="relative z-20 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <p className="text-xs sm:text-sm md:text-base uppercase tracking-[0.25em] text-white/80">Blog</p>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white leading-tight">
-                            探索锂电行业前沿资讯
-                        </h1>
-                        <p className="text-base md:text-lg text-white/80 leading-relaxed">
-                            关注最新技术、市场趋势与成功案例，获取关于新能源储能解决方案的深度洞见。
-                        </p>
+                        <p className="text-lg sm:text-xl md:text-2xl uppercase tracking-[0.25em] text-white/80">Blog</p>
                     </div>
 
                     <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
@@ -130,7 +124,7 @@ export default function BlogListPage() {
                                                 {dateFormatter.format(new Date(blog.pushDate))}
                                             </span>
                                         </div>
-                                        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                        <h2 className="text-xl sm:text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                                             {blog.title}
                                         </h2>
                                         <p className="text-gray-600 leading-relaxed max-h-20 overflow-hidden">
