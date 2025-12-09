@@ -16,9 +16,16 @@ const dateFormatter = new Intl.DateTimeFormat('en', {
 });
 
 export default function BlogListPage() {
+    const [scrollY, setScrollY] = useState(0);
     const [blogList, setBlogList] = useState<BlogListItem[]>(() => defaultBlogList);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const handleScroll = () => setScrollY(window.scrollY);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -60,23 +67,31 @@ export default function BlogListPage() {
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
             <main className="flex-1 flex flex-col pt-24">
-                <section className="relative h-[80vh] min-h-[520px] w-full overflow-hidden flex items-center justify-center">
-                    <div className="absolute inset-0">
-                        <img
-                            src="https://www.lithiumvalley.com/wp-content/uploads/2024/08/Blog.jpeg"
-                            alt="Blog banner"
-                            className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/35 to-black/55" />
-                    </div>
-                    <div className="relative z-10 text-center text-white max-w-3xl px-6 space-y-6">
-                        <p className="text-sm md:text-base uppercase tracking-[0.3em] text-white/80">Blog</p>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight">
+                <section className="relative h-[90vh] min-h-[560px] w-full overflow-hidden flex items-center justify-center">
+                    <div
+                        className="absolute inset-0 z-0"
+                        style={{
+                            backgroundImage: 'url(https://www.lithiumvalley.com/wp-content/uploads/2024/10/Blog-Banner-1.jpg)',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            backgroundAttachment: 'fixed',
+                            transform: `translateY(${scrollY * 0.4}px)`,
+                        }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/60 z-10" />
+                    <div className="relative z-20 text-center max-w-4xl mx-auto px-6 sm:px-8 space-y-6">
+                        <p className="text-xs sm:text-sm md:text-base uppercase tracking-[0.25em] text-white/80">Blog</p>
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white leading-tight">
                             探索锂电行业前沿资讯
                         </h1>
                         <p className="text-base md:text-lg text-white/80 leading-relaxed">
                             关注最新技术、市场趋势与成功案例，获取关于新能源储能解决方案的深度洞见。
                         </p>
+                    </div>
+                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
+                        <div className="animate-bounce text-white text-xl">
+                            <i className="ri-arrow-down-line" />
+                        </div>
                     </div>
                 </section>
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 pb-16">
