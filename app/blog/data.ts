@@ -57,6 +57,4 @@ export const blogPosts: BlogDetail[] = [
 
 export const blogList: BlogListItem[] = blogPosts.map(({content, ...rest}) => rest);
 
-export function findBlogById(id: string): BlogDetail | undefined {
-    return blogPosts.find((post) => post.id === id);
-}
+

@@ -9,7 +9,7 @@ import WhatAPP from '../components/WhatAPP';
 import {blogList as defaultBlogList} from './data';
 import type {BlogListItem} from './types';
 
-const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
+const dateFormatter = new Intl.DateTimeFormat('en', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -42,8 +42,7 @@ export default function BlogListPage() {
                 if (err instanceof DOMException && err.name === 'AbortError') {
                     return;
                 }
-                console.error('获取博客列表失败:', err);
-                setError('列表加载失败，显示默认内容。');
+                setError('List loading fails, showing default content');
                 setBlogList(defaultBlogList);
             } finally {
                 setLoading(false);
@@ -62,20 +61,10 @@ export default function BlogListPage() {
             <Header />
             <main className="pt-28 pb-16">
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
-                        <span className="inline-flex items-center px-4 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-medium">
-                            博客与洞察
-                        </span>
-                        <h1 className="mt-4 text-4xl sm:text-5xl font-bold text-gray-900">
-                            储能行业的最新思考与实践
-                        </h1>
-                        <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-                            我们分享项目经验、产品安全设计与智能运维的最佳实践，帮助您快速了解储能方案的商业价值。
-                        </p>
-                    </div>
+
 
                     {loading && (
-                        <div className="text-center text-sm text-gray-500 mb-4">列表加载中...</div>
+                        <div className="text-center text-sm text-gray-500 mb-4">Listloading...</div>
                     )}
                     {error && (
                         <div className="text-center text-sm text-red-500 mb-4">{error}</div>
@@ -105,10 +94,6 @@ export default function BlogListPage() {
                                     <p className="text-gray-600 leading-relaxed max-h-16 overflow-hidden">
                                         {blog.description}
                                     </p>
-                                    <div className="flex items-center text-blue-600 font-medium">
-                                        阅读详情
-                                        <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
-                                    </div>
                                 </div>
                             </Link>
                         ))}

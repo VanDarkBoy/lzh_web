@@ -25,7 +25,7 @@ export default function BlogDetailPage() {
 
     useEffect(() => {
         if (!blogId) {
-            setError('未找到有效的文章 ID');
+            setError('No valid article found ID');
             setLoading(false);
             return;
         }
@@ -43,11 +43,11 @@ export default function BlogDetailPage() {
                 });
 
                 if (response.status === 404) {
-                    throw new Error('未找到对应的文章');
+                    throw new Error('No corresponding article found');
                 }
 
                 if (!response.ok) {
-                    throw new Error('获取文章详情失败');
+                    throw new Error('Failed to get article details');
                 }
 
                 const payload: BlogDetail = await response.json();
@@ -57,7 +57,7 @@ export default function BlogDetailPage() {
                     return;
                 }
                 console.error('Failed to fetch blog detail', err);
-                setError('文章详情加载失败，请稍后再试。');
+                setError('Article details failed to load, please try again later.');
                 setBlog(null);
             } finally {
                 setLoading(false);
@@ -75,7 +75,7 @@ export default function BlogDetailPage() {
                 <Header />
                 <main className="pt-28 pb-16">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600">
-                        正在加载文章详情...
+                        Loading article details...
                     </div>
                 </main>
                 <Footer />
@@ -89,8 +89,8 @@ export default function BlogDetailPage() {
                 <Header />
                 <main className="pt-28 pb-16">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-                        <p className="text-xl font-semibold text-gray-900">{error || '未找到对应的文章详情'}</p>
-                        <p className="text-gray-600">请返回博客列表后重试。</p>
+                        <p className="text-xl font-semibold text-gray-900">{error || 'The corresponding article details were not found'}</p>
+                        <p className="text-gray-600">Please return to the list of blogs and try again。</p>
                     </div>
                 </main>
                 <Footer />
@@ -108,13 +108,7 @@ export default function BlogDetailPage() {
                             {dateFormatter.format(new Date(blog.pushDate))}
                         </div>
                         <h1 className="text-4xl font-bold text-gray-900 leading-tight">{blog.title}</h1>
-                        <p className="text-gray-600 text-lg">{blog.description}</p>
                     </div>
-
-                    <div className="rounded-3xl overflow-hidden shadow-lg mb-10">
-                        <img src={blog.image} alt={blog.title} className="w-full h-[420px] object-cover" />
-                    </div>
-
                     <article
                         className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700"
                         dangerouslySetInnerHTML={{__html: blog.content}}
