@@ -110,25 +110,33 @@ export default function BlogListPage() {
                             <Link
                                 key={blog.id}
                                 href={`/blog-detail?id=${blog.id}`}
-                                className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+                                className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
                             >
-                                <div className="bg-gray-100 aspect-[4/3] overflow-hidden flex items-center justify-center">
-                                    <img
-                                        src={blog.image}
-                                        alt={blog.title}
-                                        className="max-h-full w-full object-contain transform group-hover:scale-105 transition-transform duration-500"
-                                    />
-                                </div>
-                                <div className="p-6 space-y-3">
-                                    <div className="text-sm text-blue-600 font-medium">
-                                        {dateFormatter.format(new Date(blog.pushDate))}
+                                <div className="flex flex-col sm:flex-row h-full">
+                                    <div className="sm:w-2/5 bg-gray-100 aspect-[4/3] sm:aspect-square overflow-hidden flex-shrink-0">
+                                        <img
+                                            src={blog.image}
+                                            alt={blog.title}
+                                            className="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                                        />
                                     </div>
-                                    <h2 className="text-2xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                        {blog.title}
-                                    </h2>
-                                    <p className="text-gray-600 leading-relaxed max-h-16 overflow-hidden">
-                                        {blog.description}
-                                    </p>
+                                    <div className="flex-1 p-6 sm:p-8 flex flex-col gap-3 justify-center">
+                                        <div className="flex items-center gap-3 text-sm text-gray-500">
+                                            <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-600">
+                                                Blog
+                                            </span>
+                                            <span className="text-gray-300">•</span>
+                                            <span className="text-blue-600 font-medium">
+                                                {dateFormatter.format(new Date(blog.pushDate))}
+                                            </span>
+                                        </div>
+                                        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                            {blog.title}
+                                        </h2>
+                                        <p className="text-gray-600 leading-relaxed max-h-20 overflow-hidden">
+                                            {blog.description}
+                                        </p>
+                                    </div>
                                 </div>
                             </Link>
                         ))}
