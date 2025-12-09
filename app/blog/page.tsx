@@ -40,7 +40,7 @@ export default function BlogListPage() {
                 });
 
                 if (!response.ok) {
-                    throw new Error('无法获取博客列表');
+                    throw new Error('Unable to get a list of blogs');
                 }
 
                 const data = (await response.json()) as BlogListItem[];
@@ -67,19 +67,20 @@ export default function BlogListPage() {
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
             <main className="flex-1 flex flex-col pt-24">
-                <section className="relative h-[90vh] min-h-[560px] w-full overflow-hidden flex items-center justify-center">
+                <section className="relative h-screen flex items-center justify-center overflow-hidden">
                     <div
                         className="absolute inset-0 z-0"
                         style={{
-                            backgroundImage: 'url(https://www.lithiumvalley.com/wp-content/uploads/2024/10/Blog-Banner-1.jpg)',
+                            backgroundImage: `url(https://www.lithiumvalley.com/wp-content/uploads/2024/08/Blog.jpeg)`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             backgroundAttachment: 'fixed',
-                            transform: `translateY(${scrollY * 0.4}px)`,
+                            transform: `translateY(${scrollY * 0.5}px)`,
                         }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/60 z-10" />
-                    <div className="relative z-20 text-center max-w-4xl mx-auto px-6 sm:px-8 space-y-6">
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60 z-10"></div>
+
+                    <div className="relative z-20 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                         <p className="text-xs sm:text-sm md:text-base uppercase tracking-[0.25em] text-white/80">Blog</p>
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white leading-tight">
                             探索锂电行业前沿资讯
@@ -88,11 +89,13 @@ export default function BlogListPage() {
                             关注最新技术、市场趋势与成功案例，获取关于新能源储能解决方案的深度洞见。
                         </p>
                     </div>
-                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
-                        <div className="animate-bounce text-white text-xl">
-                            <i className="ri-arrow-down-line" />
+
+                    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+                        <div className="animate-bounce">
+                            <i className="ri-arrow-down-line text-white text-2xl w-6 h-6 flex items-center justify-center"></i>
                         </div>
                     </div>
+
                 </section>
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 pb-16">
                     {loading && (
