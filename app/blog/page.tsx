@@ -67,7 +67,7 @@ export default function BlogListPage() {
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
             <main className="flex-1 flex flex-col pt-20">
-                <section className="relative h-screen flex items-center justify-center overflow-hidden">
+                <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
                     <div
                         className="absolute inset-0 z-0"
                         style={{
@@ -97,7 +97,7 @@ export default function BlogListPage() {
                     </div>
 
                 </section>
-                <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-0 pb-16">
+                <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pb-16">
                     {loading && (
                         <div className="text-center text-sm text-gray-500 mb-4">Listloading...</div>
                     )}
