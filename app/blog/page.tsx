@@ -107,7 +107,7 @@ export default function BlogListPage() {
                                 className="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 min-h-[360px]"
                             >
                                 <div className="flex flex-col sm:flex-row h-full">
-                                    <div className="sm:w-1/2 lg:w-2/5 bg-gray-100 aspect-[4/3] sm:aspect-[3/2] lg:aspect-[4/3] overflow-hidden flex-shrink-0">
+                                    <div className="sm:w-1/2 lg:w-2/5 bg-gray-100 aspect-[3/4] sm:aspect-[3/4] lg:aspect-[3/4] overflow-hidden flex-shrink-0">
                                         <img
                                             src={blog.image}
                                             alt={blog.title}
